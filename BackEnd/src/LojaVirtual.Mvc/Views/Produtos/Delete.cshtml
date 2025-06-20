@@ -1,0 +1,51 @@
+﻿@using LojaVirtual.Mvc.Extensions
+@model ProdutoViewModel
+@{
+    ViewData["Title"] = "Exclusão do Produto - " + Model.Nome;
+}
+
+<h4 style="padding-top: 50px">@ViewData["Title"]</h4>
+<h5>Você tem certeza disso?</h5>
+<hr />
+<vc:Summary></vc:Summary>
+<div class="row">
+    <div class="col-md-4">
+        <img src="~/images/@Model.Imagem" alt="@Model.Imagem" style="width: 300px; height: 300px" />
+    </div>
+    <div class="col-md-6">
+        <dl>
+            <dt>
+                @Html.DisplayNameFor(model => model.NomeCategoria)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NomeCategoria)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Nome)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Nome)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Descricao)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Preco)
+            </dt>
+            <dd>
+                @this.FormatoMoeda(Model.Preco)
+            </dd>
+        </dl>
+
+        <div>
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <input type="submit" value="Excluir" class="btn btn-danger" />
+                <a class="btn btn-info" asp-action="Index">Voltar</a>
+            </form>
+        </div>
+    </div>
+</div>

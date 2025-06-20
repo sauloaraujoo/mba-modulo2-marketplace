@@ -1,0 +1,56 @@
+﻿@using LojaVirtual.Mvc.Extensions
+@model IEnumerable<ProdutoViewModel>
+@{
+    ViewData["Title"] = "Lista de Produtos";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-info" asp-action="Create">Novo</a>
+</div>
+
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>
+
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Preco)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeCategoria)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var produto in Model)
+        {
+            <tr>
+                <td>
+                    <img src="~/images/@produto.Imagem" alt="@produto.Nome" style="width: 70px; height: 100px" />
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => produto.Nome)
+                </td>
+                <td>
+                    @this.FormatoMoeda(produto.Preco)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => produto.NomeCategoria)
+                </td>
+                <td class="text-end">
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

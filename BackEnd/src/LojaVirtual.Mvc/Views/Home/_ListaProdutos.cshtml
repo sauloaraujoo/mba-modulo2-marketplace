@@ -1,0 +1,40 @@
+﻿@using LojaVirtual.Mvc.Extensions
+@model IEnumerable<ProdutoVitrineViewModel>
+
+<div class="row">
+    @foreach (var produto in Model.OrderBy(p => p.Nome))
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <a asp-controller="Home" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id">
+                    <img src="~/images/@produto.Imagem" alt="@produto.Nome" style="width:100%;height:180px" class="card-img-top" />
+                </a>
+                <div class="card-body">
+                    <h5 class="card-title">@produto.Nome</h5>
+                    <p class="card-text">@produto.Descricao</p>
+                    <div class="card-text"><b>Categoria: </b>@produto.Categoria</div>
+                    <div class="card-text"><b>Vendedor: </b>@produto.Vendedor</div>
+                    <p><strong>Preço:</strong> @this.FormatoMoeda(produto.Preco)</p>
+                    @if (produto.Estoque > 0)
+                    {
+                        <div class="text-center">
+                            <button type="button" class="btn btn-outline-primary">
+                                <span class="text">Adicionar ao carrinho</span> <i class="fas fa-shopping-cart"> &nbsp;</i>
+                            </button>
+
+                            <a asp-controller="Home" asp-action="ProdutoDetalhe" asp-route-id="@produto.Id" class="btn btn-info">
+                                <b> Detalhes</b>
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center">
+                            <span style="border: 1px solid;padding: 5px 8px;color: red;border-radius: 5px;">Sem Estoque</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>

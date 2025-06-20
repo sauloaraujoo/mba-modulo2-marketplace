@@ -1,0 +1,42 @@
+﻿@model IEnumerable<ProdutoVitrineViewModel>
+@{
+    ViewData["Title"] = "Loja Virtual";
+}
+<div class="banner">
+    Bem-vindo à Minha Loja
+</div>
+
+<div class="mt-5">
+    <h2 class="text-center mb-4">Nossos Produtos</h2>
+    <div class="row mb-4">
+        <div class="col-md-6 offset-md-3 d-flex">
+            <form method="get" asp-action="Index" class="col-md-6 offset-md-3 d-flex">
+                <label class="visually-hidden" for="categoriaId">Categorias</label>
+                <select class="form-select" id="categoriaId" name="categoriaId">
+                    <option value="">Todas as Categorias</option>
+                    @foreach (var categoria in ViewBag.Categorias)
+                    {
+                        <option value="@categoria.Id">@categoria.Nome</option>
+                    }
+                </select>
+                <button type="submit" class="btn btn-dark" id="searchButton"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+<div id="produtos">
+    @Html.Partial("_ListaProdutos", Model)
+</div>
+
+@section Scripts {    
+    <script>
+        $('form').submit(function (event) {
+            event.preventDefault(); // Evitar o envio padrão do formulário
+            var categoriaId = $('select[name="categoriaId"]').val();
+
+            $.get('@Url.Action("ListaProdutos", "Home")', { categoriaId: categoriaId }, function (data) {
+                $('#produtos').html(data);
+            });
+        });
+    </script>
+}
