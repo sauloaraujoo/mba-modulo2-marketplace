@@ -1,0 +1,32 @@
+﻿@using LojaVirtual.Mvc.Extensions
+@model ProdutoViewModel
+@{
+    ViewData["Title"] = "Detalhes do Produto";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="~/images/@Model.Imagem" alt="@Model.Nome" class="product-img" />
+        </div>
+        <div class="col-md-6">
+            <h2>@Model.Nome</h2>
+            <p class="text-muted">@Model.NomeCategoria</p>
+            <h4 class="text">@this.FormatoMoeda(Model.Preco)</h4>
+            <p>@Model.Descricao</p>
+            @* <button class="btn btn-dark btn-lg"><i class="bi bi-cart"></i> Comprar Agora</button> *@
+            @{
+                if (Model.Estoque > 0)
+                {
+                    <button type="button" class="btn btn-dark btn-lg">
+                        <span class="text">Adicionar ao carrinho</span> <i class="fas fa-shopping-cart"> &nbsp;</i>
+                    </button>
+                }
+                else
+                {
+                    <span style="border: 1px solid;padding: 5px 8px;color: red;border-radius: 5px;">Sem Estoque</span>
+                }
+            }
+        </div>
+    </div>
+</div>

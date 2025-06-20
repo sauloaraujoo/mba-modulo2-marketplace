@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CategoriaViewModel>
+@{
+    ViewData["Title"] = "Lista de Categorias";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+<div class="d-flex justify-content-end mb-3">
+    <a class="btn btn-info" asp-action="Create">Nova</a>
+</div>
+
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descricao)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var categoria in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(_ => categoria.Nome)
+                </td>
+                <td>
+                    @(categoria.Descricao is { Length: > 99 } ? categoria.Descricao[..99] + "..." : categoria.Descricao)
+                </td>
+                <td class="text-end">
+                    <a class="btn btn-info" asp-action="Details" asp-route-id="@categoria.Id"><spam class="fa fa-search"></spam></a>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@categoria.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@categoria.Id"><spam class="fa fa-trash"></spam></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
