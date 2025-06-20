@@ -17,5 +17,8 @@
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.14" />
 	<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.14" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Business\Validations\" />
+  </ItemGroup>
 
 </Project>
