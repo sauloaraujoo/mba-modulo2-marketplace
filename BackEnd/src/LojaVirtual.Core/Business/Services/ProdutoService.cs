@@ -53,7 +53,8 @@ namespace LojaVirtual.Core.Business.Services
             var produto = await GetSelfProdutoById(request.Id, cancellationToken);
             if (produto is null) { return; }
 
-            produto.Edit(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, request.CategoriaId);
+            //Alterar o campo de Ativo para vim do request
+            produto.Edit(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, true, request.CategoriaId);
 
             await _produtoRepository.Edit(produto, cancellationToken);
             await _produtoRepository.SaveChanges(cancellationToken);
