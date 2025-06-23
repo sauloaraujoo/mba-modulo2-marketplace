@@ -1,4 +1,5 @@
 ﻿using LojaVirtual.Core.Infra.Context;
+using LojaVirtual.Core.Infra.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.Api.Configurations
@@ -8,10 +9,13 @@ namespace LojaVirtual.Api.Configurations
         public static IServiceCollection AddDbContextConfig(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var absolutePath = DbPathHelper.GetDatabasePath();
+
             services.AddDbContext<LojaVirtualContext>(options =>
             {
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite($"Data Source={absolutePath}");
             });
+
             return services;
         }
 

@@ -43,19 +43,24 @@ namespace LojaVirtual.Core.Infra.Seed
 
             var idUser = Guid.NewGuid();
 
+            var email = "admin@marketplace.com";
+            var senha = "Abcd1234!";
+
             var usuario = new IdentityUser
             {
                 Id = idUser.ToString(),
-                Email = "rinaldo@teste.com",
+                Email = email,
                 EmailConfirmed = true,
-                NormalizedEmail = "RINALDO@TESTE.COM",
-                UserName = "rinaldo@teste.com",
+                NormalizedEmail = email.ToUpper(),
+                UserName = email,
                 AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
-                NormalizedUserName = "RINALDO@TESTE.COM"
+                NormalizedUserName = email.ToUpper()
             };
-            
-            var vendedor = new Vendedor(idUser, "Rinaldo Serra", usuario.Email);
+
+            var passwordHasher = new PasswordHasher<IdentityUser>();
+            usuario.PasswordHash = passwordHasher.HashPassword(usuario, senha);
+
+            var vendedor = new Vendedor(idUser, "Vendedor Teste", usuario.Email);
             var categoria = new Categoria("Informática", "Descrição da categoria Informática");
             var produto = new Produto("Mouse", "Descrição do produto Mouse", "mouse.jpg", 100, 20, categoria.Id);
             produto.VinculaVendedor(vendedor.Id);
