@@ -1,4 +1,5 @@
 ﻿using LojaVirtual.Core.Infra.Context;
+using LojaVirtual.Core.Infra.Helpers;
 using LojaVirtual.Mvc.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +11,11 @@ namespace LojaVirtual.Mvc.Configurations
         public static IServiceCollection AddDbContextIdentityConfig(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var absolutePath = DbPathHelper.GetDatabasePath();
+
             services.AddDbContext<LojaVirtualContext>(options =>
             {
-                options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlite($"Data Source={absolutePath}");
             });
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
