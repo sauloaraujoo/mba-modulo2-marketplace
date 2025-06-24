@@ -98,23 +98,14 @@ namespace LojaVirtual.Core.Infra.Seed
             };
             await context.Users.AddAsync(adminUser);
 
-            // Cria role Admin
-            var idAdminRole = Guid.NewGuid();
-            var adminRole = new IdentityRole
-            {
-                Id = idAdminRole.ToString(),
-                Name = "Admin",
-                NormalizedName = "ADMIN"
-            };
-            await context.Roles.AddAsync(adminRole);
-
-            // Atribui role Admin ao user admin@teste.com
-            var adminUserRole = new IdentityUserRole<string>
+            // Cria claim Categorias para usuário admin@teste.com, com todas as permissões
+            var claimCategorias = new IdentityUserClaim<string>
             {
                 UserId = idAdminUser.ToString(),
-                RoleId = idAdminRole.ToString()
+                ClaimType = "Categorias",
+                ClaimValue = "AD,VI,ED,EX"
             };
-            await context.UserRoles.AddAsync(adminUserRole);
+            await context.UserClaims.AddAsync(claimCategorias);
 
             await context.SaveChangesAsync();
         }
