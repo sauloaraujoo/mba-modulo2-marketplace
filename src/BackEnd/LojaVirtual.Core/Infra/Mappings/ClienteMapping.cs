@@ -4,20 +4,17 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace LojaVirtual.Core.Infra.Mappings
 {
-    public class VendedorMapping : IEntityTypeConfiguration<Vendedor>
+    public class ClienteMapping : IEntityTypeConfiguration<Cliente>
     {
-        public void Configure(EntityTypeBuilder<Vendedor> builder)
+        public void Configure(EntityTypeBuilder<Cliente> builder)
         {
-            builder.ToTable("Vendedor");
+            builder.ToTable("Cliente");
 
             builder.HasKey(x => x.Id);
 
             builder.Property(p => p.Email)
                .IsRequired();
 
-            builder.HasMany(c => c.Produtos)
-                .WithOne(p => p.Vendedor)
-                .HasForeignKey(c => c.VendedorId);
         }
     }
 }
