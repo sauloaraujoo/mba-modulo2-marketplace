@@ -82,6 +82,40 @@ namespace LojaVirtual.Core.Infra.Seed
             cliente.AddFavorito(produto.Id);
             await context.Users.AddAsync(userCliente);
             await context.ClienteSet.AddAsync(cliente);
+
+            // Cria user admin@teste.com
+            var idAdminUser = Guid.NewGuid();
+            var adminUser = new IdentityUser
+            {
+                Id = idAdminUser.ToString(),
+                Email = "admin@teste.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "ADMIN@TESTE.COM",
+                UserName = "admin@teste.com",
+                AccessFailedCount = 0,
+                PasswordHash = "AQAAAAIAAYagAAAAEOQcC81V5MSVNFknjggK/c048ymIOvMUecQtLhf8OYPetgFcuGYI6ToC0GNbbMSoWg==", // Abcd1234!
+                NormalizedUserName = "ADMIN@TESTE.COM"
+            };
+            await context.Users.AddAsync(adminUser);
+
+            // Cria role Admin
+            var idAdminRole = Guid.NewGuid();
+            var adminRole = new IdentityRole
+            {
+                Id = idAdminRole.ToString(),
+                Name = "Admin",
+                NormalizedName = "ADMIN"
+            };
+            await context.Roles.AddAsync(adminRole);
+
+            // Atribui role Admin ao user admin@teste.com
+            var adminUserRole = new IdentityUserRole<string>
+            {
+                UserId = idAdminUser.ToString(),
+                RoleId = idAdminRole.ToString()
+            };
+            await context.UserRoles.AddAsync(adminUserRole);
+
             await context.SaveChangesAsync();
         }
     }
