@@ -1,5 +1,5 @@
-﻿using LojaVirtual.Core.Infra.Context;
-using LojaVirtual.Core.Infra.Helpers;
+﻿using LojaVirtual.Data.Context;
+using LojaVirtual.Data.Helpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.Api.Configurations

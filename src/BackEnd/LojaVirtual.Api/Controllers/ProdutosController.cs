@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using LojaVirtual.Api.Models;
-using LojaVirtual.Core.Business.Entities;
-using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Notifications;
+using LojaVirtual.Business.Entities;
+using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;

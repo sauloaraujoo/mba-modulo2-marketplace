@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using LojaVirtual.Api.Models;
-using LojaVirtual.Core.Business.Entities;
+using LojaVirtual.Business.Entities;
 
 namespace LojaVirtual.Api.Configurations
 {
