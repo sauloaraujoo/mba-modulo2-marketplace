@@ -1,0 +1,44 @@
+﻿@model IEnumerable<VendedorViewModel>
+@{
+    ViewData["Title"] = "Lista de Vendedores";
+}
+
+<h1>@ViewData["Title"]</h1>
+<hr />
+
+
+
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nome)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vendedor in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(_ => vendedor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => vendedor.Email)
+                </td>
+                <td class="text-end">
+                    <a asp-action="AlterarStatus" asp-route-id="@vendedor.Id" title="Alterar Status">
+                        <span class="fa @(vendedor.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
