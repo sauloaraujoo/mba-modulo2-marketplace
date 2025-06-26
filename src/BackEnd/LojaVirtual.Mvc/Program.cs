@@ -1,4 +1,4 @@
-using LojaVirtual.Core.Infra.Seed;
+using LojaVirtual.Data.Seed;
 using LojaVirtual.Mvc.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);

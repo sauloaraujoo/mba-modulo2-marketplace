@@ -1,8 +1,8 @@
-﻿using LojaVirtual.Core.Business.Extensions.IdentityUser;
-using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Notifications;
-using LojaVirtual.Core.Business.Services;
-using LojaVirtual.Core.Infra.Repositories;
+﻿using LojaVirtual.Business.Extensions.IdentityUser;
+using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Services;
+using LojaVirtual.Data.Repositories;
 using LojaVirtual.Mvc.Extensions;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
 

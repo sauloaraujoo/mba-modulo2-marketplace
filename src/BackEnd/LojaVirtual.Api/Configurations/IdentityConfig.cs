@@ -1,5 +1,5 @@
 ﻿using LojaVirtual.Api.Extensions;
-using LojaVirtual.Core.Infra.Context;
+using LojaVirtual.Data.Context;
 using Microsoft.AspNetCore.Identity;
 
 namespace LojaVirtual.Api.Configurations

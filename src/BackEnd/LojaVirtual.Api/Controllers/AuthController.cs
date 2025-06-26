@@ -1,7 +1,7 @@
 ﻿using LojaVirtual.Api.Models;
-using LojaVirtual.Core.Business.Entities;
-using LojaVirtual.Core.Business.Extensions.IdentityUser;
-using LojaVirtual.Core.Business.Interfaces;
+using LojaVirtual.Business.Entities;
+using LojaVirtual.Business.Extensions.IdentityUser;
+using LojaVirtual.Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

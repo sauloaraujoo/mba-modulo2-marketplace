@@ -1,4 +1,4 @@
-﻿using LojaVirtual.Core.Business.Extensions.IdentityUser;
+﻿using LojaVirtual.Business.Extensions.IdentityUser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

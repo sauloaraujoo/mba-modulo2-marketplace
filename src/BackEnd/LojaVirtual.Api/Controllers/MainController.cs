@@ -1,5 +1,5 @@
-﻿using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Notifications;
+﻿using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
