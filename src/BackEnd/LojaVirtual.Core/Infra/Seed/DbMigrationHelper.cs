@@ -82,6 +82,31 @@ namespace LojaVirtual.Core.Infra.Seed
             cliente.AddFavorito(produto.Id);
             await context.Users.AddAsync(userCliente);
             await context.ClienteSet.AddAsync(cliente);
+
+            // Cria user admin@teste.com
+            var idAdminUser = Guid.NewGuid();
+            var adminUser = new IdentityUser
+            {
+                Id = idAdminUser.ToString(),
+                Email = "admin@teste.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "ADMIN@TESTE.COM",
+                UserName = "admin@teste.com",
+                AccessFailedCount = 0,
+                PasswordHash = "AQAAAAIAAYagAAAAEOQcC81V5MSVNFknjggK/c048ymIOvMUecQtLhf8OYPetgFcuGYI6ToC0GNbbMSoWg==", // Abcd1234!
+                NormalizedUserName = "ADMIN@TESTE.COM"
+            };
+            await context.Users.AddAsync(adminUser);
+
+            // Cria claim Categorias para usuário admin@teste.com, com todas as permissões
+            var claimCategorias = new IdentityUserClaim<string>
+            {
+                UserId = idAdminUser.ToString(),
+                ClaimType = "Categorias",
+                ClaimValue = "AD,VI,ED,EX"
+            };
+            await context.UserClaims.AddAsync(claimCategorias);
+
             await context.SaveChangesAsync();
         }
     }
