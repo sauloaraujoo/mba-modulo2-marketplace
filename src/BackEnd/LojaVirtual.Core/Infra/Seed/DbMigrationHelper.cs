@@ -43,33 +43,45 @@ namespace LojaVirtual.Core.Infra.Seed
 
             var idUser = Guid.NewGuid();
 
-            var email = "admin@marketplace.com";
-            var senha = "Abcd1234!";
-
-            var usuario = new IdentityUser
+            var usuarioVendedor = new IdentityUser
             {
                 Id = idUser.ToString(),
-                Email = email,
+                Email = "vendedor@teste.com",
                 EmailConfirmed = true,
-                NormalizedEmail = email.ToUpper(),
-                UserName = email,
+                NormalizedEmail = "VENDEDOR@TESTE.COM",
+                UserName = "vendedor@teste.com",
                 AccessFailedCount = 0,
-                NormalizedUserName = email.ToUpper()
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
+                NormalizedUserName = "VENDEDOR@TESTE.COM"
             };
 
-            var passwordHasher = new PasswordHasher<IdentityUser>();
-            usuario.PasswordHash = passwordHasher.HashPassword(usuario, senha);
-
-            var vendedor = new Vendedor(idUser, "Vendedor Teste", usuario.Email);
+            var vendedor = new Vendedor(idUser, "Vendedor", usuarioVendedor.Email);
             var categoria = new Categoria("Informática", "Descrição da categoria Informática");
-            var produto = new Produto("Mouse", "Descrição do produto Mouse", "mouse.jpg", 100, 20, categoria.Id);
+            var produto = new Produto("Mouse", "Descrição do produto Mouse", "mouse.jpg", 100, 20, true, categoria.Id);
             produto.VinculaVendedor(vendedor.Id);
             categoria.AddProduto(produto);
 
-            await context.Users.AddAsync(usuario);
+            await context.Users.AddAsync(usuarioVendedor);
             await context.VendedorSet.AddAsync(vendedor);
             await context.CategoriaSet.AddAsync(categoria);
 
+            var idClienteUser = Guid.NewGuid();
+            var userCliente = new IdentityUser
+            {
+                Id = idClienteUser.ToString(),
+                Email = "cliente@teste.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "CLIENTE@TESTE.COM",
+                UserName = "cliente@teste.com",
+                AccessFailedCount = 0,
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
+                NormalizedUserName = "CLIENTE@TESTE.COM"
+            };
+
+            var cliente = new Cliente(idClienteUser, "Cliente", "cliente@teste.com");
+            cliente.AddFavorito(produto.Id);
+            await context.Users.AddAsync(userCliente);
+            await context.ClienteSet.AddAsync(cliente);
             await context.SaveChangesAsync();
         }
     }
