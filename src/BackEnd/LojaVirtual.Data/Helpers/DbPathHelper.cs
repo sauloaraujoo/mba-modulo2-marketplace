@@ -4,7 +4,7 @@
     {
         public static string GetDatabasePath()
         {
-            var absolutePath = Path.GetFullPath(Path.Combine("..", "LojaVirtual.Core", "Database", "loja.db"));
+            var absolutePath = Path.GetFullPath(Path.Combine("..", "LojaVirtual.Data", "Database", "loja.db"));
             Directory.CreateDirectory(Path.GetDirectoryName(absolutePath)!);
             return absolutePath;
         }

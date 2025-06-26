@@ -14,6 +14,7 @@ namespace LojaVirtual.Api.Configurations
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IVendedorRepository, VendedorRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
 
             //Notification
             services.AddScoped<INotifiable, Notifiable>();
