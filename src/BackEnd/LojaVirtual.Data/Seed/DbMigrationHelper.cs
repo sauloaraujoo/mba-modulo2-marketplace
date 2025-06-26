@@ -82,6 +82,14 @@ namespace LojaVirtual.Data.Seed
             cliente.AddFavorito(produto.Id);
             await context.Users.AddAsync(userCliente);
             await context.ClienteSet.AddAsync(cliente);
+            // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
+            var claimCliente = new IdentityUserClaim<string>
+            {
+                UserId = idClienteUser.ToString(),
+                ClaimType = "Clientes",
+                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
+            };
+            await context.UserClaims.AddAsync(claimCliente);
 
             // Cria user admin@teste.com
             var idAdminUser = Guid.NewGuid();

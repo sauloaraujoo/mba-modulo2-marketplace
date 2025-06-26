@@ -20,17 +20,17 @@ namespace LojaVirtual.Api.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly IVendedorRepository _vendedorRepository;
+        private readonly IClienteRepository _clienteRepository;
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
                               IOptions<JwtSettings> jwtSettings,
-                              IVendedorRepository vendedorRepository,
+                              IClienteRepository clienteRepository,
                               INotifiable notifiable) : base(notifiable)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _jwtSettings = jwtSettings.Value;
-            _vendedorRepository = vendedorRepository;
+            _clienteRepository = clienteRepository;
         }
 
         [HttpPost("login")]
@@ -77,26 +77,33 @@ namespace LojaVirtual.Api.Controllers
             var result = await _userManager.CreateAsync(user, registerUser.Password);
             if (result.Succeeded)
             {
-                var vendedor = new Vendedor(idUser, registerUser.Nome, registerUser.Email);
-                
-                await _vendedorRepository.Insert(vendedor, cancellationToken);
-                await _vendedorRepository.SaveChanges(cancellationToken);
+                var cliente = new Cliente(idUser, registerUser.Nome, registerUser.Email);
+
+                await _clienteRepository.Insert(cliente, cancellationToken);
+                await _clienteRepository.SaveChanges(cancellationToken);
                 await _signInManager.SignInAsync(user, false);
                 return CustomResponse(HttpStatusCode.OK, await GerarJwt(user.Email));
             }
             AdicionarErroProcessamento("Falha no registro do usuário.");
             return CustomResponse();
         }
-        private async Task<string> GerarJwt(string email)
+        private async Task<LoginResponseViewModel> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+            var claims = await _userManager.GetClaimsAsync(user);
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-            if (user == null) return string.Empty;            
-
-            var claims = new List<Claim>
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+            foreach (var userRole in userRoles)
             {
-                new(ClaimTypes.NameIdentifier, user.Id),
-            };            
+                claims.Add(new Claim("role", userRole));
+            }
+            var identityClaims = new ClaimsIdentity();
+            identityClaims.AddClaims(claims);
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -113,7 +120,21 @@ namespace LojaVirtual.Api.Controllers
 
             var encodedToken = tokenHandler.WriteToken(token);
 
-            return encodedToken;
+            var response = new LoginResponseViewModel
+            {
+                AccessToken = encodedToken,
+                ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpiracaoHoras).TotalSeconds,
+                UserToken = new UserTokenViewModel
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                }
+            };
+
+            return response;
         }
+        private static long ToUnixEpochDate(DateTime date)
+            => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
     }
 }
