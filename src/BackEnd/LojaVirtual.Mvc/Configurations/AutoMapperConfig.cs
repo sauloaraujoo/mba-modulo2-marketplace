@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LojaVirtual.Core.Business.Entities;
+using LojaVirtual.Business.Entities;
 using LojaVirtual.Mvc.Models;
 
 namespace LojaVirtual.Mvc.Configurations

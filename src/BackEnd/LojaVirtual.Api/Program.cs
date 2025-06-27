@@ -1,5 +1,5 @@
 using LojaVirtual.Api.Configurations;
-using LojaVirtual.Core.Infra.Seed;
+using LojaVirtual.Data.Seed;
 
 var builder = WebApplication.CreateBuilder(args);
 

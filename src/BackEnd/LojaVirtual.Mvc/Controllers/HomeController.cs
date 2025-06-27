@@ -1,5 +1,5 @@
 using AutoMapper;
-using LojaVirtual.Core.Business.Interfaces;
+using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Mvc.Models;
 using Microsoft.AspNetCore.Mvc;
 

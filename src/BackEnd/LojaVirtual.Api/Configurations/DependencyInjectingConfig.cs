@@ -1,8 +1,8 @@
-﻿using LojaVirtual.Core.Business.Extensions.IdentityUser;
-using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Notifications;
-using LojaVirtual.Core.Business.Services;
-using LojaVirtual.Core.Infra.Repositories;
+﻿using LojaVirtual.Business.Extensions.IdentityUser;
+using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Services;
+using LojaVirtual.Data.Repositories;
 
 namespace LojaVirtual.Api.Configurations
 {
@@ -14,6 +14,7 @@ namespace LojaVirtual.Api.Configurations
             services.AddScoped<ICategoriaRepository, CategoriaRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<IVendedorRepository, VendedorRepository>();
+            services.AddScoped<IClienteRepository, ClienteRepository>();
 
             //Notification
             services.AddScoped<INotifiable, Notifiable>();

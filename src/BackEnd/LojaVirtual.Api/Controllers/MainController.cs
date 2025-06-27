@@ -1,5 +1,5 @@
-﻿using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Notifications;
+﻿using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Net;
@@ -19,16 +19,21 @@ namespace LojaVirtual.Api.Controllers
         {
             if (OperacaoValida())
             {
-                return new ObjectResult(result)
+                return new ObjectResult(new
+                {
+                    Sucesso = true,
+                    Data = result
+                })
                 {
                     StatusCode = (int)statusCode
                 };
             }
-            
-            return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]>
+
+            return BadRequest(new
             {
-                { "Mensagens", _notifiable.GetNotifications().Select(n => n.Message).ToArray() }
-            }));
+                Sucesso = false,
+                Mensagens = _notifiable.GetNotifications().Select(n => n.Message).ToArray()
+            });
         }
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {

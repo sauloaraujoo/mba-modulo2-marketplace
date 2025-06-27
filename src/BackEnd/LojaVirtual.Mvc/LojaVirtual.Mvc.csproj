@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LojaVirtual.Core\LojaVirtual.Core.csproj" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <ProjectReference Include="..\LojaVirtual.Data\LojaVirtual.Data.csproj" />
   </ItemGroup>
 
 </Project>
