@@ -15,6 +15,7 @@ namespace LojaVirtual.Data.Context
         public DbSet<Categoria> CategoriaSet { get; set; }
         public DbSet<Produto> ProdutoSet { get; set; }
         public DbSet<Cliente> ClienteSet { get; set; }
+        public DbSet<Favorito> FavoritoSet { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
@@ -24,6 +25,14 @@ namespace LojaVirtual.Data.Context
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes()
                 .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientCascade;
+
+            modelBuilder.Entity<Favorito>(e =>
+            {
+                e.ToTable("Favoritos");
+                e.HasKey(f => new { f.ClienteId, f.ProdutoId });
+                e.HasOne(f => f.Cliente).WithMany().HasForeignKey(f => f.ClienteId).OnDelete(DeleteBehavior.ClientCascade);
+                e.HasOne(f => f.Produto).WithMany().HasForeignKey(f => f.ProdutoId).OnDelete(DeleteBehavior.ClientCascade);
+            });
 
             base.OnModelCreating(modelBuilder);
         }
