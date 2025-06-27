@@ -13,9 +13,9 @@
             ProdutoId = produtoId;
         }
 
-        public Guid ClienteId { get; private set; }
-        public Cliente Cliente { get; private set; }
-        public Guid ProdutoId { get; private set; }
-        public Produto Produto { get; private set; }
+        public Guid ClienteId { get; protected set; }
+        public Cliente Cliente { get; protected set; }
+        public Guid ProdutoId { get; protected set; }
+        public Produto Produto { get; protected set; }
     }
 }

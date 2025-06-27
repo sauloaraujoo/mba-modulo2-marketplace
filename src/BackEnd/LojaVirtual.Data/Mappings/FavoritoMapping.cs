@@ -9,20 +9,23 @@ namespace LojaVirtual.Data.Mappings
         public void Configure(EntityTypeBuilder<Favorito> builder)
         {
             builder.ToTable("Favorito");
+
             builder.HasKey(f => new { f.ClienteId, f.ProdutoId });
 
+            builder.Ignore(f => f.Cliente);
+
             builder
-            .HasOne(f => f.Cliente)
-            .WithMany(c => c.Favoritos)
-            .HasForeignKey(f => f.ClienteId)
-            .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(f => f.Cliente)
+                .WithMany(c => c.Favoritos)
+                .HasForeignKey(f => f.ClienteId)
+                .HasPrincipalKey(c => c.Id)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder
                 .HasOne(f => f.Produto)
                 .WithMany(p => p.Favoritos)
                 .HasForeignKey(f => f.ProdutoId)
                 .OnDelete(DeleteBehavior.Cascade);
-
         }
     }
 }
