@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using LojaVirtual.Core.Business.Entities;
-using LojaVirtual.Core.Business.Interfaces;
-using LojaVirtual.Core.Business.Services;
+using LojaVirtual.Business.Entities;
+using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Mvc.Extensions;
 using LojaVirtual.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.Mvc.Controllers
 {
@@ -25,6 +24,7 @@ namespace LojaVirtual.Mvc.Controllers
             _mapper = mapper;
         }
 
+        [ClaimsAuthorize("Vendedores", "VI")]
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
@@ -34,20 +34,17 @@ namespace LojaVirtual.Mvc.Controllers
         }
 
 
-        [Route("vendedor/alterar-status/{id:guid}")]
+        [ClaimsAuthorize("Vendedores", "ATUALIZAR_STATUS")]
         [HttpPost]
         public async Task<IActionResult> AlterarStatus(Guid id,VendedorViewModel vendedorViewModel, CancellationToken cancellationToken)
         {
             if (id != vendedorViewModel.Id) return NotFound();
 
-            if (!ModelState.IsValid) return View();
-
-            vendedorViewModel.Ativo = !vendedorViewModel.Ativo;
 
             var vendedor = _mapper.Map<Vendedor>(vendedorViewModel);
             if (vendedor == null) return NotFound();
 
-            await _vendedorService.Edit(vendedor, cancellationToken);
+            await _vendedorService.AlterarStatus(vendedor, cancellationToken);
 
             if (!OperacaoValida()) return View();
 

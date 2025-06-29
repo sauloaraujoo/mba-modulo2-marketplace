@@ -20,25 +20,34 @@
             <th>
                 @Html.DisplayNameFor(model => model.Ativo)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var vendedor in Model)
+        @if (Model != null)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(_ => vendedor.Nome)
-                </td>
-                <td>
-                    @Html.DisplayFor(_ => vendedor.Email)
-                </td>
-                <td class="text-end">
-                    <a asp-action="AlterarStatus" asp-route-id="@vendedor.Id" title="Alterar Status">
-                        <span class="fa @(vendedor.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
-                    </a>
-                </td>
-            </tr>
+            @foreach (var vendedor in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(_ => vendedor.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(_ => vendedor.Email)
+                    </td>
+                    <td>
+                        <form asp-action="AlterarStatus">
+                            <input type="hidden" name="id" value="@vendedor.Id" />
+                            
+
+                            <button type="submit" title="Alterar Status" class="btn btn-link p-0 border-0">
+                                <span class="fa @(vendedor.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
+                            </button>
+
+                        </form>
+
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>

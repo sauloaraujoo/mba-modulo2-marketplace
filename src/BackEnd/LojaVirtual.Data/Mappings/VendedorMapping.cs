@@ -15,6 +15,10 @@ namespace LojaVirtual.Data.Mappings
             builder.Property(p => p.Email)
                .IsRequired();
 
+
+            builder.Property(p => p.Ativo)
+               .IsRequired();
+
             builder.HasMany(c => c.Produtos)
                 .WithOne(p => p.Vendedor)
                 .HasForeignKey(c => c.VendedorId);

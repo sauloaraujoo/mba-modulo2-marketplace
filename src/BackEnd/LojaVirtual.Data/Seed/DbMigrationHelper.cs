@@ -42,7 +42,6 @@ namespace LojaVirtual.Data.Seed
             if (context.CategoriaSet.Any()) return;
 
             var idUser = Guid.NewGuid();
-
             var usuarioVendedor = new IdentityUser
             {
                 Id = idUser.ToString(),
@@ -55,6 +54,15 @@ namespace LojaVirtual.Data.Seed
                 NormalizedUserName = "VENDEDOR@TESTE.COM"
             };
 
+            // Cria claim para usuário vendedor@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
+            var claimVendedorProdutos = new IdentityUserClaim<string>
+            {
+                UserId = idUser.ToString(),
+                ClaimType = "Produtos",
+                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
+            };
+            await context.UserClaims.AddAsync(claimVendedorProdutos);
+
             var vendedor = new Vendedor(idUser, "Vendedor", usuarioVendedor.Email);
             var categoria = new Categoria("Informática", "Descrição da categoria Informática");
             var produto = new Produto("Mouse", "Descrição do produto Mouse", "mouse.jpg", 100, 20, true, categoria.Id);
@@ -64,6 +72,34 @@ namespace LojaVirtual.Data.Seed
             await context.Users.AddAsync(usuarioVendedor);
             await context.VendedorSet.AddAsync(vendedor);
             await context.CategoriaSet.AddAsync(categoria);
+
+            idUser = Guid.NewGuid();
+            usuarioVendedor = new IdentityUser
+            {
+                Id = idUser.ToString(),
+                Email = "vendedor2@teste.com",
+                EmailConfirmed = true,
+                NormalizedEmail = "VENDEDOR2@TESTE.COM",
+                UserName = "vendedor2@teste.com",
+                AccessFailedCount = 0,
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
+                NormalizedUserName = "VENDEDOR2@TESTE.COM"
+            };
+
+             vendedor = new Vendedor(idUser, "Vendedor 2", usuarioVendedor.Email);
+
+            // Cria claim para usuário vendedor@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
+             claimVendedorProdutos = new IdentityUserClaim<string>
+            {
+                UserId = idUser.ToString(),
+                ClaimType = "Produtos",
+                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
+            };
+            await context.UserClaims.AddAsync(claimVendedorProdutos);
+
+
+            await context.Users.AddAsync(usuarioVendedor);
+            await context.VendedorSet.AddAsync(vendedor);
 
             var idClienteUser = Guid.NewGuid();
             var userCliente = new IdentityUser
@@ -82,15 +118,7 @@ namespace LojaVirtual.Data.Seed
             cliente.AddFavorito(produto.Id);
             await context.Users.AddAsync(userCliente);
             await context.ClienteSet.AddAsync(cliente);
-            // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
-            var claimCliente = new IdentityUserClaim<string>
-            {
-                UserId = idClienteUser.ToString(),
-                ClaimType = "Clientes",
-                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
-            };
-            await context.UserClaims.AddAsync(claimCliente);
-
+            
             // Cria user admin@teste.com
             var idAdminUser = Guid.NewGuid();
             var adminUser = new IdentityUser
@@ -101,10 +129,19 @@ namespace LojaVirtual.Data.Seed
                 NormalizedEmail = "ADMIN@TESTE.COM",
                 UserName = "admin@teste.com",
                 AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEOQcC81V5MSVNFknjggK/c048ymIOvMUecQtLhf8OYPetgFcuGYI6ToC0GNbbMSoWg==", // Abcd1234!
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==", // Teste@123
                 NormalizedUserName = "ADMIN@TESTE.COM"
             };
             await context.Users.AddAsync(adminUser);
+
+            // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
+            var claimCliente = new IdentityUserClaim<string>
+            {
+                UserId = idClienteUser.ToString(),
+                ClaimType = "Clientes",
+                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
+            };
+            await context.UserClaims.AddAsync(claimCliente);
 
             // Cria claim Categorias para usuário admin@teste.com, com todas as permissões
             var claimCategorias = new IdentityUserClaim<string>
@@ -114,6 +151,27 @@ namespace LojaVirtual.Data.Seed
                 ClaimValue = "AD,VI,ED,EX"
             };
             await context.UserClaims.AddAsync(claimCategorias);
+
+            // Cria claim para usuário admin@teste.com, com as permisões de visualizar e mudar o Status dos Vendedores
+            var claimAdmVendedores = new IdentityUserClaim<string>
+            {
+                UserId = idAdminUser.ToString(),
+                ClaimType = "Vendedores",
+                ClaimValue = "VI,ATUALIZAR_STATUS"
+            };
+            await context.UserClaims.AddAsync(claimAdmVendedores);
+
+
+            // Cria claim para usuário admin@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
+            var claimAdmProdutos = new IdentityUserClaim<string>
+            {
+                UserId = idAdminUser.ToString(),
+                ClaimType = "Produtos",
+                ClaimValue = "VI,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+            };
+            await context.UserClaims.AddAsync(claimAdmProdutos);
+
+
 
             await context.SaveChangesAsync();
         }
