@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Services;
+using LojaVirtual.Mvc.Extensions;
 using LojaVirtual.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,14 +27,23 @@ namespace LojaVirtual.Mvc.Controllers
             _mapper = mapper;
         }
 
+        [ClaimsAuthorize("Produtos", "VI")]
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
-            var produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.GetAllSelfProdutoWithCategoria(cancellationToken));
+            IEnumerable<ProdutoViewModel> produtos;
+
+            if (CustomAuthorization.ValidarClaimsUsuario(this.HttpContext, "Produtos", "TODOS_PRODUTOS"))
+                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.GetAllProdutoWithCategoria(cancellationToken));
+            else
+                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.GetAllSelfProdutoWithCategoria(cancellationToken));
+
+
 
             return View(produtos);
         }
 
+        [ClaimsAuthorize("Produos", "AD")]
         [Route("novo")]
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
@@ -41,6 +52,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produtos", "AD")]
         [HttpPost("novo")]
         public async Task<IActionResult> Create(ProdutoViewModel produtoViewModel, CancellationToken cancellationToken)
         {
@@ -68,6 +80,7 @@ namespace LojaVirtual.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Produtos", "VI")]
         [Route("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
         {
@@ -81,6 +94,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produtos", "EX")]
         [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
@@ -93,6 +107,7 @@ namespace LojaVirtual.Mvc.Controllers
 
             return View(produtoViewModel);
         }
+        [ClaimsAuthorize("Produtos", "EX")]
         [Route("excluir/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken cancellationToken)
@@ -108,6 +123,25 @@ namespace LojaVirtual.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Produtos", "ATUALIZAR_STATUS")]
+        [HttpPost]
+        [ActionName("AlterarStatus")]
+        public async Task<IActionResult> AlterarStatus(Guid id, ProdutoViewModel produtoViewModel, CancellationToken cancellationToken)
+        {
+            if (id != produtoViewModel.Id) return NotFound();
+
+
+            var produto = _mapper.Map<Produto>(produtoViewModel);
+            if (produto == null) return NotFound();
+
+            await _produtoService.AlterarStatus(produto, cancellationToken);
+
+            if (!OperacaoValida()) return View();
+
+            return RedirectToAction("Index");
+        }
+
+        [ClaimsAuthorize("Produtos", "ED")]
         [Route("editar/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken)
         {
@@ -121,6 +155,7 @@ namespace LojaVirtual.Mvc.Controllers
 
             return View(produtoViewModel);
         }
+        [ClaimsAuthorize("Produtos", "ED")]
         [Route("editar/{id:guid}")]
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, ProdutoViewModel produtoViewModel, CancellationToken cancellationToken)

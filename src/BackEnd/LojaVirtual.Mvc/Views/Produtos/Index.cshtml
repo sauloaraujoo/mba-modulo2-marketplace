@@ -26,6 +26,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomeCategoria)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ativo)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -44,6 +47,18 @@
                 </td>
                 <td>
                     @Html.DisplayFor(_ => produto.NomeCategoria)
+                </td>
+                <td>
+                    <form asp-action="AlterarStatus">
+                        <input type="hidden" name="id" value="@produto.Id" />
+
+
+                        <button type="submit" title="Alterar Status" class="btn btn-link p-0 border-0">
+                            <span class="fa @(produto.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
+                        </button>
+
+                    </form>
+
                 </td>
                 <td class="text-end">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>

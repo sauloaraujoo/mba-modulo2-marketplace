@@ -69,9 +69,12 @@ namespace LojaVirtual.Data.Seed
             produto.VinculaVendedor(vendedor.Id);
             categoria.AddProduto(produto);
 
+            produto = new Produto("Teclado", "Descrição do produto Teclado", "teclado.jpg", 150, 15, true, categoria.Id);
+            produto.VinculaVendedor(vendedor.Id);
+            categoria.AddProduto(produto);
+
             await context.Users.AddAsync(usuarioVendedor);
             await context.VendedorSet.AddAsync(vendedor);
-            await context.CategoriaSet.AddAsync(categoria);
 
             idUser = Guid.NewGuid();
             usuarioVendedor = new IdentityUser
@@ -88,8 +91,15 @@ namespace LojaVirtual.Data.Seed
 
              vendedor = new Vendedor(idUser, "Vendedor 2", usuarioVendedor.Email);
 
+            produto = new Produto("Monitor", "Descrição do produto Monitor", "monitor.jpg", 899, 15, true, categoria.Id);
+            produto.VinculaVendedor(vendedor.Id);
+            categoria.AddProduto(produto);
+
+
+            await context.CategoriaSet.AddAsync(categoria);
+
             // Cria claim para usuário vendedor@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
-             claimVendedorProdutos = new IdentityUserClaim<string>
+            claimVendedorProdutos = new IdentityUserClaim<string>
             {
                 UserId = idUser.ToString(),
                 ClaimType = "Produtos",

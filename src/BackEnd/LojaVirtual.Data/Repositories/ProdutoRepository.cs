@@ -28,6 +28,12 @@ namespace LojaVirtual.Data.Repositories
                 .Where(p => p.VendedorId == vendedorId)
                 .ToListAsync(cancellationToken);
         }
+        public async Task<IEnumerable<Produto>> GetAllProdutoWithCategoria( CancellationToken cancellationToken)
+        {
+            return await _context.ProdutoSet
+                .Include(p => p.Categoria)
+                .ToListAsync(cancellationToken);
+        }
         public async Task<Produto> GetSelfWithCategoriaById(Guid id, Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
