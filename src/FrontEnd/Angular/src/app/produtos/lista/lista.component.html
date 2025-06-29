@@ -1,1 +1,28 @@
-<p>Componente para a pagina principal com lista de produtos</p>
+<div class="container main-container">
+
+    <div class="row text-center">
+        
+        <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
+            <div class="card h-100">
+                <a class="text-decoration-none" [routerLink]="['/produto-detalhe', produto.id]">
+                    <div style="align-content:center;">
+                        <img src="/assets/{{ produto.imagem }}" height="164px" width="253px" alt="">
+                    </div>
+                </a>
+                <h4 class="card-title">{{ produto.nome | titlecase }}</h4>
+
+                <div class="card-body">
+                    <div><h4 class="card-text">
+                        {{ produto.preco | currency:'BRL':true:'1.2-2':'pt' }}
+                    </h4></div>
+                </div>
+
+                <div class="card-footer">
+                    <a class="btn btn-primary" [routerLink]="['/carrinho',produto.id]">
+                        <span class="fa fa-shopping-cart"></span> Comprar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
