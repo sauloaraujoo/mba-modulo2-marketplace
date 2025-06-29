@@ -1,12 +1,20 @@
-# **[LojaVirtual] - Aplicação de uma Mini Loja Virtual com MVC e API RESTful**
+# **[LojaVirtual] - Aplicação de uma plataforma de Marketplace com MVC, Angular e API RESTful**
 
 ## **1. Apresentação**
 
 Bem-vindo ao repositório do projeto **[LojaVirtual]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Desenvolvimento Full-Stack Avançado com ASP.NET Core**.
-O objetivo principal é ...
+O objetivo principal é desenvolver uma plataforma de comércio eletrônico, na qual cada vendedor adiciona e edita seus produtos, e os clientes finais visualizam todos os produtos ofertados, podendo marcar seus favoritos. A plataforma contará também com um painel administrativo. A solução para os vendedores e administradores será implementada em MVC, enquanto a vitrine para os cliente será uma SPA em Angular. Ambas soluções estarão integradas por uma API REST.
 
 ### **Autor(es)**
+- **Diego Junqueira**
+- **Felício Melloni**
+- **Fernando Texas**
+- **Márcio Gomes**
+- **Renato Carrasco**
 - **Rinaldo Serra**
+- **Saulo Araújo**
+
+*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
 
 ## **2. Proposta do Projeto**
 
