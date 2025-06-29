@@ -9,18 +9,24 @@ registerLocaleData(localePt)
 
 import { ListaComponent } from '../produtos/lista/lista.component';
 import { ProdutoComponent } from '../produtos/produto/produto.component';
+import { VitrineComponent } from '../produtos/vitrine/vitrine.component';
 
-import { ProdutoService } from './services/produtos.service';
+import { ProdutosRoutingModule } from './produtos.route';
+import { ProdutoService } from '../produtos/services/produtos.service';
+
+
 
 
 @NgModule({
   declarations: [
     ListaComponent,
     ProdutoComponent,
+    VitrineComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
+    ProdutosRoutingModule,
     HttpClientModule
   ],
   providers: [

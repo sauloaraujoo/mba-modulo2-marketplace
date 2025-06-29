@@ -10,7 +10,15 @@ import { BaseService } from 'src/app/services/base.service';
 export class ProdutoService extends BaseService {
     constructor(private http: HttpClient) { super(); }
 
-    obterProdutos() : Observable<Produto[]>{
-        return this.http.get<Produto[]>(this.UrlServiceV1 + "api/produtos/lista")
+    obterProdutos(categoriaId?: string) : Observable<Produto[]>{
+
+        let url = this.UrlServiceV1 + 'api/vitrine';
+        if (categoriaId) {
+            url += `?categoriaId=${categoriaId}`;
+        }
+
+        return this.http.get<any>(url).pipe(
+            map(response => response.data)
+        );
     }
 }

@@ -5,11 +5,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
-import { ProdutoService } from './produtos/services/produtos.service';
-import { ListaComponent } from './produtos/lista/lista.component';
-import { ProdutoComponent } from './produtos/produto/produto.component';
-
 import { NavegacaoModule } from './navegacao/navegacao.module';
 
 import { NotificacaoService } from './services/notificacao.service';
@@ -18,8 +13,6 @@ import { NotificacaoComponent } from './components/notificacao/notificacao.compo
 @NgModule({
   declarations: [
     AppComponent,
-    ListaComponent,
-    ProdutoComponent,
     NotificacaoComponent
   ],
   imports: [
@@ -29,8 +22,7 @@ import { NotificacaoComponent } from './components/notificacao/notificacao.compo
     HttpClientModule
   ],
   providers: [
-    NotificacaoService,
-    ProdutoService
+    NotificacaoService
   ],
   bootstrap: [AppComponent]
 })
