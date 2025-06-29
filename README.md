@@ -14,16 +14,15 @@ O objetivo principal é desenvolver uma plataforma de comércio eletrônico, na 
 - **Rinaldo Serra**
 - **Saulo Araújo**
 
-*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
-
 ## **2. Proposta do Projeto**
 
 O projeto consiste em:
 
-- **Aplicação MVC:** Interface web para interação com a loja.
-- **API RESTful:** Exposição dos recursos da loja para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
-- **Autenticação:** Implementação de controle de acesso.
-- **Acesso a Dados:** Implementação de acesso ao banco de dados através de ORM.
+- **Aplicação MVC:** Interface web para administração do marketplace, onde vendedores gerenciam seus produtos e o administrador geral modera todos os cadastros.
+- **Aplicação Angular:** Interface web para os clientes finais conhecerem os produtos oferecidos no marketplace e marcar seus favoritos.
+- **API RESTful:** Exposição dos recursos do marketplace para integração com outras aplicações ou desenvolvimento de front-ends alternativos.
+- **Acesso a Dados:** Implementação da persistência de dados através de ORM.
+- **Negócios:** Definição dos modelos de domínio e das regras de negócio.
 
 ## **3. Tecnologias Utilizadas**
 
@@ -33,11 +32,12 @@ O projeto consiste em:
   - ASP.NET Core Web API
   - Entity Framework Core
 - **Banco de Dados:** SQLite
-- **Autenticação:**
+- **Autenticação e Autorização:**
   - ASP.NET Core Identity
   - JWT (JSON Web Token) para autenticação na API
 - **Front-end:**
   - Razor Pages/Views
+  - Angular
   - HTML/CSS e Bootstrap para estilização
   - JQuery para requisições AJAX
 - **Documentação da API:** Swagger
@@ -47,12 +47,15 @@ O projeto consiste em:
 A estrutura do projeto é organizada da seguinte forma:
 
 - src/
-  - LojaVirtual.Mvc/ - Projeto MVC
-  - LojaVirtual.Api/ - API RESTful
-  - LojaVirtual.Core/ - Modelos de Dados, Serviços de negócios e Configuração do EF Core  
-- README.md - Arquivo de Documentação do Projeto
-- FEEDBACK.md - Arquivo para Consolidação dos Feedbacks
-- .gitignore - Arquivo de Ignoração do Git
+  - BackEnd/
+    - LojaVirtual.Api/       - API RESTful
+    - LojaVirtual.Business/  - Regras de negócio
+    - LojaVirtual.Data/      - Persistência de dados
+    - LojaVirtual.Mvc/       - Interface web administrativa
+  - FrontEnd/
+    - LojaVirtual.Angular    - Interface web da vitrine
+
+*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
 
 ## **5. Funcionalidades Implementadas**
 
