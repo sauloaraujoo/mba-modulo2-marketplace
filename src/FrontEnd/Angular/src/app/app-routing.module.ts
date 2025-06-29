@@ -11,7 +11,7 @@ const routes: Routes = [
     loadChildren: () => import('./conta/conta.module').then(mod => mod.ContaModule)
   },
   { path: 'produtos', component: ListaComponent },
-  { path: 'produto', component: ProdutoComponent },
+  { path: 'produto/:id', component: ProdutoComponent },
   { path: 'favoritos', component: FavoritosComponent },
 
   // Redirecionamento opcional da raiz para login

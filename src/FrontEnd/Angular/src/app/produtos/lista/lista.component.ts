@@ -1,6 +1,7 @@
 import { Component, OnInit} from '@angular/core';
-import { Produto } from '../../models/produto';
-import { ProdutoService } from '../../services/produtos.service';
+import { Produto } from '../models/produto';
+import { ProdutoService } from '../services/produtos.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista',
@@ -13,13 +14,14 @@ export class ListaComponent implements OnInit {
   public produtos: Produto[] = [];
 
   ngOnInit() {
-    this.produtoService.obterProdutos()
-      .subscribe(
-        produtos => {
-          this.produtos = produtos;
-          console.log(produtos);
-        },
-        error => console.log(error)
-      );
+
+  this.produtoService.obterProdutos()
+    .subscribe({
+      next: (produtos) => {
+        this.produtos = produtos;
+        console.log(produtos);
+      },
+      error: (error) => console.error(error)
+    });
   }
 }

@@ -1,8 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+
+import { ProdutoService } from './produtos/services/produtos.service';
 import { ListaComponent } from './produtos/lista/lista.component';
 import { ProdutoComponent } from './produtos/produto/produto.component';
 
@@ -22,9 +26,11 @@ import { NotificacaoComponent } from './components/notificacao/notificacao.compo
     BrowserModule,
     AppRoutingModule,
     NavegacaoModule,
+    HttpClientModule
   ],
   providers: [
-    NotificacaoService
+    NotificacaoService,
+    ProdutoService
   ],
   bootstrap: [AppComponent]
 })

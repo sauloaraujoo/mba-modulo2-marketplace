@@ -4,7 +4,7 @@
         
         <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
             <div class="card h-100">
-                <a class="text-decoration-none" [routerLink]="['/produto-detalhe', produto.id]">
+                <a class="text-decoration-none" [routerLink]="['/produto', produto.id]">
                     <div style="align-content:center;">
                         <img src="/assets/{{ produto.imagem }}" height="164px" width="253px" alt="">
                     </div>
@@ -18,8 +18,8 @@
                 </div>
 
                 <div class="card-footer">
-                    <a class="btn btn-primary" [routerLink]="['/carrinho',produto.id]">
-                        <span class="fa fa-shopping-cart"></span> Comprar
+                    <a class="btn btn-primary" [routerLink]="['/produto', produto.id]">
+                        <span class="fa fa-shopping-cart"></span> Detalhes
                     </a>
                 </div>
             </div>
