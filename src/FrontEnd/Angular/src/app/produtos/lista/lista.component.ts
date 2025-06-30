@@ -1,13 +1,12 @@
-import { Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Produto } from '../models/produto';
 import { ProdutoService } from '../services/produtos.service';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-lista',
   templateUrl: './lista.component.html'
 })
-export class ListaComponent implements OnInit {
+export class ListaComponent implements OnInit, OnChanges  {
   
   @Input() categoriaId?: string;
   @Input() vendedorId?: string;
@@ -18,6 +17,16 @@ export class ListaComponent implements OnInit {
   public produtos: Produto[] = [];
 
   ngOnInit() {
+    this.carregarProdutos();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['categoriaId'] && !changes['categoriaId'].firstChange) {
+      this.carregarProdutos();
+    }
+  }  
+
+  private carregarProdutos(): void {
 
     if (this.contexto === 'favoritos') {
       //definir parte da pagina de favoritos
@@ -33,5 +42,6 @@ export class ListaComponent implements OnInit {
           error: (error) => console.error(error)
         });    
       }
-  }
+      
+  }  
 }

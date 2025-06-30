@@ -9,8 +9,3 @@ export interface Produto {
   categoriaId: string,
   nomeCategoria: string
 }
-
-export interface Categoria{
-  id: string,
-  nome: string,
-}

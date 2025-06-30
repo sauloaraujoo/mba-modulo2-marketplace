@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http"
 import { Produto } from "../models/produto"
+import { Categoria } from "../models/categoria"
 
 import { Observable } from "rxjs";
 import { catchError, map } from "rxjs/operators";
@@ -21,4 +22,14 @@ export class ProdutoService extends BaseService {
             map(response => response.data)
         );
     }
+
+    obterCategorias() : Observable<Categoria[]>{
+
+        let url = this.UrlServiceV1 + 'api/vitrine/categorias';
+
+        return this.http.get<any>(url).pipe(
+            map(response => response.data)
+        );
+    }
+
 }

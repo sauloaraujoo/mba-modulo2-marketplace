@@ -1,2 +1,18 @@
-<app-lista [categoriaId]="" [vendedorId]="" contexto="produtos"></app-lista>
+<div class="container main-container">
+    <h1>Produtos</h1>
+
+    <div class="form-group">
+        <label class="col-md-2 control-label">Categoria</label>
+        <div class="col-md-10">
+            <select id="selCategoria" class="form-control" (change)="onCategoriaChange($event)">
+                <option value="">Selecione uma categoria</option>
+                <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</option>
+            </select>
+        </div>
+    </div>
+
+    <br>
+
+    <app-lista [categoriaId]="categoriaSelecionada" [vendedorId]="" contexto="produtos"></app-lista>
+</div>
 
