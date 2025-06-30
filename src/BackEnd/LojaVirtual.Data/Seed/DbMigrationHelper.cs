@@ -30,7 +30,6 @@ namespace LojaVirtual.Data.Seed
             var context = scope.ServiceProvider.GetRequiredService<LojaVirtualContext>();
 
             if (env.EnvironmentName == "Development")
-
             {
                 await context.Database.MigrateAsync();
 
@@ -82,6 +81,10 @@ namespace LojaVirtual.Data.Seed
             cliente.AddFavorito(produto.Id);
             await context.Users.AddAsync(userCliente);
             await context.ClienteSet.AddAsync(cliente);
+
+            var favorito = new Favorito(idClienteUser, produto.Id);
+            await context.FavoritoSet.AddAsync(favorito);
+
             // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
             var claimCliente = new IdentityUserClaim<string>
             {
