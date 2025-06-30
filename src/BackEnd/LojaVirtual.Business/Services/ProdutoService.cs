@@ -73,7 +73,11 @@ namespace LojaVirtual.Business.Services
         {
             return await _produtoRepository.GetSelfWithCategoriaById(id, new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
         }
-        
+        public async Task<Produto> GetWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.GetWithCategoriaById(id, cancellationToken);
+        }
+
         public async Task<IEnumerable<Produto>> List(CancellationToken cancellationToken)
         {
             return await _produtoRepository.List(new Guid(_appIdentifyUser.GetUserId()), cancellationToken);

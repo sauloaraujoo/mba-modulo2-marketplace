@@ -40,6 +40,13 @@ namespace LojaVirtual.Data.Repositories
                 .Include(p => p.Categoria)
                 .FirstOrDefaultAsync(p => p.Id == id && p.VendedorId == vendedorId, cancellationToken);
         }
+
+        public async Task<Produto> GetWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.ProdutoSet
+                .Include(p => p.Categoria)
+                .FirstOrDefaultAsync(p => p.Id == id , cancellationToken);
+        }
         public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
         {
             return await _context

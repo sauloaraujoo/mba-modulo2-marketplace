@@ -84,7 +84,15 @@ namespace LojaVirtual.Mvc.Controllers
         [Route("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
         {
-            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.GetSelfWithCategoriaById(id, cancellationToken));
+
+
+            ProdutoViewModel produtoViewModel;
+
+            if (CustomAuthorization.ValidarClaimsUsuario(this.HttpContext, "Produtos", "TODOS_PRODUTOS"))
+                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.GetWithCategoriaById(id, cancellationToken));
+            else
+                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.GetSelfWithCategoriaById(id, cancellationToken));
+
 
             if (produtoViewModel == null)
             {

@@ -6,10 +6,12 @@
 
 <h1>@ViewData["Title"]</h1>
 <hr />
-<div class="d-flex justify-content-end mb-3">
-    <a class="btn btn-info" asp-action="Create">Novo</a>
-</div>
-
+@if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("AD")))
+{
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-info" asp-action="Create">Novo</a>
+    </div>
+}
 
 <table class="table table-hover">
     <thead class="table-dark">
@@ -26,9 +28,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomeCategoria)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ativo)
-            </th>
+            @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Ativo)
+                </th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -48,22 +53,31 @@
                 <td>
                     @Html.DisplayFor(_ => produto.NomeCategoria)
                 </td>
-                <td>
-                    <form asp-action="AlterarStatus">
-                        <input type="hidden" name="id" value="@produto.Id" />
+                @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
+                {
+                    <td>
+                        <form asp-action="AlterarStatus">
+                            <input type="hidden" name="id" value="@produto.Id" />
 
 
-                        <button type="submit" title="Alterar Status" class="btn btn-link p-0 border-0">
-                            <span class="fa @(produto.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
-                        </button>
+                            <button type="submit" title="Alterar Status" class="btn btn-link p-0 border-0">
+                                <span class="fa @(produto.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
+                            </button>
 
-                    </form>
+                        </form>
 
-                </td>
+                    </td>
+                }
                 <td class="text-end">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                    @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ED")))
+                    {
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                    }
+                    @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("EX")))
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                    }
                 </td>
             </tr>
         }
