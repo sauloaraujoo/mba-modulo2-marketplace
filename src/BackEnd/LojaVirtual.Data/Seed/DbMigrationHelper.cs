@@ -155,15 +155,6 @@ namespace LojaVirtual.Data.Seed
             };
             await context.Users.AddAsync(adminUser);
 
-            // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
-            var claimCliente = new IdentityUserClaim<string>
-            {
-                UserId = idClienteUser.ToString(),
-                ClaimType = "Clientes",
-                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
-            };
-            await context.UserClaims.AddAsync(claimCliente);
-
             // Cria claim Categorias para usuário admin@teste.com, com todas as permissões
             var claimCategorias = new IdentityUserClaim<string>
             {
