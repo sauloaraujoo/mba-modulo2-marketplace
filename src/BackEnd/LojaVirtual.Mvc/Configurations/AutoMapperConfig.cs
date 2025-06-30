@@ -8,6 +8,7 @@ namespace LojaVirtual.Mvc.Configurations
     {
         public AutoMapperConfig()
         {
+            CreateMap<Vendedor, VendedorViewModel>().ReverseMap();
             CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
             CreateMap<Produto, ProdutoViewModel>().ForMember(dest => dest.NomeCategoria, opt => opt.MapFrom(src => src.Categoria.Nome));
             CreateMap<ProdutoViewModel, Produto>();
