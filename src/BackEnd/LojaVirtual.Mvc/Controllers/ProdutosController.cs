@@ -132,8 +132,7 @@ namespace LojaVirtual.Mvc.Controllers
         }
 
         [ClaimsAuthorize("Produtos", "ATUALIZAR_STATUS")]
-        [HttpPost]
-        [ActionName("AlterarStatus")]
+        [HttpPost("alterar-status/{id}"), ActionName("AlterarStatus")]
         public async Task<IActionResult> AlterarStatus(Guid id, ProdutoViewModel produtoViewModel, CancellationToken cancellationToken)
         {
             if (id != produtoViewModel.Id) return NotFound();
