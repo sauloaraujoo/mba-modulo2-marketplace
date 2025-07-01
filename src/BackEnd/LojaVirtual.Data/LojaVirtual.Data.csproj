@@ -24,4 +24,8 @@
     <ProjectReference Include="..\LojaVirtual.Business\LojaVirtual.Business.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Database\" />
+  </ItemGroup>
+
 </Project>

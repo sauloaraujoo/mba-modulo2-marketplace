@@ -38,6 +38,8 @@ namespace LojaVirtual.Mvc.Models
         [DisplayName("Categoria")]
         public Guid CategoriaId { get; set; }
 
+        public bool Ativo { get; set; }
+
         [DisplayName("Categoria")]
         public string NomeCategoria { get; set; } = string.Empty;
         public IEnumerable<CategoriaViewModel> Categorias { get; set; } =  Enumerable.Empty<CategoriaViewModel>();

@@ -23,6 +23,7 @@ namespace LojaVirtual.Mvc.Configurations
             //Services
             services.AddScoped<ICategoriaService, CategoriaService>();
             services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IVendedorService, VendedorService>();
             services.AddScoped<IAppIdentifyUser, AppIdentityUser>();
 
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
