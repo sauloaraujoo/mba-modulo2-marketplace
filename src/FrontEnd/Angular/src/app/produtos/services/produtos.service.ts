@@ -11,6 +11,7 @@ import { BaseService } from 'src/app/services/base.service';
 export class ProdutoService extends BaseService {
     constructor(private http: HttpClient) { super(); }
 
+    public urlImagem = this.UrlImagemV1;
     obterProdutos(categoriaId?: string) : Observable<Produto[]>{
 
         let url = this.UrlServiceV1 + 'api/vitrine';

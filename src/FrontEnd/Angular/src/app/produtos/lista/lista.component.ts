@@ -14,6 +14,7 @@ export class ListaComponent implements OnInit, OnChanges  {
 
   constructor(private produtoService: ProdutoService) { }
 
+  public urlImagem: string = this.produtoService.urlImagem;
   public produtos: Produto[] = [];
 
   ngOnInit() {
