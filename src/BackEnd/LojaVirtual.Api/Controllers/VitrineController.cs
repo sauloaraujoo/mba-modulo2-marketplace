@@ -12,12 +12,15 @@ namespace LojaVirtual.Api.Controllers
     public class VitrineController : MainController
     {
         private readonly IProdutoService _produtoService;
+        private readonly ICategoriaService _categoriaService;
         private readonly IMapper _mapper;
         public VitrineController(IProdutoService produtoService,
+                                 ICategoriaService categoriaService,
                                  INotifiable notifiable,
                                  IMapper mapper) : base(notifiable)
         {
             _produtoService = produtoService;
+            _categoriaService = categoriaService;
             _mapper = mapper;
         }
 
@@ -31,6 +34,13 @@ namespace LojaVirtual.Api.Controllers
         public async Task<IActionResult> GetDetailById(Guid id, CancellationToken cancellationToken)
         {
             return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.GetById(id,cancellationToken)));            
-        }        
+        }
+
+        [HttpGet("categorias")]
+        public async Task<ActionResult> ListarCategorias(CancellationToken cancellationToken)
+        {
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.List(cancellationToken)));
+        }
+
     }
 }

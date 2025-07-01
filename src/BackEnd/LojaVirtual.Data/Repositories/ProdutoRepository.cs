@@ -67,6 +67,7 @@ namespace LojaVirtual.Data.Repositories
                 .AsNoTracking()
                 .Include(p => p.Categoria)
                 .Include(p => p.Vendedor)
+                .Where(p => p.Ativo == true && p.Vendedor.Ativo == true)
                 .ToListAsync(cancellationToken);
         }
         public async Task<List<Produto>> ListWithCategoriaVendedorByCategoriaAsNoTracking(Guid categoriaId, CancellationToken cancellationToken)
@@ -76,7 +77,7 @@ namespace LojaVirtual.Data.Repositories
                 .AsNoTracking()
                 .Include(p => p.Categoria)
                 .Include(p => p.Vendedor)
-                .Where(p => p.CategoriaId == categoriaId)
+                .Where(p => p.CategoriaId == categoriaId && p.Ativo == true && p.Vendedor.Ativo == true)
                 .ToListAsync(cancellationToken);
         }        
 
