@@ -16,12 +16,14 @@ namespace LojaVirtual.Data.Repositories
         }
         public async Task<Cliente?> GetById(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.ClienteSet
-                .Include(c => c.Favoritos)
-                .ThenInclude(f => f.Produto)
-                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
-        }
-
+            return await _context.ClienteSet.Include(c => c.Favoritos)
+                                                .ThenInclude(f => f.Produto)
+                                                    .ThenInclude(p => p.Vendedor)
+                                                .Include(c => c.Favoritos)
+                                                    .ThenInclude(f => f.Produto)
+                                                        .ThenInclude(p => p.Categoria)
+                                                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+       }
         public void Update(Cliente cliente)
         {
             _context.ClienteSet.Update(cliente);

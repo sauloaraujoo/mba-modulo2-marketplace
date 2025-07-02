@@ -9,8 +9,8 @@ namespace LojaVirtual.Business.Interfaces
 {
     public interface IClienteService
     {
-        Task<IEnumerable<Favorito>> GetFavoritos(Guid clienteId, CancellationToken cancellationToken);
-        Task<bool> AdicionarFavorito(Guid clienteId, Guid produtoId, CancellationToken cancellationToken);
-        Task RemoverFavorito(Guid clienteId, Guid produtoId, CancellationToken cancellationToken);
+        Task<bool> AdicionarFavorito(Guid produtoId, CancellationToken cancellationToken);
+        Task<IEnumerable<Favorito>> GetFavoritos(CancellationToken cancellationToken);
+        Task<bool> RemoverFavorito(Guid produtoId, CancellationToken cancellationToken);
     }
 }

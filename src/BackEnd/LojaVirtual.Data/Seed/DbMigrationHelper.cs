@@ -120,7 +120,7 @@ namespace LojaVirtual.Data.Seed
                 NormalizedEmail = "CLIENTE@TESTE.COM",
                 UserName = "cliente@teste.com",
                 AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==", //Teste@123
                 NormalizedUserName = "CLIENTE@TESTE.COM"
             };
 

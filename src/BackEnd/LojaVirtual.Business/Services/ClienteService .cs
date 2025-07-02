@@ -11,22 +11,27 @@ namespace LojaVirtual.Business.Services
     public class ClienteService : IClienteService
     {
         private readonly IClienteRepository _clienteRepository;
-        private readonly IProdutoRepository _produtoRepository;
+        private readonly IAppIdentifyUser _appIdentityUser;
 
-        public ClienteService(IClienteRepository clienteRepository, IProdutoRepository produtoRepository)
+        public ClienteService(
+            IClienteRepository clienteRepository,
+            IProdutoRepository produtoRepository,
+            IAppIdentifyUser appIdentityUser)
         {
             _clienteRepository = clienteRepository;
-            _produtoRepository = produtoRepository;
+            _appIdentityUser = appIdentityUser;
         }
 
-        public async Task<IEnumerable<Favorito>> GetFavoritos(Guid clienteId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Favorito>> GetFavoritos(CancellationToken cancellationToken)
         {
+            var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
             var cliente = await _clienteRepository.GetById(clienteId, cancellationToken);
             return cliente?.Favoritos ?? Enumerable.Empty<Favorito>();
         }
 
-        public async Task<bool> AdicionarFavorito(Guid clienteId, Guid produtoId, CancellationToken cancellationToken)
+        public async Task<bool> AdicionarFavorito(Guid produtoId, CancellationToken cancellationToken)
         {
+            var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
             var cliente = await _clienteRepository.GetById(clienteId, cancellationToken);
             if (cliente == null)
                 throw new Exception("Cliente não encontrado.");
@@ -44,19 +49,24 @@ namespace LojaVirtual.Business.Services
             return true;
         }
 
-        public async Task RemoverFavorito(Guid clienteId, Guid produtoId, CancellationToken cancellationToken)
+        public async Task<bool> RemoverFavorito(Guid produtoId, CancellationToken cancellationToken)
         {
+            var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
             var cliente = await _clienteRepository.GetById(clienteId, cancellationToken);
+
             if (cliente == null)
                 throw new Exception("Cliente não encontrado.");
 
             var favorito = cliente.Favoritos.FirstOrDefault(f => f.ProdutoId == produtoId);
-            if (favorito != null)
-            {
-                cliente.RemoveFavorito(favorito);
-                _clienteRepository.Update(cliente);
-                await _clienteRepository.SaveChanges(cancellationToken);
-            }
+            if (favorito == null)
+                return false;
+
+            cliente.RemoveFavorito(favorito);
+            _clienteRepository.Update(cliente);
+            await _clienteRepository.SaveChanges(cancellationToken);
+
+            return true;
         }
     }
+
 }
