@@ -2,6 +2,7 @@
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Data.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace LojaVirtual.Data.Repositories
 {
@@ -12,6 +13,20 @@ namespace LojaVirtual.Data.Repositories
         public ClienteRepository(LojaVirtualContext context)
         {
             _context = context;
+        }
+        public async Task<Cliente?> GetClienteComFavoritos(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.ClienteSet.Include(c => c.Favoritos)
+                                                .ThenInclude(f => f.Produto)
+                                                    .ThenInclude(p => p.Vendedor)
+                                                .Include(c => c.Favoritos)
+                                                    .ThenInclude(f => f.Produto)
+                                                        .ThenInclude(p => p.Categoria)
+                                                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+       }
+        public void Update(Cliente cliente)
+        {
+            _context.ClienteSet.Update(cliente);
         }
 
         public async Task Insert(Cliente request, CancellationToken cancellationToken)

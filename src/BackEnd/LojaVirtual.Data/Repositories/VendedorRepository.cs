@@ -32,6 +32,24 @@ namespace LojaVirtual.Data.Repositories
         public void Dispose()
         {
             _context.Dispose();
-        }        
+        }
+
+        public async Task<IList<Vendedor>> ListAsNoTracking(CancellationToken cancellationToken)
+        {
+            return await _context
+                           .VendedorSet
+                           .AsNoTracking()
+                           .ToListAsync(cancellationToken);
+        }
+
+        public Task Edit(Vendedor vendedor, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_context.VendedorSet.Update(vendedor));
+        }
+
+        public async Task<bool> Exists(string nome, CancellationToken cancellationToken)
+        {
+            return await _context.VendedorSet.AnyAsync(c => c.Nome == nome, cancellationToken);
+        }
     }
 }

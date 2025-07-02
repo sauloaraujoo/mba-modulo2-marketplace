@@ -6,10 +6,12 @@
 
 <h1>@ViewData["Title"]</h1>
 <hr />
-<div class="d-flex justify-content-end mb-3">
-    <a class="btn btn-info" asp-action="Create">Novo</a>
-</div>
-
+@if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("AD")))
+{
+    <div class="d-flex justify-content-end mb-3">
+        <a class="btn btn-info" asp-action="Create">Novo</a>
+    </div>
+}
 
 <table class="table table-hover">
     <thead class="table-dark">
@@ -26,6 +28,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomeCategoria)
             </th>
+            @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.Ativo)
+                </th>
+            }
             <th></th>
         </tr>
     </thead>
@@ -45,12 +53,91 @@
                 <td>
                     @Html.DisplayFor(_ => produto.NomeCategoria)
                 </td>
+                @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
+                {
+                    <td>
+
+                        <button type="button" class="btn btn-link p-0 border-0" title="Alterar Status" data-bs-toggle="modal" data-bs-target="#alterarStatusModal" data-id="@produto.Id" data-nome="@produto.Nome" data-ativo="@produto.Ativo">
+                            <span class="fa @(produto.Ativo ? "fa-toggle-on text-success" : "fa-toggle-off text-danger") fa-lg"></span>
+                        </button>
+
+                    </td>
+                }
                 <td class="text-end">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                    @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ED")))
+                    {
+                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                    }
+                    @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("EX")))
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                    }
                 </td>
             </tr>
         }
+        <form id="antiForgeryForm" method="post">
+            @Html.AntiForgeryToken()
+        </form>
     </tbody>
 </table>
+
+<!-- Modal de Alterar Status -->
+<div class="modal fade" id="alterarStatusModal" tabindex="-1" role="dialog" aria-labelledby="alterarStatusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alterarStatusModalLabel">Confirmar Alteração</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza de que alterar o Status do produto <span id="produtoNome"></span>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger" id="confirmarAlteracao">Alterar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script>
+
+
+        $(document).ready(function () {
+            var produtoId; // Variável para armazenar o ID do produto
+
+            var form = $('#antiForgeryForm');
+            var token = form[0][0].value;
+
+            $('#alterarStatusModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                produtoId = button.data('id'); // Armazene o ID do produto
+                var nome = button.data('nome');
+
+                // Atualize o conteúdo do modal
+                $('#produtoNome').text(nome);
+            });
+
+            $('#confirmarAlteracao').click(function () {
+                // Chame o método de alteração na sua controller
+                $.ajax({
+                    url: '/meus-produtos/alterar-status/' + produtoId,
+                    type: 'POST',
+                    headers: { 'RequestVerificationToken': token },
+                    success: function () {
+                        // Recarregue a página ou faça outra ação após a alteração bem-sucedida
+                        location.reload();
+                    },
+                    error: function () {
+                        // Trate o erro aqui, se necessário
+                        alert('Erro ao alterar o Status do produto.');
+                    }
+                });
+            });
+        });
+
+    </script>
+}

@@ -15,6 +15,7 @@ namespace LojaVirtual.Data.Context
         public DbSet<Categoria> CategoriaSet { get; set; }
         public DbSet<Produto> ProdutoSet { get; set; }
         public DbSet<Cliente> ClienteSet { get; set; }
+        public DbSet<Favorito> FavoritoSet { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetProperties().Where(p => p.ClrType == typeof(string))))

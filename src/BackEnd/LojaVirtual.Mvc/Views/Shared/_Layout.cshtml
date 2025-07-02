@@ -25,7 +25,10 @@
                 @if (SignInManager.IsSignedIn(User))
                 {
                     <ul class="navbar-nav ms-auto">
-
+                        @if (User.Claims.Any(c => c.Type == "Vendedores" && c.Value.Contains("VI")))
+                        {
+                            <li><a class="nav-link text-dark" asp-area="" asp-controller="Vendedores" asp-action="Index">Vendedores</a></li>
+                        }
                         @if (User.Claims.Any(c => c.Type == "Categorias" && c.Value.Contains("VI")))
                         {
                             <li><a class="nav-link text-dark" asp-area="" asp-controller="Categorias" asp-action="Index">Categorias</a></li>

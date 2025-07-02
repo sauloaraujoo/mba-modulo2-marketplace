@@ -28,11 +28,24 @@ namespace LojaVirtual.Data.Repositories
                 .Where(p => p.VendedorId == vendedorId)
                 .ToListAsync(cancellationToken);
         }
+        public async Task<IEnumerable<Produto>> GetAllProdutoWithCategoria( CancellationToken cancellationToken)
+        {
+            return await _context.ProdutoSet
+                .Include(p => p.Categoria)
+                .ToListAsync(cancellationToken);
+        }
         public async Task<Produto> GetSelfWithCategoriaById(Guid id, Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .FirstOrDefaultAsync(p => p.Id == id && p.VendedorId == vendedorId, cancellationToken);
+        }
+
+        public async Task<Produto> GetWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.ProdutoSet
+                .Include(p => p.Categoria)
+                .FirstOrDefaultAsync(p => p.Id == id , cancellationToken);
         }
         public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
         {
@@ -54,6 +67,7 @@ namespace LojaVirtual.Data.Repositories
                 .AsNoTracking()
                 .Include(p => p.Categoria)
                 .Include(p => p.Vendedor)
+                .Where(p => p.Ativo == true && p.Vendedor.Ativo == true)
                 .ToListAsync(cancellationToken);
         }
         public async Task<List<Produto>> ListWithCategoriaVendedorByCategoriaAsNoTracking(Guid categoriaId, CancellationToken cancellationToken)
@@ -63,7 +77,7 @@ namespace LojaVirtual.Data.Repositories
                 .AsNoTracking()
                 .Include(p => p.Categoria)
                 .Include(p => p.Vendedor)
-                .Where(p => p.CategoriaId == categoriaId)
+                .Where(p => p.CategoriaId == categoriaId && p.Ativo == true && p.Vendedor.Ativo == true)
                 .ToListAsync(cancellationToken);
         }        
 
