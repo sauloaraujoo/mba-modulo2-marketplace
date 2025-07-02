@@ -1,6 +1,7 @@
 ﻿using LojaVirtual.Business.Extensions.IdentityUser;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace LojaVirtual.Api.Configurations
@@ -31,7 +32,9 @@ namespace LojaVirtual.Api.Configurations
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidAudience = jwtSettings.Audience,
-                    ValidIssuer = jwtSettings.Issuer
+                    ValidIssuer = jwtSettings.Issuer,
+                    // Adicionei esse aqui pra pegar a sub
+                    NameClaimType = JwtRegisteredClaimNames.Sub
                 };
             });
 

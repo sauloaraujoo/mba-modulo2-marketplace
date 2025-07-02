@@ -8,7 +8,7 @@ namespace LojaVirtual.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<Favorito> builder)
         {
-            builder.ToTable("Favorito");
+            builder.ToTable("Favoritos");
             builder.HasKey(f => new { f.ClienteId, f.ProdutoId });
 
             builder
