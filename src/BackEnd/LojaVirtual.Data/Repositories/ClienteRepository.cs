@@ -14,7 +14,7 @@ namespace LojaVirtual.Data.Repositories
         {
             _context = context;
         }
-        public async Task<Cliente?> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Cliente?> GetClienteComFavoritos(Guid id, CancellationToken cancellationToken)
         {
             return await _context.ClienteSet.Include(c => c.Favoritos)
                                                 .ThenInclude(f => f.Produto)
