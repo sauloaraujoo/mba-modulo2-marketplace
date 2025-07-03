@@ -32,7 +32,14 @@ export class ListaComponent implements OnInit, OnChanges  {
     if (this.contexto === 'favoritos') {
       //definir parte da pagina de favoritos
     } else if (this.vendedorId) {
-      //definir parte da pagina de detalhes do vendedor
+      this.produtoService.obterProdutos(this.vendedorId)
+        .subscribe({
+          next: (produtos) => {
+            this.produtos = produtos;
+            console.log(produtos);
+          },
+          error: (error) => console.error(error)
+        });    
     } else {
       this.produtoService.obterProdutos(this.categoriaId)
         .subscribe({
