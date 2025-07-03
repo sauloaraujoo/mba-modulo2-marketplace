@@ -34,5 +34,10 @@ namespace LojaVirtual.Api.Models
         
         [ScaffoldColumn(false)]
         public string NomeCategoria { get; set; }
+
+        public Guid VendedorId { get; set; }
+
+        [ScaffoldColumn(false)]
+        public string NomeVendedor { get; set; }
     }
 }

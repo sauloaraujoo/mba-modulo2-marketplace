@@ -8,4 +8,6 @@ export interface Produto {
   estoque: number,
   categoriaId: string,
   nomeCategoria: string
+  vendedorId: string,
+  nomeVendedor: string
 }

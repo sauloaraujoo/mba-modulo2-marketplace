@@ -93,11 +93,13 @@ namespace LojaVirtual.Business.Services
             return produto;
         }
         
-        public async Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, Guid? vendedorId, CancellationToken cancellationToken)
         {
-            var produtos = categoriaId == null ? 
-                await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken) :
-                await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
+            var produtos = categoriaId != null ?
+                await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken) :
+                vendedorId != null ?
+                await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken) :
+                await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken);
             return produtos;
         }
         public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
