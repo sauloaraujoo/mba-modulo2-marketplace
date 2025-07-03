@@ -24,24 +24,19 @@ namespace LojaVirtual.Mvc.Controllers
             _categoriaService = categoriaService;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}        
-
         [HttpGet]
         [Route("")]
-        public async Task<ActionResult> Index(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<ActionResult> Index(Guid? categoriaId, Guid? vendedorId, CancellationToken cancellationToken)
         {
-            var produtos = _mapper.Map<IEnumerable<ProdutoVitrineViewModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken));
+            var produtos = _mapper.Map<IEnumerable<ProdutoVitrineViewModel>>(await _produtoService.ListVitrine(categoriaId, vendedorId, cancellationToken));
             var _categorias = _mapper.Map<IEnumerable<CategoriaViewModel>>(await _categoriaService.List(cancellationToken));
             ViewBag.Categorias = _categorias; // Passar categorias para a view
             
             return View(produtos);
         }
-        public async Task<IActionResult> ListaProdutos(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<IActionResult> ListaProdutos(Guid? categoriaId, Guid? vendedorId,  CancellationToken cancellationToken)
         {
-            var produtos = _mapper.Map<IEnumerable<ProdutoVitrineViewModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken));
+            var produtos = _mapper.Map<IEnumerable<ProdutoVitrineViewModel>>(await _produtoService.ListVitrine(categoriaId, vendedorId, cancellationToken));
 
             return PartialView("_ListaProdutos", produtos);
         }

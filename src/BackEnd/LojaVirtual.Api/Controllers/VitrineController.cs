@@ -25,9 +25,9 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("")]        
-        public async Task<ActionResult> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<ActionResult> ListVitrine(Guid? categoriaId, Guid? vendedorId, CancellationToken cancellationToken)
         {            
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrine(categoriaId, vendedorId, cancellationToken)));
         }
 
         [HttpGet("detalhe/{id:Guid}")]                
