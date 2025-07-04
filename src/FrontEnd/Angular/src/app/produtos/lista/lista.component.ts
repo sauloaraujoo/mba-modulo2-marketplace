@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { Produto } from '../models/produto';
 import { ProdutoService } from '../services/produtos.service';
+import { LocalStorageUtils } from 'src/app/utils/localstorage';
+import { NotificacaoService } from 'src/app/services/notificacao.service';
 
 @Component({
   selector: 'app-lista',
@@ -8,17 +10,19 @@ import { ProdutoService } from '../services/produtos.service';
 })
 export class ListaComponent implements OnInit, OnChanges  {
   
+  
   @Input() categoriaId?: string;
   @Input() vendedorId?: string;
   @Input() contexto: 'produtos' | 'favoritos' | 'vendedor' = 'produtos';
 
-  constructor(private produtoService: ProdutoService) { }
+  constructor(private produtoService: ProdutoService, private notificacaoService: NotificacaoService) { }
 
   public urlImagem: string = this.produtoService.urlImagem;
   public produtos: Produto[] = [];
   public favoritosIds: Set<string> = new Set();
   public mensagem: string | null = null;
   public mensagemTipo: 'success' | 'danger' | 'info' | null = null;
+  private localStorageUtils = new LocalStorageUtils();
 
   ngOnInit() {
     this.carregarProdutos();
@@ -30,9 +34,18 @@ export class ListaComponent implements OnInit, OnChanges  {
     }
   }  
 
+  ehUsuarioLogado(): boolean {
+    return this.localStorageUtils.obterTokenUsuario() !== null;
+  }
+
   private carregarProdutos(): void {
 
     if (this.contexto === 'favoritos') {
+      if (!this.ehUsuarioLogado()) {
+        this.produtos = [];
+        return;
+      }
+
       this.produtoService.obterFavoritos().subscribe({
         next: (favoritos) => {
           this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
@@ -55,19 +68,28 @@ export class ListaComponent implements OnInit, OnChanges  {
     } else if (this.vendedorId) {
       //definir parte da pagina de detalhes do vendedor
     } else {
-      this.produtoService.obterFavoritos().subscribe({
-        next: (favoritos) => {
-          this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
+      if(this.ehUsuarioLogado()) {
+        this.produtoService.obterFavoritos().subscribe({
+          next: (favoritos) => {
+            this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
 
-          this.produtoService.obterProdutos(this.categoriaId).subscribe({
-            next: (produtos) => {
-              this.produtos = produtos;
-            },
-            error: (error) => console.error('Erro ao carregar produtos:', error)
-          });
-        },
-        error: (error) => console.error('Erro ao carregar favoritos:', error)
-      });   
+            this.produtoService.obterProdutos(this.categoriaId).subscribe({
+              next: (produtos) => {
+                this.produtos = produtos;
+              },
+              error: (error) => console.error('Erro ao carregar produtos:', error)
+            });
+          },
+          error: (error) => console.error('Erro ao carregar favoritos:', error)
+        }); 
+      } else {
+        this.produtoService.obterProdutos(this.categoriaId).subscribe({
+          next: (produtos) => {
+            this.produtos = produtos;
+          },
+          error: (error) => console.error('Erro ao carregar produtos:', error)
+        });
+      }        
     }      
   }
   
@@ -81,11 +103,11 @@ export class ListaComponent implements OnInit, OnChanges  {
           if (this.contexto === 'favoritos') {
             this.produtos = this.produtos.filter(p => p.id !== produtoId);
           }
-          this.mostrarMensagem('Produto removido dos favoritos.', 'success');
+          this.notificacaoService.showSuccess('Produto removido dos favoritos.');
         },
         error: (err) => {
           console.error('Erro ao remover favorito:', err);
-          this.mostrarMensagem('Erro ao remover dos favoritos.', 'danger');
+          this.notificacaoService.showError('Erro ao remover dos favoritos.');
         } 
       });
     } else {
@@ -94,11 +116,11 @@ export class ListaComponent implements OnInit, OnChanges  {
           this.favoritosIds.add(produtoId);
           this.favoritosIds = new Set(this.favoritosIds); 
 
-          this.mostrarMensagem('Produto adicionado aos favoritos!', 'success');
+          this.notificacaoService.showSuccess('Produto adicionado aos favoritos!');
         },
         error: (err) => {
           console.error('Erro ao adicionar favorito:', err)
-          this.mostrarMensagem('Erro ao adicionar aos favoritos.', 'danger');
+          this.notificacaoService.showError('Erro ao adicionar aos favoritos.');
         }
       });
     }
@@ -106,15 +128,5 @@ export class ListaComponent implements OnInit, OnChanges  {
 
   ehFavorito(produtoId: string): boolean {
     return this.favoritosIds.has(produtoId);
-  }
-
-  private mostrarMensagem(msg: string, tipo: 'success' | 'danger' | 'info' = 'info'): void {
-    this.mensagem = msg;
-    this.mensagemTipo = tipo;
-
-    setTimeout(() => {
-      this.mensagem = null;
-      this.mensagemTipo = null;
-    }, 2000);
   }
 }

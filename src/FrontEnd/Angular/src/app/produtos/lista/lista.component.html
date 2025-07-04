@@ -1,12 +1,5 @@
 <div class="container main-container">
 
-  <div style="min-height: 60px;">
-    <div *ngIf="mensagem" class="alert alert-{{ mensagemTipo || 'info' }} alert-dismissible fade show" role="alert">
-      {{ mensagem }}
-      <button type="button" class="btn-close" aria-label="Fechar" (click)="mensagem = null"></button>
-    </div>
-  </div>
-
   <div *ngIf="produtos.length === 0 && contexto === 'favoritos'; else listaProdutos">
     <p>Você ainda não tem produtos favoritos.</p>
   </div>
@@ -17,7 +10,7 @@
       <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
         <div class="card h-100">
 
-          <button class="btn btn-link position-absolute" style="right: 10px; top: 10px; z-index: 2;" (click)="AdicionarRemoverFavorito(produto.id)">
+          <button *ngIf="ehUsuarioLogado()" class="btn btn-link position-absolute" style="right: 10px; top: 10px; z-index: 2;" (click)="AdicionarRemoverFavorito(produto.id)">
             <i class="bi" [ngClass]="{ 'bi-heart-fill': ehFavorito(produto.id),'bi-heart': !ehFavorito(produto.id)}" style="color: red; font-size: 1.4em;"></i>
           </button>
 
