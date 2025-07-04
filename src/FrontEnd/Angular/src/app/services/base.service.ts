@@ -53,4 +53,8 @@ export abstract class BaseService {
         console.error(response);
         return throwError(response);
     }
+
+    public usuarioLogado(): boolean {
+        return !!this.LocalStorage.obterTokenUsuario();
+    }
 }

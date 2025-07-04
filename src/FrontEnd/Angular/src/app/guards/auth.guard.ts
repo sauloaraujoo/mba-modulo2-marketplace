@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 export const authGuard = (route: any, state: any) => {
   const router = inject(Router);
 
-  const userData = localStorage.getItem('user');
+  const userData = localStorage.getItem('lojamba.user');
   if (userData) {
     return true;
   }
