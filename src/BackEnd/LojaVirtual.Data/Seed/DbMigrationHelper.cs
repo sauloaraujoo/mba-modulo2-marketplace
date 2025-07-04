@@ -158,7 +158,7 @@ namespace LojaVirtual.Data.Seed
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Categorias",
-                ClaimValue = "ADICIONAR,EDITAR,EXCLUIR"
+                ClaimValue = "VISUALIZAR,ADICIONAR,EDITAR,EXCLUIR"
             };
             await context.UserClaims.AddAsync(claimCategorias);
 

@@ -23,7 +23,7 @@ namespace LojaVirtual.Mvc.Controllers
             _mapper = mapper;
         }
 
-        [ClaimsAuthorize("Categorias", "VI")]
+        [ClaimsAuthorize("Categorias", "VISUALIZAR")]
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken cancellationToken)
         {
@@ -32,14 +32,14 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categorias);
         }
 
-        [ClaimsAuthorize("Categorias", "AD")]
+        [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [Route("novo")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [ClaimsAuthorize("Categorias", "AD")]
+        [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [Route("novo")]
         [HttpPost]
         public async Task<IActionResult> Create(CategoriaViewModel categoriaViewModel, CancellationToken cancellationToken)
@@ -53,7 +53,7 @@ namespace LojaVirtual.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
-        [ClaimsAuthorize("Categorias", "VI")]
+        [ClaimsAuthorize("Categorias", "VISUALIZAR")]
         [Route("detalhes/{id:guid}")]
         public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
         {
@@ -67,7 +67,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "ED")]
+        [ClaimsAuthorize("Categorias", "EDITAR")]
         [Route("editar/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken)
         {
@@ -81,7 +81,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "ED")]
+        [ClaimsAuthorize("Categorias", "EDITAR")]
         [Route("editar/{id:guid}")]
         [HttpPost]
         public async Task<IActionResult> Edit(Guid id, CategoriaViewModel categoriaViewModel, CancellationToken cancellationToken)
@@ -98,7 +98,7 @@ namespace LojaVirtual.Mvc.Controllers
             return RedirectToAction("Index");
         }
 
-        [ClaimsAuthorize("Categorias", "EX")]
+        [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
         {
@@ -112,7 +112,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "EX")]
+        [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [Route("excluir/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken cancellationToken)
