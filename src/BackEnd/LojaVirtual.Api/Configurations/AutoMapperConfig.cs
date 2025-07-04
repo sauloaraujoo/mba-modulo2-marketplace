@@ -9,7 +9,7 @@ namespace LojaVirtual.Api.Configurations
         public AutoMapperConfig()
         {            
             CreateMap<Categoria, CategoriaModel>().ReverseMap();
-            CreateMap<Produto, ProdutoModel>().ForMember(dest => dest.NomeCategoria, opt => opt.MapFrom(src => src.Categoria.Nome));
+            CreateMap<Produto, ProdutoModel>().ForMember(dest => dest.NomeCategoria, opt => opt.MapFrom(src => src.Categoria.Nome)).ForMember(dest => dest.NomeVendedor, opt => opt.MapFrom(src => src.Vendedor.Nome));
             CreateMap<ProdutoModel, Produto>();
 
             //CreateMap<ProdutoImagemViewModel, Produto>().ReverseMap();

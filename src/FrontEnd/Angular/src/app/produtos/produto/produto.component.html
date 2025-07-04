@@ -1,1 +1,46 @@
-<p>Componente para detalhes do produto</p>
+<div class="container main-container">
+    <div class="row">
+        <div class="col-md-4">
+           <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt=""> 
+        </div>
+        <div class="col-md-6">
+            <dl>
+                <dt>
+                    Categoria
+                </dt>
+                <dd>
+                   {{ produto.nomeCategoria }} 
+                </dd>
+                <dt>
+                    Nome
+                </dt>
+                <dd>
+                    {{ produto.nome }} 
+                </dd>
+                <dt>
+                    Descrição
+                </dt>
+                <dd>
+                    {{ produto.descricao }} 
+                </dd>
+                <dt>
+                    Preço
+                </dt>
+                <dd>
+                    {{ produto.preco | currency:'BRL':true:'1.2-2':'pt' }}
+                </dd>
+                <dt>
+                    Vendedor
+                </dt>
+                <dd>
+                    {{ produto.nomeVendedor }} 
+                </dd>
+            </dl>
+
+            <div>
+                <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
+            </div>
+        </div>
+    </div>
+
+</div>
