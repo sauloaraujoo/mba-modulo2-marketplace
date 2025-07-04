@@ -13,15 +13,14 @@ import { VitrineComponent } from '../produtos/vitrine/vitrine.component';
 
 import { ProdutosRoutingModule } from './produtos.route';
 import { ProdutoService } from '../produtos/services/produtos.service';
-
-
-
+import { FavoritosComponent } from './favoritos/favoritos.component';
 
 @NgModule({
   declarations: [
     ListaComponent,
     ProdutoComponent,
-    VitrineComponent
+    VitrineComponent,
+    FavoritosComponent 
   ],
   imports: [
     CommonModule,

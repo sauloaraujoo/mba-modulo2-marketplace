@@ -56,7 +56,7 @@ namespace LojaVirtual.Api.Controllers
                 return CustomResponse(HttpStatusCode.NotFound);
             }
 
-            return CustomResponse(HttpStatusCode.NoContent);
+            return CustomResponse(HttpStatusCode.OK);
         }
 
     }
