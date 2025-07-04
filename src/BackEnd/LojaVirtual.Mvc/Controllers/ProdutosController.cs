@@ -43,7 +43,7 @@ namespace LojaVirtual.Mvc.Controllers
             return View(produtos);
         }
 
-        [ClaimsAuthorize("Produos", "AD")]
+        [ClaimsAuthorize("Produtos", "AD")]
         [Route("novo")]
         public async Task<IActionResult> Create(CancellationToken cancellationToken)
         {
