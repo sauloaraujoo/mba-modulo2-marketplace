@@ -33,7 +33,7 @@ namespace LojaVirtual.Api.Controllers
         [HttpGet("detalhe/{id:Guid}")]                
         public async Task<IActionResult> GetDetailById(Guid id, CancellationToken cancellationToken)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.GetById(id,cancellationToken)));            
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListVitrineById(id,cancellationToken)));            
         }
 
         [HttpGet("categorias")]

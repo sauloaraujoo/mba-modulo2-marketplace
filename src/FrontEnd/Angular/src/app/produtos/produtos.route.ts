@@ -8,8 +8,10 @@ import { FavoritosComponent } from '../produtos/favoritos/favoritos.component';
 
 const produtosRouterConfig: Routes = [
   { path: '', component: VitrineComponent }, // /produtos
-  { path: ':id', component: ProdutoComponent }, // /produto/:id
-  { path: ':id', component: VendedorComponent }, // /vendedor/:id
+  { 
+    path: 'produto/:id', component: ProdutoComponent
+  },
+  { path: 'vendedor/:id', component: VendedorComponent }, // /produtos/vendedor/:id
   { path: 'favoritos', component: FavoritosComponent } // /produtos/favoritos
 ];
 
@@ -17,6 +19,7 @@ const produtosRouterConfig: Routes = [
     imports: [
         RouterModule.forChild(produtosRouterConfig)
     ],
+    
     exports: [RouterModule]
 })
 export class ProdutosRoutingModule { }

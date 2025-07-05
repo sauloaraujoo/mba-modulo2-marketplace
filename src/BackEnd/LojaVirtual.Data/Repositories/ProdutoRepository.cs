@@ -88,8 +88,18 @@ namespace LojaVirtual.Data.Repositories
                 .AsNoTracking()
                 .Include(p => p.Categoria)
                 .Include(p => p.Vendedor)
-                .Where(p => p.VendedorId == vendedorId && p.Ativo == true)
+                .Where(p => p.VendedorId == vendedorId && p.Ativo && p.Vendedor.Ativo)
                 .ToListAsync(cancellationToken);
+        }
+
+        public async Task<Produto> getProdutoWithCategoriaVendedorById(Guid produtoId, CancellationToken cancellationToken)
+        {
+            return await _context
+                .ProdutoSet
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .FirstOrDefaultAsync(p => p.Id == produtoId && p.Ativo == true && p.Vendedor.Ativo == true, cancellationToken);
         }
 
         public async Task Remove(Produto produto, CancellationToken cancellationToken)

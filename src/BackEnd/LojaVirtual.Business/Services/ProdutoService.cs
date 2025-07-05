@@ -92,16 +92,26 @@ namespace LojaVirtual.Business.Services
             }
             return produto;
         }
-        
-        public async Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, Guid? vendedorId, CancellationToken cancellationToken)
+
+        public async Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken)
         {
-            var produtos = categoriaId != null ?
-                await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken) :
-                vendedorId != null ?
-                await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken) :
-                await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken);
-            return produtos;
+            var produtos = categoriaId == null ?
+                await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken) :
+                await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
+
         }
+
+        public async Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken);
+        }
+
+        public async Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken)
+        {
+            var produto = await _produtoRepository.getProdutoWithCategoriaVendedorById(new Guid(produtoId.ToString()!), cancellationToken);
+            return produto;
+        }
+
         public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
         {
             return await _produtoRepository.GetById(id, cancellationToken);
