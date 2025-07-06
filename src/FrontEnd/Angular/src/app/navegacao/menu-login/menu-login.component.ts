@@ -25,7 +25,9 @@ export class MenuLoginComponent {
   }
 
   logout() {
-    this.localStorageUtils.limparDadosLocaisUsuario();
-    this.router.navigate(['/home']);
+      this.localStorageUtils.limparDadosLocaisUsuario();
+      this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+      this.router.navigate(['/home']);
+    });
   }
 }

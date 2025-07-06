@@ -14,6 +14,7 @@ import { VitrineComponent } from '../produtos/vitrine/vitrine.component';
 
 import { ProdutosRoutingModule } from './produtos.route';
 import { ProdutoService } from '../produtos/services/produtos.service';
+import { FavoritosComponent } from './favoritos/favoritos.component';
 import { VendedorService } from '../produtos/services/vendedor.service';
 
 @NgModule({
@@ -21,7 +22,8 @@ import { VendedorService } from '../produtos/services/vendedor.service';
     ListaComponent,
     ProdutoComponent,
     VendedorComponent,
-    VitrineComponent
+    VitrineComponent,
+    FavoritosComponent 
   ],
   imports: [
     CommonModule,
