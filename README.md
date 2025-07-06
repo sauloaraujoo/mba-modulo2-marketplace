@@ -55,16 +55,17 @@ A estrutura do projeto é organizada da seguinte forma:
   - FrontEnd/
     - LojaVirtual.Angular    - Interface web da vitrine
 
-*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
-
 ## **5. Funcionalidades Implementadas**
 
-- **Registro de Usuários:** Permite incluir usuários à Loja que são inseridos também como vendedores para cadastros das categorias e produtos.
-- **CRUD para Categorias:** Permite criar, editar, visualizar e excluir categorias.
-- **CRUD para Produtos:** Permite criar, editar, visualizar e excluir os produtos do próprio vendedor.
-- **Autenticação:** Somente usuários autenticados poderão realizar criação, edição e exclusão das categorias e produtos.
-- **API RESTful:** Exposição de endpoints para operações CRUD via API.
-- **Documentação da API:** Documentação automática dos endpoints da API utilizando Swagger.
+- **Autocadastro de Vendedores:** Possibilita aos vendedores se registrarem na área administrativa do marketplace.
+- **API RESTful:** Exposição de endpoints para operações CRUD, via API.
+- **Documentação da API:** Documentação automática dos endpoints da API, utilizando Swagger.
+- **Autocadastro de Clientes:** Possibilita aos clientes se registrarem na área de vitrine do marketplace.
+- **Autenticação e Autorização:** Somente usuários autenticados poderão realizar determinadas operações, a depender de autorizações específicas para cada tipo de usuário.
+- **CRUD de Categorias de Produtos:** Possibilita ao administrador criar, editar, visualizar e excluir categorias de produtos.
+- **CRUD de Produtos:** Permite ao vendedor incluir, editar, visualizar e excluir seus produtos.
+- **Desativação e Ativação de Vendedores e Produtos:** Dá poder de moderação ao administrador do marketplace.
+- **Produtos Favoritos:** Os clientes podem manter uma lista de seus produtos favoritos.
 
 ## **6. Como Executar o Projeto**
 
@@ -77,8 +78,10 @@ A estrutura do projeto é organizada da seguinte forma:
 ### **Passos para Execução**
 
 1. **Clone o Repositório:**
-   - `git clone https://github.com/rinaldoserra-dev/LojaVirtual-Mba.git`
-   - `cd LojaVirtual-Mba`
+   - `git clone https://github.com/sauloaraujoo/mba-modulo2-marketplace.git`
+   - `cd mba-modulo2-marketplace`
+
+*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
 
 2. **Configuração do Banco de Dados:**
    - No arquivo `appsettings.json`, configure a string de conexão do SQL Server nos projetos BlogExpert.Mvc e BlogExpert.Api.
