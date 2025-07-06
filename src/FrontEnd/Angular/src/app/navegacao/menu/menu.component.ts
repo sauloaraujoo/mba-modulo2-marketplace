@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalStorageUtils } from 'src/app/utils/localstorage';
 
 @Component({
   selector: 'app-menu',
@@ -7,5 +8,10 @@ import { Component } from '@angular/core';
   ]
 })
 export class MenuComponent {
+  localStorageUtils = new LocalStorageUtils();
+
+  usuarioLogado(): boolean {
+    return this.localStorageUtils.obterTokenUsuario() !== null;
+  }
 
 }
