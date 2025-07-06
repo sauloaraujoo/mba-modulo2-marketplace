@@ -22,6 +22,7 @@ namespace LojaVirtual.Api.Configurations
             //Services
             services.AddScoped<ICategoriaService, CategoriaService>();
             services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<IVendedorService, VendedorService>();
             services.AddScoped<IClienteService, ClienteService>();
             services.AddScoped<IAppIdentifyUser, AppIdentityUser>();
 
