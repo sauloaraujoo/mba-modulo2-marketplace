@@ -1,4 +1,5 @@
-export interface Vendedor {
-  id: string,
-  nome: string
+export class Vendedor {
+  id!: string;
+  nome!: string;
+  email!: string;
 }
