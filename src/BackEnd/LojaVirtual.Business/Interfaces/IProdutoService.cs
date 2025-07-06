@@ -9,6 +9,7 @@ namespace LojaVirtual.Business.Interfaces
         Task Remove(Guid id, CancellationToken cancellationToken);
         Task<IEnumerable<Produto>> List(CancellationToken cancellationToken);
         Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken);
+        Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken);
 
         Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken);
 

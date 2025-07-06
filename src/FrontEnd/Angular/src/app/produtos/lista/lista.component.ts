@@ -60,13 +60,21 @@ export class ListaComponent implements OnInit, OnChanges  {
             nomeCategoria: f.categoria ?? '',
             descricao: '',
             estoque: 0,
+            vendedorId: f.vendedorId ?? '',
             nomeVendedor: f.vendedor ?? ''
           }));
         },
         error: (error) => console.error('Erro ao carregar favoritos:', error)
       });
-    } else if (this.vendedorId) {
-      //definir parte da pagina de detalhes do vendedor
+    } else if (this.contexto === 'vendedor') {
+      this.produtoService.obterProdutosPorVendedor(this.vendedorId)
+        .subscribe({
+          next: (produtos) => {
+            this.produtos = produtos;
+            console.log(produtos);
+          },
+          error: (error) => console.error(error)
+        });    
     } else {
       if(this.ehUsuarioLogado()) {
         this.produtoService.obterFavoritos().subscribe({

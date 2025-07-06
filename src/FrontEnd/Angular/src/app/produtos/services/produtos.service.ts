@@ -25,6 +25,14 @@ export class ProdutoService extends BaseService {
         );
     }
 
+    obterProdutosPorVendedor(vendedorId?: string) : Observable<Produto[]>{
+
+        let url = this.UrlServiceV1 + `api/vitrine/por-vendedor/${vendedorId}`;
+
+        return this.http.get<any>(url)
+                        .pipe(map(response => response.data));
+    }
+
     obterProduto(produtoId?: string) : Observable<Produto>{
 
         let url = this.UrlServiceV1 + 'api/vitrine/detalhe/';

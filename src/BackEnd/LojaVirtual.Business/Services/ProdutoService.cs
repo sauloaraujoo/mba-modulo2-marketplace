@@ -100,6 +100,12 @@ namespace LojaVirtual.Business.Services
                 await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
             return produtos;
         }
+
+        public async Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken);
+        }
+
         public async Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken)
         {
             var produto = await _produtoRepository.getProdutoWithCategoriaVendedorById(new Guid(produtoId.ToString()!), cancellationToken);
