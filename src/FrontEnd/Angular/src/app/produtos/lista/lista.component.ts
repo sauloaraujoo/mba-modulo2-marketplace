@@ -60,6 +60,7 @@ export class ListaComponent implements OnInit, OnChanges  {
             nomeCategoria: f.categoria ?? '',
             descricao: '',
             estoque: 0,
+            vendedorId: f.vendedorId ?? '',
             nomeVendedor: f.vendedor ?? ''
           }));
         },
