@@ -15,10 +15,6 @@
                     <div><h4 class="card-text">
                         {{ produto.preco | currency:'BRL':true:'1.2-2':'pt' }}
                     </h4></div>
-
-                    <div style="margin-top: 30px;">
-                        Vendido por <a [routerLink]="['/vendedor', produto.vendedorId]">{{ produto.nomeVendedor }}</a>
-                    </div>
                 </div>
 
                 <div class="card-footer">

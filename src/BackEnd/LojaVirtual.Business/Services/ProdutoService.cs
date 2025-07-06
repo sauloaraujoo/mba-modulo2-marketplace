@@ -98,7 +98,7 @@ namespace LojaVirtual.Business.Services
             var produtos = categoriaId == null ?
                 await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken) :
                 await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
-
+            return produtos;
         }
 
         public async Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken)

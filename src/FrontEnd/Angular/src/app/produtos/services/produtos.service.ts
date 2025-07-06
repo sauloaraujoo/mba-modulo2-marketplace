@@ -12,21 +12,24 @@ export class ProdutoService extends BaseService {
     constructor(private http: HttpClient) { super(); }
 
     public urlImagem = this.UrlImagemV1;
-    obterProdutos(categoriaId?: string, vendedorId?: string) : Observable<Produto[]>{
+    obterProdutos(categoriaId?: string) : Observable<Produto[]>{
 
         let url = this.UrlServiceV1 + 'api/vitrine';
-
         if (categoriaId) {
             url += `?categoriaId=${categoriaId}`;
-        } else {
-            if (vendedorId) {
-                url += `?vendedorId=${vendedorId}`;
-            }
         }
 
         return this.http.get<any>(url).pipe(
             map(response => response.data)
         );
+    }
+
+    obterProdutosPorVendedor(vendedorId?: string) : Observable<Produto[]>{
+
+        let url = this.UrlServiceV1 + `api/vitrine/por-vendedor/${vendedorId}`;
+
+        return this.http.get<any>(url)
+                        .pipe(map(response => response.data));
     }
 
     obterProduto(produtoId?: string) : Observable<Produto>{

@@ -31,8 +31,8 @@ export class ListaComponent implements OnInit, OnChanges  {
 
     if (this.contexto === 'favoritos') {
       //definir parte da pagina de favoritos
-    } else if (this.vendedorId) {
-      this.produtoService.obterProdutos(this.vendedorId)
+    } else if (this.contexto === 'vendedor') {
+      this.produtoService.obterProdutosPorVendedor(this.vendedorId)
         .subscribe({
           next: (produtos) => {
             this.produtos = produtos;
@@ -49,7 +49,7 @@ export class ListaComponent implements OnInit, OnChanges  {
           },
           error: (error) => console.error(error)
         });    
-      }
+    }
       
   }  
 }

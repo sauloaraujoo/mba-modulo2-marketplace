@@ -33,7 +33,7 @@
                     Vendedor
                 </dt>
                 <dd>
-                    {{ produto.nomeVendedor }} 
+                    <a [routerLink]="['/produtos/vendedor', produto.vendedorId]">{{ produto.nomeVendedor }}</a> 
                 </dd>
             </dl>
 
