@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LojaVirtual.Api.Models;
+using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -25,15 +26,35 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("")]        
-        public async Task<ActionResult> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<ActionResult> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {            
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken)));
+            var resultado = await _produtoService.ListVitrinePaginado(categoriaId, pagina, tamanho, cancellationToken);
+            var viewModel = new PagedResult<ProdutoModel>
+            {
+                TotalItens = resultado.TotalItens,
+                PaginaAtual = resultado.PaginaAtual,
+                TamanhoPagina = resultado.TamanhoPagina,
+                Itens = _mapper.Map<IEnumerable<ProdutoModel>>(resultado.Itens)
+            };
+            return CustomResponse(HttpStatusCode.OK, viewModel);
+            //return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken)));
         }
 
         [HttpGet("por-vendedor/{vendedorId:guid}")]
-        public async Task<ActionResult> ListVitrineByVendedor(Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<ActionResult> ListVitrineByVendedor([FromRoute]Guid vendedorId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrineByVendedor(vendedorId, cancellationToken)));
+            var resultado = await _produtoService.ListVitrineByVendedorPaginado(vendedorId, pagina, tamanho, cancellationToken);
+
+            var viewModel = new PagedResult<ProdutoModel>
+            {
+                TotalItens = resultado.TotalItens,
+                PaginaAtual = resultado.PaginaAtual,
+                TamanhoPagina = resultado.TamanhoPagina,
+                Itens = _mapper.Map<IEnumerable<ProdutoModel>>(resultado.Itens)
+            };
+            return CustomResponse(HttpStatusCode.OK, viewModel);
+
+            //return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrineByVendedor(vendedorId, cancellationToken)));
         }
 
         [HttpGet("detalhe/{id:Guid}")]                

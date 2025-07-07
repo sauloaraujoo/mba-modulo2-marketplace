@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Business.Entities;
+﻿using LojaVirtual.Business.Common;
+using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Business.Notifications;
 
@@ -76,6 +77,23 @@ namespace LojaVirtual.Business.Services
             await _clienteRepository.SaveChanges(cancellationToken);
 
             return true;
+        }
+
+        public async Task<PagedResult<Favorito>> GetFavoritosPaginado(int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
+            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, cancellationToken);
+
+            return new PagedResult<Favorito>()
+            {
+                TotalItens = cliente.Favoritos.Count,
+                PaginaAtual = pagina,
+                TamanhoPagina = tamanho,
+                Itens = cliente.Favoritos.Skip((pagina - 1) * tamanho).Take(tamanho)
+            };
+
+
+            
         }
     }
 }
