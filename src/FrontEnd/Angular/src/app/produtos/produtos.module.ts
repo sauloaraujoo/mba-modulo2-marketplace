@@ -16,6 +16,7 @@ import { ProdutosRoutingModule } from './produtos.route';
 import { ProdutoService } from '../produtos/services/produtos.service';
 import { FavoritosComponent } from './favoritos/favoritos.component';
 import { VendedorService } from '../produtos/services/vendedor.service';
+import { PaginacaoComponent } from '../components/paginacao/paginacao.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { VendedorService } from '../produtos/services/vendedor.service';
     ProdutoComponent,
     VendedorComponent,
     VitrineComponent,
-    FavoritosComponent 
+    FavoritosComponent,
+    PaginacaoComponent
   ],
   imports: [
     CommonModule,

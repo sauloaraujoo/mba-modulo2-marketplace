@@ -1,5 +1,6 @@
 ﻿using LojaVirtual.Api.Extensions;
 using LojaVirtual.Api.Models;
+using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,21 @@ namespace LojaVirtual.Api.Controllers
         {
             var favoritos = await _clienteService.GetFavoritos(cancellationToken);
             return CustomResponse(HttpStatusCode.OK, favoritos.Select(FavoritoViewModel.FromFavorito));
+        }
+
+        [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
+        [HttpGet("favorito")]
+        public async Task<IActionResult> GetFavoritosPaginado(CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        {
+            var resultado = await _clienteService.GetFavoritosPaginado(pagina, tamanho, cancellationToken);
+            var viewModel = new PagedResult<FavoritoViewModel>
+            {
+                TotalItens = resultado.TotalItens,
+                PaginaAtual = resultado.PaginaAtual,
+                TamanhoPagina = resultado.TamanhoPagina,
+                Itens = resultado.Itens.Select(FavoritoViewModel.FromFavorito)
+            };
+            return CustomResponse(HttpStatusCode.OK, viewModel);
         }
 
         [ClaimsAuthorize("Clientes", "EDITAR_FAVORITOS")]

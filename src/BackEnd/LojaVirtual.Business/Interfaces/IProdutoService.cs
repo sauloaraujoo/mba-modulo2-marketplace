@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Business.Entities;
+﻿using LojaVirtual.Business.Common;
+using LojaVirtual.Business.Entities;
 
 namespace LojaVirtual.Business.Interfaces
 {
@@ -10,6 +11,9 @@ namespace LojaVirtual.Business.Interfaces
         Task<IEnumerable<Produto>> List(CancellationToken cancellationToken);
         Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken);
         Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken);
+
+        Task<PagedResult<Produto>> ListVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken);
+        Task<PagedResult<Produto>> ListVitrineByVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken);
 
         Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken);
 

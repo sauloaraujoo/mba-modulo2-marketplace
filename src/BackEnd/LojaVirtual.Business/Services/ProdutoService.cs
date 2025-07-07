@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Business.Entities;
+﻿using LojaVirtual.Business.Common;
+using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Business.Notifications;
 
@@ -129,6 +130,19 @@ namespace LojaVirtual.Business.Services
 
             await _produtoRepository.Edit(produtoOrigem, cancellationToken);
             await _produtoRepository.SaveChanges(cancellationToken);
+        }
+
+        public async Task<PagedResult<Produto>> ListVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var produtos = categoriaId == null ?
+               await _produtoRepository.ListWithCategoriaVendedorPagedAsNoTracking(pagina, tamanho, cancellationToken) :
+               await _produtoRepository.ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(new Guid(categoriaId.ToString()!), pagina, tamanho, cancellationToken);
+            return produtos;
+        }
+
+        public async Task<PagedResult<Produto>> ListVitrineByVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.ListWithCategoriaVendedorByVendedorPagedAsNoTracking(new Guid(vendedorId.ToString()!), pagina, tamanho, cancellationToken);
         }
     }
 }
