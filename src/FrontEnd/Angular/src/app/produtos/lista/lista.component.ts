@@ -17,6 +17,10 @@ export class ListaComponent implements OnInit, OnChanges  {
 
   constructor(private produtoService: ProdutoService, private notificacaoService: NotificacaoService) { }
 
+  paginaAtual = 1;
+  tamanhoPagina = 3;
+  totalItens = 0;
+
   public urlImagem: string = this.produtoService.urlImagem;
   public produtos: Produto[] = [];
   public favoritosIds: Set<string> = new Set();
@@ -46,11 +50,11 @@ export class ListaComponent implements OnInit, OnChanges  {
         return;
       }
 
-      this.produtoService.obterFavoritos().subscribe({
+      this.produtoService.obterFavoritosPaginado(this.paginaAtual, this.tamanhoPagina).subscribe({
         next: (favoritos) => {
-          this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
+          this.favoritosIds = new Set(favoritos.itens.map(f => f.produtoId));
 
-          this.produtos = favoritos.map(f => ({
+          this.produtos = favoritos.itens.map(f => ({
             id: f.produtoId,
             nome: f.nome,
             imagem: f.imagem,
@@ -63,27 +67,30 @@ export class ListaComponent implements OnInit, OnChanges  {
             vendedorId: f.vendedorId ?? '',
             nomeVendedor: f.vendedor ?? ''
           }));
+          this.totalItens = favoritos.totalItens;
         },
         error: (error) => console.error('Erro ao carregar favoritos:', error)
       });
     } else if (this.contexto === 'vendedor') {
-      this.produtoService.obterProdutosPorVendedor(this.vendedorId)
+      this.produtoService.obterProdutosPorVendedorPaginado(this.paginaAtual, this.tamanhoPagina,this.vendedorId)
         .subscribe({
           next: (produtos) => {
-            this.produtos = produtos;
-            console.log(produtos);
+            this.produtos = produtos.itens;
+            this.totalItens = produtos.totalItens;
           },
           error: (error) => console.error(error)
         });    
     } else {
+      
       if(this.ehUsuarioLogado()) {
         this.produtoService.obterFavoritos().subscribe({
           next: (favoritos) => {
             this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
 
-            this.produtoService.obterProdutos(this.categoriaId).subscribe({
+            this.produtoService.obterProdutosPaginado(this.paginaAtual, this.tamanhoPagina, this.categoriaId).subscribe({
               next: (produtos) => {
-                this.produtos = produtos;
+                this.produtos = produtos.itens;
+                this.totalItens = produtos.totalItens;
               },
               error: (error) => console.error('Erro ao carregar produtos:', error)
             });
@@ -91,9 +98,10 @@ export class ListaComponent implements OnInit, OnChanges  {
           error: (error) => console.error('Erro ao carregar favoritos:', error)
         }); 
       } else {
-        this.produtoService.obterProdutos(this.categoriaId).subscribe({
+        this.produtoService.obterProdutosPaginado(this.paginaAtual, this.tamanhoPagina, this.categoriaId).subscribe({
           next: (produtos) => {
-            this.produtos = produtos;
+            this.produtos = produtos.itens;
+            this.totalItens = produtos.totalItens;
           },
           error: (error) => console.error('Erro ao carregar produtos:', error)
         });
@@ -110,6 +118,10 @@ export class ListaComponent implements OnInit, OnChanges  {
 
           if (this.contexto === 'favoritos') {
             this.produtos = this.produtos.filter(p => p.id !== produtoId);
+            
+            if(this.produtos.length === 0) {
+              this.mudarPagina(this.paginaAtual - 1);
+            }
           }
           this.notificacaoService.showSuccess('Produto removido dos favoritos.');
         },
@@ -136,5 +148,10 @@ export class ListaComponent implements OnInit, OnChanges  {
 
   ehFavorito(produtoId: string): boolean {
     return this.favoritosIds.has(produtoId);
+  }
+
+  mudarPagina(novaPagina: number) {
+    this.paginaAtual = novaPagina;
+    this.carregarProdutos();
   }
 }

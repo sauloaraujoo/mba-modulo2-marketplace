@@ -34,6 +34,12 @@
           </div>
         </div>
       </div>
+      <app-paginacao
+        [totalItens]="totalItens"
+        [paginaAtual]="paginaAtual"
+        [tamanhoPagina]="tamanhoPagina"
+        (paginaChange)="mudarPagina($event)">
+      </app-paginacao>
     </div>
   </ng-template>
 </div>
