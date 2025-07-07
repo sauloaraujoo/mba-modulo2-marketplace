@@ -84,7 +84,11 @@ namespace LojaVirtual.Api.Controllers
                 await _signInManager.SignInAsync(user, false);
                 return CustomResponse(HttpStatusCode.OK, await GerarJwt(user.Email));
             }
-            AdicionarErroProcessamento("Falha no registro do usuário.");
+            foreach (var item in result.Errors)
+            {
+                AdicionarErroProcessamento(item.Description);
+            }
+            
             return CustomResponse();
         }
         private async Task<LoginResponseViewModel> GerarJwt(string email)
