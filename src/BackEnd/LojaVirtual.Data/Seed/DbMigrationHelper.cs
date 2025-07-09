@@ -91,7 +91,7 @@ namespace LojaVirtual.Data.Seed
                     var produto = new Produto(
                             $"Produto {v}-{p}",
                             $"Descrição do Produto {v}-{p}",
-                            "imagem.jpg",
+                            $"imagem{p}.jpg",
                             100 + p,
                             10 + p,
                             true,
@@ -145,7 +145,7 @@ namespace LojaVirtual.Data.Seed
             {
                 UserId = idClienteUser.ToString(),
                 ClaimType = "Clientes",
-                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
+                ClaimValue = "VI,ED"
             };
             await context.UserClaims.AddAsync(claimCliente);
 
