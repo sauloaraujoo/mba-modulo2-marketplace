@@ -145,7 +145,7 @@ namespace LojaVirtual.Data.Seed
             {
                 UserId = idClienteUser.ToString(),
                 ClaimType = "Clientes",
-                ClaimValue = "VI,ED"
+                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
             };
             await context.UserClaims.AddAsync(claimCliente);
 
