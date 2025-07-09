@@ -72,14 +72,30 @@ export class ListaComponent implements OnInit, OnChanges  {
         error: (error) => console.error('Erro ao carregar favoritos:', error)
       });
     } else if (this.contexto === 'vendedor') {
-      this.produtoService.obterProdutosPorVendedorPaginado(this.paginaAtual, this.tamanhoPagina,this.vendedorId)
-        .subscribe({
-          next: (produtos) => {
-            this.produtos = produtos.itens;
-            this.totalItens = produtos.totalItens;
-          },
-          error: (error) => console.error(error)
-        });    
+        if (this.ehUsuarioLogado()) {
+          this.produtoService.obterFavoritos().subscribe({
+            next: (favoritos) => {
+              this.favoritosIds = new Set(favoritos.map(f => f.produtoId));
+
+              this.produtoService.obterProdutosPorVendedorPaginado(this.paginaAtual, this.tamanhoPagina, this.vendedorId).subscribe({
+                next: (res) => {
+                  this.produtos = res.itens;
+                  this.totalItens = res.totalItens;
+                },
+                error: (error) => console.error('Erro ao carregar produtos do vendedor:', error)
+              });
+            },
+            error: (error) => console.error('Erro ao carregar favoritos:', error)
+          });
+        } else {
+          this.produtoService.obterProdutosPorVendedorPaginado(this.paginaAtual, this.tamanhoPagina, this.vendedorId).subscribe({
+            next: (res) => {
+              this.produtos = res.itens;
+              this.totalItens = res.totalItens;
+            },
+            error: (error) => console.error('Erro ao carregar produtos do vendedor:', error)
+          });
+        }   
     } else {
       
       if(this.ehUsuarioLogado()) {

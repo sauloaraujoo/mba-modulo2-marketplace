@@ -12,7 +12,7 @@
         }
         public string Nome { get; private set; }
         public string Email { get; private set; }
-        private readonly List<Favorito> _favoritos;
+        private readonly List<Favorito> _favoritos = new();
         public IReadOnlyCollection<Favorito> Favoritos => _favoritos;
         public void AddFavorito(Guid produtoId)
         {
@@ -22,6 +22,11 @@
         public void RemoveFavorito(Favorito favorito)
         {
             _favoritos.Remove(favorito);
+        }
+        public void SetFavoritos(List<Favorito> favoritosAtivos)
+        {
+            _favoritos.Clear();
+            _favoritos.AddRange(favoritosAtivos);
         }
     }
 }
