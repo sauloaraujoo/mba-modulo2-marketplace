@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Business.Entities;
+﻿using LojaVirtual.Business.Common;
+using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Data.Context;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +82,17 @@ namespace LojaVirtual.Data.Repositories
                 .ToListAsync(cancellationToken);
         }
 
+        public async Task<List<Produto>> ListWithCategoriaVendedorByVendedorAsNoTracking(Guid vendedorId, CancellationToken cancellationToken)
+        {
+            return await _context
+                .ProdutoSet
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .Where(p => p.VendedorId == vendedorId && p.Ativo && p.Vendedor.Ativo)
+                .ToListAsync(cancellationToken);
+        }
+
         public async Task<Produto> getProdutoWithCategoriaVendedorById(Guid produtoId, CancellationToken cancellationToken)
         {
             return await _context
@@ -112,9 +124,88 @@ namespace LojaVirtual.Data.Repositories
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
+
+        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorPagedAsNoTracking(int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var query = _context
+                .ProdutoSet
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .Where(p => p.Ativo == true && p.Vendedor.Ativo == true);
+
+            var totalItens = await query.CountAsync();
+
+            var itens = await query
+            .OrderBy(p => p.Nome)
+            .Skip((pagina - 1) * tamanho)
+            .Take(tamanho)
+            .ToListAsync(cancellationToken);
+
+            return new PagedResult<Produto>
+            {
+                TotalItens = totalItens,
+                PaginaAtual = pagina,
+                TamanhoPagina = tamanho,
+                Itens = itens
+            };
+        }
+
+        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(Guid categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var query = _context
+                .ProdutoSet
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .Where(p => p.CategoriaId == categoriaId && p.Ativo == true && p.Vendedor.Ativo == true);
+
+            var totalItens = await query.CountAsync();
+
+            var itens = await query
+            .OrderBy(p => p.Nome)
+            .Skip((pagina - 1) * tamanho)
+            .Take(tamanho)
+            .ToListAsync(cancellationToken);
+
+            return new PagedResult<Produto>
+            {
+                TotalItens = totalItens,
+                PaginaAtual = pagina,
+                TamanhoPagina = tamanho,
+                Itens = itens
+            };
+        }
+
+        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorByVendedorPagedAsNoTracking(Guid vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var query = _context
+                .ProdutoSet
+                .AsNoTracking()
+                .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .Where(p => p.VendedorId == vendedorId && p.Ativo && p.Vendedor.Ativo);
+
+            var totalItens = await query.CountAsync();
+
+            var itens = await query
+            .OrderBy(p => p.Nome)
+            .Skip((pagina - 1) * tamanho)
+            .Take(tamanho)
+            .ToListAsync(cancellationToken);
+
+            return new PagedResult<Produto>
+            {
+                TotalItens = totalItens,
+                PaginaAtual = pagina,
+                TamanhoPagina = tamanho,
+                Itens = itens
+            };
+        }
+
         public void Dispose()
         {
             _context.Dispose();
-        }        
+        }
     }
 }

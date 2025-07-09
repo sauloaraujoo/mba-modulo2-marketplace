@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Business.Entities;
+﻿using LojaVirtual.Business.Common;
+using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Business.Notifications;
 
@@ -100,6 +101,12 @@ namespace LojaVirtual.Business.Services
                 await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
             return produtos;
         }
+
+        public async Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken);
+        }
+
         public async Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken)
         {
             var produto = await _produtoRepository.getProdutoWithCategoriaVendedorById(new Guid(produtoId.ToString()!), cancellationToken);
@@ -123,6 +130,19 @@ namespace LojaVirtual.Business.Services
 
             await _produtoRepository.Edit(produtoOrigem, cancellationToken);
             await _produtoRepository.SaveChanges(cancellationToken);
+        }
+
+        public async Task<PagedResult<Produto>> ListVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            var produtos = categoriaId == null ?
+               await _produtoRepository.ListWithCategoriaVendedorPagedAsNoTracking(pagina, tamanho, cancellationToken) :
+               await _produtoRepository.ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(new Guid(categoriaId.ToString()!), pagina, tamanho, cancellationToken);
+            return produtos;
+        }
+
+        public async Task<PagedResult<Produto>> ListVitrineByVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        {
+            return await _produtoRepository.ListWithCategoriaVendedorByVendedorPagedAsNoTracking(new Guid(vendedorId.ToString()!), pagina, tamanho, cancellationToken);
         }
     }
 }

@@ -1,28 +1,45 @@
 <div class="container main-container">
 
+  <div *ngIf="produtos.length === 0 && contexto === 'favoritos'; else listaProdutos">
+    <p>Você ainda não tem produtos favoritos.</p>
+  </div>
+
+  <ng-template #listaProdutos>
     <div class="row text-center">
-        
-        <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
-            <div class="card h-100">
-                <a class="text-decoration-none" [routerLink]="['/produto', produto.id]">
-                    <div style="align-content:center;">
-                        <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt="">
-                    </div>
-                </a>
-                <h4 class="card-title">{{ produto.nome | titlecase }}</h4>
 
-                <div class="card-body">
-                    <div><h4 class="card-text">
-                        {{ produto.preco | currency:'BRL':true:'1.2-2':'pt' }}
-                    </h4></div>
-                </div>
+      <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
+        <div class="card h-100">
 
-                <div class="card-footer">
-                    <a class="btn btn-primary" [routerLink]="['/produtos/produto', produto.id]">
-                        <span class="fa fa-shopping-cart"></span> Detalhes
-                    </a>
-                </div>
+          <button *ngIf="ehUsuarioLogado()" class="btn btn-link position-absolute" style="right: 10px; top: 10px; z-index: 2;" (click)="AdicionarRemoverFavorito(produto.id)">
+            <i class="bi" [ngClass]="{ 'bi-heart-fill': ehFavorito(produto.id),'bi-heart': !ehFavorito(produto.id)}" style="color: red; font-size: 1.4em;"></i>
+          </button>
+
+          <a class="text-decoration-none" [routerLink]="['/produto', produto.id]">
+            <div style="align-content:center;">
+              <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt="">
             </div>
+          </a>
+          <h4 class="card-title">{{ produto.nome | titlecase }}</h4>
+
+          <div class="card-body">
+            <div><h4 class="card-text">
+                {{ produto.preco | currency:'BRL':true:'1.2-2':'pt' }}
+              </h4></div>
+          </div>
+
+          <div class="card-footer">
+            <a class="btn btn-primary" [routerLink]="['/produtos/produto', produto.id]">
+              <span class="fa fa-shopping-cart"></span> Detalhes
+            </a>
+          </div>
         </div>
+      </div>
+      <app-paginacao
+        [totalItens]="totalItens"
+        [paginaAtual]="paginaAtual"
+        [tamanhoPagina]="tamanhoPagina"
+        (paginaChange)="mudarPagina($event)">
+      </app-paginacao>
     </div>
+  </ng-template>
 </div>

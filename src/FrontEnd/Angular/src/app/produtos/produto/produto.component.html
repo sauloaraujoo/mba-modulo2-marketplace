@@ -1,7 +1,9 @@
 <div class="container main-container">
     <div class="row">
         <div class="col-md-4">
-           <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt=""> 
+            <div *ngIf="produto?.imagem">
+                <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt=""> 
+            </div>
         </div>
         <div class="col-md-6">
             <dl>
@@ -33,7 +35,7 @@
                     Vendedor
                 </dt>
                 <dd>
-                    {{ produto.nomeVendedor }} 
+                    <a [routerLink]="['/produtos/vendedor', produto.vendedorId]">{{ produto.nomeVendedor }}</a> 
                 </dd>
             </dl>
 

@@ -9,19 +9,23 @@ registerLocaleData(localePt)
 
 import { ListaComponent } from '../produtos/lista/lista.component';
 import { ProdutoComponent } from '../produtos/produto/produto.component';
+import { VendedorComponent } from '../produtos/vendedor/vendedor.component';
 import { VitrineComponent } from '../produtos/vitrine/vitrine.component';
 
 import { ProdutosRoutingModule } from './produtos.route';
 import { ProdutoService } from '../produtos/services/produtos.service';
-
-
-
+import { FavoritosComponent } from './favoritos/favoritos.component';
+import { VendedorService } from '../produtos/services/vendedor.service';
+import { PaginacaoComponent } from '../components/paginacao/paginacao.component';
 
 @NgModule({
   declarations: [
     ListaComponent,
     ProdutoComponent,
-    VitrineComponent
+    VendedorComponent,
+    VitrineComponent,
+    FavoritosComponent,
+    PaginacaoComponent
   ],
   imports: [
     CommonModule,
@@ -30,7 +34,8 @@ import { ProdutoService } from '../produtos/services/produtos.service';
     HttpClientModule
   ],
   providers: [
-    ProdutoService
+    ProdutoService,
+    VendedorService
   ]
 })
 export class ProdutosModule { }

@@ -7,6 +7,7 @@ export interface Produto {
   preco: number,
   estoque: number,
   categoriaId: string,
-  nomeCategoria: string,
+  nomeCategoria: string
+  vendedorId: string,
   nomeVendedor: string
 }
