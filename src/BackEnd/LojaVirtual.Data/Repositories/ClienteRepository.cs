@@ -16,14 +16,26 @@ namespace LojaVirtual.Data.Repositories
         }
         public async Task<Cliente?> GetClienteComFavoritos(Guid id, CancellationToken cancellationToken)
         {
-            return await _context.ClienteSet.Include(c => c.Favoritos)
-                                                .ThenInclude(f => f.Produto)
-                                                    .ThenInclude(p => p.Vendedor)
-                                                .Include(c => c.Favoritos)
-                                                    .ThenInclude(f => f.Produto)
-                                                        .ThenInclude(p => p.Categoria)
-                                                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
-       }
+            var cliente = await _context.ClienteSet
+                .Include(c => c.Favoritos)
+                    .ThenInclude(f => f.Produto)
+                        .ThenInclude(p => p.Vendedor)
+                .Include(c => c.Favoritos)
+                    .ThenInclude(f => f.Produto)
+                        .ThenInclude(p => p.Categoria)
+                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+
+            if (cliente != null)
+            {
+                var favoritosAtivos = cliente.Favoritos
+                    .Where(f => f.Produto.Ativo && f.Produto.Vendedor != null && f.Produto.Vendedor.Ativo)
+                    .ToList();
+
+                cliente.SetFavoritos(favoritosAtivos);
+            }
+
+            return cliente;
+        }
         public void Update(Cliente cliente)
         {
             _context.ClienteSet.Update(cliente);
