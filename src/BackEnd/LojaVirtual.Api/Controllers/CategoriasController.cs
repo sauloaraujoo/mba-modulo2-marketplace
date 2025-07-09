@@ -23,7 +23,7 @@ namespace LojaVirtual.Api.Controllers
             _mapper = mapper;
         }
 
-        [ClaimsAuthorize("Categorias", "ADICIONAR")]
+        [ClaimsAuthorize("Categorias", "AD")]
         [HttpPost]
         public async Task<ActionResult> Insert([FromBody] CategoriaModel request, CancellationToken cancellationToken)
         {
@@ -43,7 +43,7 @@ namespace LojaVirtual.Api.Controllers
             return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.List(cancellationToken)));
         }
 
-        [ClaimsAuthorize("Categorias", "EDITAR")]
+        [ClaimsAuthorize("Categorias", "ED")]
         [HttpPut("{id:Guid}")]
         public async Task<IActionResult> Edit(Guid id, [FromBody] CategoriaModel request, CancellationToken cancellationToken)
         {
@@ -70,7 +70,7 @@ namespace LojaVirtual.Api.Controllers
             return CustomResponse(HttpStatusCode.OK, categoria);
         }
 
-        [ClaimsAuthorize("Categorias", "EXCLUIR")]
+        [ClaimsAuthorize("Categorias", "EX")]
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> Remove(Guid id, CancellationToken cancellationToken)
         {
