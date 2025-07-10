@@ -72,6 +72,7 @@ A estrutura do projeto é organizada da seguinte forma:
 ### **Pré-requisitos**
 
 - .NET SDK 8.0 ou superior
+- Noje.js 16.14 ou superior, ou 18.10 ou superior
 - Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
 - Git
 
