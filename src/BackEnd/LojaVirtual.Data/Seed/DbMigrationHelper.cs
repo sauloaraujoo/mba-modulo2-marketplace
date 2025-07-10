@@ -34,82 +34,93 @@ namespace LojaVirtual.Data.Seed
             {
                 await context.Database.MigrateAsync();
 
-                await EnsureSeedTables(context);
+                await EnsureSeedTables(context);                
             }
-        }
+        }        
+
         private static async Task EnsureSeedTables(LojaVirtualContext context)
-        {
-            if (context.CategoriaSet.Any()) return;
+        {            
+            if (await context.CategoriaSet.AnyAsync()) return;
 
-            var idUser = Guid.NewGuid();
-            var usuarioVendedor = new IdentityUser
+            var categorias = new List<Categoria>
             {
-                Id = idUser.ToString(),
-                Email = "vendedor@teste.com",
-                EmailConfirmed = true,
-                NormalizedEmail = "VENDEDOR@TESTE.COM",
-                UserName = "vendedor@teste.com",
-                AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
-                NormalizedUserName = "VENDEDOR@TESTE.COM"
+            new Categoria("Informática", "Descrição da categoria Informática"),
+            new Categoria("Eletrodomésticos", "Descrição da categoria Eletrodomésticos"),
+            new Categoria("Celulares", "Descrição da categoria Celulares"),
+            new Categoria("Áudio e Vídeo", "Descrição da categoria Áudio e Vídeo"),
+            new Categoria("Eletroportáteis", "Descrição da categoria Eletroportáteis")
             };
 
-            // Cria claim para usuário vendedor@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
-            var claimVendedorProdutos = new IdentityUserClaim<string>
+            await context.CategoriaSet.AddRangeAsync(categorias);
+
+            for (int v = 1; v <= 5; v++)
             {
-                UserId = idUser.ToString(),
-                ClaimType = "Produtos",
-                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
-            };
-            await context.UserClaims.AddAsync(claimVendedorProdutos);
+                var idUser = Guid.NewGuid();
+                var emailVendedor = $"vendedor{v}@teste.com";
 
-            var vendedor = new Vendedor(idUser, "Vendedor", usuarioVendedor.Email);
-            var categoria = new Categoria("Informática", "Descrição da categoria Informática");
-            var produto = new Produto("Mouse", "Descrição do produto Mouse", "mouse.jpg", 100, 20, true, categoria.Id);
-            produto.VinculaVendedor(vendedor.Id);
-            categoria.AddProduto(produto);
+                var usuarioVendedor = new IdentityUser
+                {
+                    Id = idUser.ToString(),
+                    Email = emailVendedor,
+                    EmailConfirmed = true,
+                    NormalizedEmail = emailVendedor.ToUpper(),
+                    UserName = emailVendedor,
+                    AccessFailedCount = 0,
+                    PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==", // Teste@123
+                    NormalizedUserName = emailVendedor.ToUpper()
+                };
+                await context.Users.AddAsync(usuarioVendedor);
 
-            produto = new Produto("Teclado", "Descrição do produto Teclado", "teclado.jpg", 150, 15, true, categoria.Id);
-            produto.VinculaVendedor(vendedor.Id);
-            categoria.AddProduto(produto);
+                var vendedor = new Vendedor(idUser, $"Vendedor {v}", emailVendedor);
+                await context.VendedorSet.AddAsync(vendedor);
 
-            await context.Users.AddAsync(usuarioVendedor);
-            await context.VendedorSet.AddAsync(vendedor);
+                // Claim do vendedor
+                var claimVendedorProdutos = new IdentityUserClaim<string>
+                {
+                    UserId = idUser.ToString(),
+                    ClaimType = "Produtos",
+                    ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
+                };
+                await context.UserClaims.AddAsync(claimVendedorProdutos);
 
-            idUser = Guid.NewGuid();
-            usuarioVendedor = new IdentityUser
-            {
-                Id = idUser.ToString(),
-                Email = "vendedor2@teste.com",
-                EmailConfirmed = true,
-                NormalizedEmail = "VENDEDOR2@TESTE.COM",
-                UserName = "vendedor2@teste.com",
-                AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==",
-                NormalizedUserName = "VENDEDOR2@TESTE.COM"
-            };
+                // Criação de 5 produtos, distribuindo entre categorias
+                int categoriaIndex = 0;                
 
-             vendedor = new Vendedor(idUser, "Vendedor 2", usuarioVendedor.Email);
-
-            produto = new Produto("Monitor", "Descrição do produto Monitor", "monitor.jpg", 899, 15, true, categoria.Id);
-            produto.VinculaVendedor(vendedor.Id);
-            categoria.AddProduto(produto);
-
-
-            await context.CategoriaSet.AddAsync(categoria);
-
-            // Cria claim para usuário vendedor@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
-            claimVendedorProdutos = new IdentityUserClaim<string>
-            {
-                UserId = idUser.ToString(),
-                ClaimType = "Produtos",
-                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
-            };
-            await context.UserClaims.AddAsync(claimVendedorProdutos);
+                var produtosLoja = new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade)>
+                {
+                    ("Monitor LG 24'' Full HD", "Monitor LG LED 24 polegadas Full HD HDMI", "monitor.jpg", 699.90m, 20),
+                    ("Mouse Logitech M170", "Mouse sem fio Logitech M170 cinza", "mouse.jpg", 79.99m, 50),
+                    ("Micro-ondas Electrolux 20L", "Micro-ondas Electrolux branco 20 litros", "microondas.jpg", 599.90m, 15),
+                    ("Cabo HDMI 2.0 2M", "Cabo HDMI 2.0 2 metros 4K Ultra HD", "cabo_video.jpg", 25.70m, 100),
+                    ("Sanduicheira Mondial", "Sanduicheira Mondial inox antiaderente", "sanduicheira.jpg", 49.90m, 25)
+                };
 
 
-            await context.Users.AddAsync(usuarioVendedor);
-            await context.VendedorSet.AddAsync(vendedor);
+                for (int p = 0; p < produtosLoja.Count; p++)
+                {
+                    var categoria = categorias[categoriaIndex];
+
+                    var produtoReal = produtosLoja[p];
+
+                    var produto = new Produto(
+                        produtoReal.Nome,
+                        produtoReal.Descricao,
+                        produtoReal.Imagem,
+                        produtoReal.Preco,
+                        produtoReal.Quantidade,
+                        true,
+                        categoria.Id
+                    );
+
+                    produto.VinculaVendedor(vendedor.Id);
+                    categoria.AddProduto(produto);
+
+                    categoriaIndex++;
+
+                    if (categoriaIndex >= categorias.Count)
+                        categoriaIndex = 0;
+                }               
+            }
 
             var idClienteUser = Guid.NewGuid();
             var userCliente = new IdentityUser
@@ -120,16 +131,39 @@ namespace LojaVirtual.Data.Seed
                 NormalizedEmail = "CLIENTE@TESTE.COM",
                 UserName = "cliente@teste.com",
                 AccessFailedCount = 0,
-                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==", //Teste@123
+                PasswordHash = "AQAAAAIAAYagAAAAEF/nmfwFGPa8pnY9AvZL8HKI7r7l+aM4nryRB+Y3Ktgo6d5/0d25U2mhixnO4h/K5w==", // Teste@123
                 NormalizedUserName = "CLIENTE@TESTE.COM"
             };
+            await context.Users.AddAsync(userCliente);
 
             var cliente = new Cliente(idClienteUser, "Cliente", "cliente@teste.com");
-            cliente.AddFavorito(produto.Id);
-            await context.Users.AddAsync(userCliente);
-            await context.ClienteSet.AddAsync(cliente);
             
-            // Cria user admin@teste.com
+            Produto? primeiroProduto = null;
+
+            foreach (var categoria in categorias)
+            {
+                if (categoria.Produtos.Any())
+                {
+                    primeiroProduto = categoria.Produtos.First();
+                    break;
+                }
+            }
+
+            if (primeiroProduto != null)
+            {
+                cliente.AddFavorito(primeiroProduto.Id);
+            }
+
+            await context.ClienteSet.AddAsync(cliente);
+
+            var claimCliente = new IdentityUserClaim<string>
+            {
+                UserId = idClienteUser.ToString(),
+                ClaimType = "Clientes",
+                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
+            };
+            await context.UserClaims.AddAsync(claimCliente);
+
             var idAdminUser = Guid.NewGuid();
             var adminUser = new IdentityUser
             {
@@ -144,46 +178,30 @@ namespace LojaVirtual.Data.Seed
             };
             await context.Users.AddAsync(adminUser);
 
-            // Cria claim Clientes para usuário cliente@teste.com, com todas as permissões
-            var claimCliente = new IdentityUserClaim<string>
-            {
-                UserId = idClienteUser.ToString(),
-                ClaimType = "Clientes",
-                ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
-            };
-            await context.UserClaims.AddAsync(claimCliente);
-
-            // Cria claim Categorias para usuário admin@teste.com, com todas as permissões
-            var claimCategorias = new IdentityUserClaim<string>
+            var claimsAdmin = new List<IdentityUserClaim<string>>
+          {
+            new IdentityUserClaim<string>
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Categorias",
                 ClaimValue = "VISUALIZAR,ADICIONAR,EDITAR,EXCLUIR"
-            };
-            await context.UserClaims.AddAsync(claimCategorias);
-
-            // Cria claim para usuário admin@teste.com, com as permisões de visualizar e mudar o Status dos Vendedores
-            var claimAdmVendedores = new IdentityUserClaim<string>
+            },
+            new IdentityUserClaim<string>
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Vendedores",
                 ClaimValue = "VI,ATUALIZAR_STATUS"
-            };
-            await context.UserClaims.AddAsync(claimAdmVendedores);
-
-
-            // Cria claim para usuário admin@teste.com, com as permisões de visualizar e mudar o Status dos Produtos
-            var claimAdmProdutos = new IdentityUserClaim<string>
+            },
+            new IdentityUserClaim<string>
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Produtos",
-                ClaimValue = "VI,TODOS_PRODUTOS,ATUALIZAR_STATUS"
-            };
-            await context.UserClaims.AddAsync(claimAdmProdutos);
-
-
-
+                ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+            }
+          };
+            await context.UserClaims.AddRangeAsync(claimsAdmin);
             await context.SaveChangesAsync();
         }
+
     }
 }
