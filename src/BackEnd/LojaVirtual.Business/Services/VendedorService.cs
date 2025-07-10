@@ -43,7 +43,7 @@ namespace LojaVirtual.Business.Services
             var vendedor = await _vendedorRepository.GetById(id, cancellationToken);
             if (vendedor is null)
             {
-                _notifiable.AddNotification(new Notification("Vendedor não encontrada."));
+                _notifiable.AddNotification(new Notification("Vendedor não encontrado."));
             }
             return vendedor!;
         }
