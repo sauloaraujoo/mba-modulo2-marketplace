@@ -1,14 +1,14 @@
-# **[LojaVirtual] - Aplicação de uma plataforma de Marketplace com MVC, Angular e API RESTful**
+# **LojaVirtual - Aplicação de uma plataforma de Marketplace com MVC, Angular e API RESTful**
 
 ## **1. Apresentação**
 
 Bem-vindo ao repositório do projeto **[LojaVirtual]**. Este projeto é uma entrega do MBA DevXpert Full Stack .NET e é referente ao módulo **Desenvolvimento Full-Stack Avançado com ASP.NET Core**.
 O objetivo principal é desenvolver uma plataforma de comércio eletrônico, na qual cada vendedor adiciona e edita seus produtos, e os clientes finais visualizam todos os produtos ofertados, podendo marcar seus favoritos. A plataforma contará também com um painel administrativo. A solução para os vendedores e administradores será implementada em MVC, enquanto a vitrine para os cliente será uma SPA em Angular. Ambas soluções estarão integradas por uma API REST.
 
-### **Autor(es)**
+### **Autores**
 - **Diego Junqueira**
 - **Felício Melloni**
-- **Fernando Texas**
+- **Luiz Fernando Teixeira**
 - **Márcio Gomes**
 - **Renato Carrasco**
 - **Rinaldo Serra**
@@ -81,30 +81,34 @@ A estrutura do projeto é organizada da seguinte forma:
    - `git clone https://github.com/sauloaraujoo/mba-modulo2-marketplace.git`
    - `cd mba-modulo2-marketplace`
 
-*** Obs: até esta linha foi alterado (carece de revisão). Abaixo desta linha, ainda será alterado. ***
-
 2. **Configuração do Banco de Dados:**
-   - No arquivo `appsettings.json`, configure a string de conexão do SQL Server nos projetos BlogExpert.Mvc e BlogExpert.Api.
-   - Rode o projeto para que a configuração do Seed crie o banco e popule com os dados básicos.
+   - No arquivo `appsettings.json` dos projetos LojaVirtual.Api e LojaVirtual.Mvc, em `DefaultConnection.json`, configure a string de conexão com o banco de dados.
+   - Execute qualquer um dos referidos projetos para que o banco de dados seja automaticamente criado e alimentado com dados básicos.
 
 3. **Executar a Aplicação MVC:**
-   - `cd src/LojaVirtual.Mvc/`
+   - `cd src/BackEnd/LojaVirtual.Mvc/`
    - `dotnet run`
    - Acesse a aplicação em: http://localhost:5225/
 
 4. **Executar a API:**
-   - `cd src/LojaVirtual.Api/`
+   - `cd src/BackEnd/LojaVirtual.Api/`
    - `dotnet run`
-   - Acesse a documentação da API em: http://localhost:5032/swagger/ 
-   
-5. **Usuários registrados na carga inicial:**
-   - rinaldo@teste.com   
+   - Acesse a documentação da API em: http://localhost:5032/swagger/
+  
+5. **Executar a Aplicação Angular:**
+   - Antes de executar a aplicação Angular, certifique-se que a aplicação MVC e a API estejam em execução.
+   - `cd src/FrontEnd/Angular/`
+   - `npm install -g @angular/cli@16`
+   - `ng serve`
+
+6. **Usuários registrados na carga inicial:**
+   - admin@teste.com, vendedor1@teste.com, vendedor2@teste.com, vendedor3@teste.com, vendedor4@teste.com, vendedor5@teste.com, cliente@teste.com
    - A senha para todos esses usuários é a mesma: Teste@123
 
 ## **7. Instruções de Configuração**
 
 - **JWT para API:** As chaves de configuração do JWT estão no `appsettings.json`.
-- **Migrações do Banco de Dados:** As migrações são gerenciadas pelo Entity Framework Core. Não é necessário aplicar devido a configuração do Seed de dados.
+- **Migrações do Banco de Dados:** As migrações são gerenciadas pelo Entity Framework Core. Não é necessário aplicar devido à configuração do Seed de dados.
 
 ## **8. Documentação da API**
 
@@ -115,5 +119,5 @@ http://localhost:5032/swagger/
 ## **9. Avaliação**
 
 - Este projeto é parte de um curso acadêmico e não aceita contribuições externas. 
-- Para feedbacks ou dúvidas utilize o recurso de Issues
+- Para feedbacks ou dúvidas utilize o recurso de Issues.
 - O arquivo `FEEDBACK.md` é um resumo das avaliações do instrutor e deverá ser modificado apenas por ele.
