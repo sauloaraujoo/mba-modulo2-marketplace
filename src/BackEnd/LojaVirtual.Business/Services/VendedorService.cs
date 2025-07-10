@@ -23,13 +23,7 @@ namespace LojaVirtual.Business.Services
             var vendedorOrigem = await _vendedorRepository.GetById(vendedor.Id, cancellationToken);
             if (vendedorOrigem is null)
             {
-                _notifiable.AddNotification(new Notification("Vendedor não encontrada."));
-                return;
-            }
-            if (vendedorOrigem.Nome != vendedor.Nome &&
-                await _vendedorRepository.Exists(vendedor.Nome, cancellationToken))
-            {
-                _notifiable.AddNotification(new Notification("Nome da vendedor já existente."));
+                _notifiable.AddNotification(new Notification("Vendedor não encontrado."));
                 return;
             }
 
