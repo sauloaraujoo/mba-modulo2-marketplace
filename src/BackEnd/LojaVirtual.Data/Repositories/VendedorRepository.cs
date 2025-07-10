@@ -1,7 +1,9 @@
 ﻿using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Data.Context;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace LojaVirtual.Data.Repositories
 {
@@ -15,6 +17,34 @@ namespace LojaVirtual.Data.Repositories
         }
         public async Task Insert(Vendedor request, CancellationToken cancellationToken)
         {
+            var claimsAdmin = new List<IdentityUserClaim<string>>
+            {
+                // Categorias
+                new IdentityUserClaim<string>
+                {
+                    UserId = request.Id.ToString(),
+                    ClaimType = "Categorias",
+                    ClaimValue = "VI,AD,EX,VI"
+                },                
+
+                // Vendedores
+                new IdentityUserClaim<string>
+                {
+                   UserId = request.Id.ToString(),
+                    ClaimType = "Vendedores",
+                    ClaimValue = "VI,ATUALIZAR_STATUS"
+                },              
+
+                // Produtos
+                new IdentityUserClaim<string>
+                {
+                    UserId = request.Id.ToString(),
+                    ClaimType = "Produtos",
+                    ClaimValue = "VI,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+                }
+            };
+
+            await _context.UserClaims.AddRangeAsync(claimsAdmin);
             await _context.VendedorSet.AddAsync(request, cancellationToken);
         }
 

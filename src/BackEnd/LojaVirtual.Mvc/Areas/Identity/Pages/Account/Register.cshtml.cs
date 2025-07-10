@@ -129,23 +129,7 @@ namespace LojaVirtual.Mvc.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
-                    
-                    var claimResult = await _userManager.AddClaimsAsync(user, new List<Claim>
-                    {
-                        new Claim("Vendedores", "VI"),
-                        new Claim("Vendedores", "ATUALIZAR_STATUS"),                        
-                    });
-
-                    if (!claimResult.Succeeded)
-                    {
-                        foreach (var error in claimResult.Errors)
-                        {
-                            ModelState.AddModelError(string.Empty, error.Description);
-                        }
-
-                        return Page();
-                    }
+                    _logger.LogInformation("User created a new account with password.");                                      
 
                     var userId = await _userManager.GetUserIdAsync(user);
 
