@@ -48,9 +48,5 @@ namespace LojaVirtual.Business.Services
             return vendedor!;
         }
 
-        public Task Insert(Categoria request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
