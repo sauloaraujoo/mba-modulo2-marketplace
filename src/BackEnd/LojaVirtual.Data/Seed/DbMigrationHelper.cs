@@ -84,19 +84,34 @@ namespace LojaVirtual.Data.Seed
                 await context.UserClaims.AddAsync(claimVendedorProdutos);
 
                 // Criação de 5 produtos, distribuindo entre categorias
-                int categoriaIndex = 0;
-                for (int p = 1; p <= 5; p++)
+                int categoriaIndex = 0;                
+
+                var produtosLoja = new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade)>
+                {
+                    ("Monitor LG 24'' Full HD", "Monitor LG LED 24 polegadas Full HD HDMI", "monitor.jpg", 699.90m, 20),
+                    ("Mouse Logitech M170", "Mouse sem fio Logitech M170 cinza", "mouse.jpg", 79.99m, 50),
+                    ("Micro-ondas Electrolux 20L", "Micro-ondas Electrolux branco 20 litros", "microondas.jpg", 599.90m, 15),
+                    ("Cabo HDMI 2.0 2M", "Cabo HDMI 2.0 2 metros 4K Ultra HD", "cabo_video.jpg", 25.70m, 100),
+                    ("Sanduicheira Mondial", "Sanduicheira Mondial inox antiaderente", "sanduicheira.jpg", 49.90m, 25)
+                };
+
+
+                for (int p = 0; p < produtosLoja.Count; p++)
                 {
                     var categoria = categorias[categoriaIndex];
+
+                    var produtoReal = produtosLoja[p];
+
                     var produto = new Produto(
-                            $"Produto {v}-{p}",
-                            $"Descrição do Produto {v}-{p}",
-                            $"imagem{p}.jpg",
-                            100 + p,
-                            10 + p,
-                            true,
-                            categoria.Id
-                        );
+                        produtoReal.Nome,
+                        produtoReal.Descricao,
+                        produtoReal.Imagem,
+                        produtoReal.Preco,
+                        produtoReal.Quantidade,
+                        true,
+                        categoria.Id
+                    );
+
                     produto.VinculaVendedor(vendedor.Id);
                     categoria.AddProduto(produto);
 
@@ -104,7 +119,7 @@ namespace LojaVirtual.Data.Seed
 
                     if (categoriaIndex >= categorias.Count)
                         categoriaIndex = 0;
-                }
+                }               
             }
 
             var idClienteUser = Guid.NewGuid();
