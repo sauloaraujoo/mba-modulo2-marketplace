@@ -22,7 +22,7 @@ namespace LojaVirtual.Data.Repositories
             {
                 UserId = request.Id.ToString(),
                 ClaimType = "Produtos",
-                ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
             };
 
             await _context.UserClaims.AddRangeAsync(claimProduto);
