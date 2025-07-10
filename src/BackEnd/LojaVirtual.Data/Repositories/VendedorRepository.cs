@@ -17,34 +17,15 @@ namespace LojaVirtual.Data.Repositories
         }
         public async Task Insert(Vendedor request, CancellationToken cancellationToken)
         {
-            var claimsAdmin = new List<IdentityUserClaim<string>>
+            
+            var claimProduto = new IdentityUserClaim<string>
             {
-                // Categorias
-                new IdentityUserClaim<string>
-                {
-                    UserId = request.Id.ToString(),
-                    ClaimType = "Categorias",
-                    ClaimValue = "VISUALIZAR,ADICIONAR,EDITAR,EXCLUIR"
-                },                
-
-                // Vendedores
-                new IdentityUserClaim<string>
-                {
-                   UserId = request.Id.ToString(),
-                    ClaimType = "Vendedores",
-                    ClaimValue = "VI,ATUALIZAR_STATUS"
-                },              
-
-                // Produtos
-                new IdentityUserClaim<string>
-                {
-                    UserId = request.Id.ToString(),
-                    ClaimType = "Produtos",
-                    ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
-                }
+                UserId = request.Id.ToString(),
+                ClaimType = "Produtos",
+                ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
             };
 
-            await _context.UserClaims.AddRangeAsync(claimsAdmin);
+            await _context.UserClaims.AddRangeAsync(claimProduto);
             await _context.VendedorSet.AddAsync(request, cancellationToken);
         }
 
