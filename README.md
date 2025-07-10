@@ -72,6 +72,7 @@ A estrutura do projeto é organizada da seguinte forma:
 ### **Pré-requisitos**
 
 - .NET SDK 8.0 ou superior
+- Angular 16
 - Node.js 16.14 ou superior, ou 18.10 ou superior
 - Visual Studio 2022 ou superior (ou qualquer IDE de sua preferência)
 - Git
@@ -89,18 +90,19 @@ A estrutura do projeto é organizada da seguinte forma:
 3. **Executar a Aplicação MVC:**
    - `cd src/BackEnd/LojaVirtual.Mvc/`
    - `dotnet run`
-   - Acesse a aplicação em: http://localhost:5225/
+   - Acesse a aplicação em http://localhost:5225/
 
 4. **Executar a API:**
    - `cd src/BackEnd/LojaVirtual.Api/`
    - `dotnet run`
-   - Acesse a documentação da API em: http://localhost:5032/swagger/
+   - Acesse a documentação da API em http://localhost:5032/swagger/
   
 5. **Executar a Aplicação Angular:**
    - Antes de executar a aplicação Angular, certifique-se que a aplicação MVC e a API estejam em execução.
    - `cd src/FrontEnd/Angular/`
    - `npm install -g @angular/cli@16`
    - `ng serve`
+   - Acesse a aplicação em http://localhost:4200/
 
 6. **Usuários registrados na carga inicial:**
    - admin@teste.com, vendedor1@teste.com, vendedor2@teste.com, vendedor3@teste.com, vendedor4@teste.com, vendedor5@teste.com, cliente@teste.com
