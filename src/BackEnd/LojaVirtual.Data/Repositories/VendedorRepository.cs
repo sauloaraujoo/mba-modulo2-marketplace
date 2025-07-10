@@ -24,7 +24,7 @@ namespace LojaVirtual.Data.Repositories
                 {
                     UserId = request.Id.ToString(),
                     ClaimType = "Categorias",
-                    ClaimValue = "VI,AD,EX,VI"
+                    ClaimValue = "VISUALIZAR,ADICIONAR,EDITAR,EXCLUIR"
                 },                
 
                 // Vendedores
@@ -40,7 +40,7 @@ namespace LojaVirtual.Data.Repositories
                 {
                     UserId = request.Id.ToString(),
                     ClaimType = "Produtos",
-                    ClaimValue = "VI,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+                    ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
                 }
             };
 
