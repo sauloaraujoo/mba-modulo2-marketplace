@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddApiConfig()
+    .AddApiVersioningConfig()
     .AddCorsConfig(builder.Configuration)
     .AddSwaggerConfiguration()
     .AddDbContextConfig(builder.Configuration)
