@@ -25,9 +25,9 @@ namespace LojaVirtual.Mvc.Controllers
 
         [ClaimsAuthorize("Vendedores", "VISUALIZAR")]
         [HttpGet]
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken tokenDeCancelamento)
         {
-            var vendedores = _mapper.Map<IEnumerable<VendedorViewModel>>(await _vendedorService.List(cancellationToken));
+            var vendedores = _mapper.Map<IEnumerable<VendedorViewModel>>(await _vendedorService.List(tokenDeCancelamento));
 
             return View(vendedores);
         }
@@ -36,14 +36,14 @@ namespace LojaVirtual.Mvc.Controllers
         [HttpPost("alterar-status/{id}"), ActionName("AlterarStatus")]
         public async Task<IActionResult> AlterarStatus(Guid id, 
                                                        VendedorViewModel vendedorViewModel, 
-                                                       CancellationToken cancellationToken)
+                                                       CancellationToken tokenDeCancelamento)
         {
             if (id != vendedorViewModel.Id) return NotFound();
 
             var vendedor = _mapper.Map<Vendedor>(vendedorViewModel);
             if (vendedor == null) return NotFound();
 
-            await _vendedorService.AlterarStatus(vendedor, cancellationToken);
+            await _vendedorService.AlterarStatus(vendedor, tokenDeCancelamento);
 
             if (!OperacaoValida()) return View();
 
