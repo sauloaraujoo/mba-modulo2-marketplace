@@ -13,7 +13,7 @@ export class VendedorService extends BaseService {
 
     obter(vendedorId: string) : Observable<Vendedor>{
 
-        let url = this.UrlServiceV1 + `api/vendedor/${vendedorId}`;
+        let url = this.UrlServiceV1 + `vendedores/${vendedorId}`;
 
         return this.http.get<any>(url)
                         .pipe(map(response => response.data));

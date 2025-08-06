@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Api.Models;
+﻿using LojaVirtual.Api.Controllers;
+using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Extensions.IdentityUser;
 using LojaVirtual.Business.Interfaces;
@@ -12,9 +13,11 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [AllowAnonymous]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/auth")]
     public class AuthController : MainController
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -48,7 +51,7 @@ namespace LojaVirtual.Api.Controllers
             return CustomResponse();
         }
 
-        [HttpPost("register")]
+        [HttpPost("registrar")]
         public async Task<ActionResult> Registrar(RegisterUserModel registerUser, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
