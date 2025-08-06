@@ -1,7 +1,7 @@
 ﻿using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Notificacoes;
 
 namespace LojaVirtual.Business.Services
 {
@@ -9,12 +9,12 @@ namespace LojaVirtual.Business.Services
     {
         private readonly IClienteRepository _clienteRepository;
         private readonly IAppIdentifyUser _appIdentityUser;
-        private readonly INotifiable _notifiable;
+        private readonly INotificavel _notifiable;
 
         public ClienteService(
             IClienteRepository clienteRepository,
             IAppIdentifyUser appIdentityUser,
-            INotifiable notifiable)
+            INotificavel notifiable)
         {
             _clienteRepository = clienteRepository;
             _appIdentityUser = appIdentityUser;
@@ -36,14 +36,14 @@ namespace LojaVirtual.Business.Services
 
             if (cliente == null)
             {
-                _notifiable.AddNotification(new Notification("Cliente não encontrado."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Cliente não encontrado."));
                 return false;
             }
 
             var jaExiste = cliente.Favoritos.Any(f => f.ProdutoId == produtoId);
             if (jaExiste)
             {
-                _notifiable.AddNotification(new Notification("Produto já está nos favoritos."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Produto já está nos favoritos."));
                 return false;
             }
 
@@ -61,14 +61,14 @@ namespace LojaVirtual.Business.Services
 
             if (cliente == null)
             {
-                _notifiable.AddNotification(new Notification("Cliente não encontrado."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Cliente não encontrado."));
                 return false;
             }
 
             var favorito = cliente.Favoritos.FirstOrDefault(f => f.ProdutoId == produtoId);
             if (favorito == null)
             {
-                _notifiable.AddNotification(new Notification("Produto não estava nos favoritos."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Produto não estava nos favoritos."));
                 return false;
             }
 

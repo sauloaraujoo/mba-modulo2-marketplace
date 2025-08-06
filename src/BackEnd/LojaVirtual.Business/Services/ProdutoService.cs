@@ -1,7 +1,7 @@
 ﻿using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Notificacoes;
 
 namespace LojaVirtual.Business.Services
 {
@@ -9,12 +9,12 @@ namespace LojaVirtual.Business.Services
     {
         private readonly ICategoriaRepository _categoriaRepository;
         private readonly IProdutoRepository _produtoRepository;
-        private readonly INotifiable _notifiable;
+        private readonly INotificavel _notifiable;
         private readonly IAppIdentifyUser _appIdentifyUser;
         public ProdutoService(
             ICategoriaRepository categoriaRepository,
             IProdutoRepository produtoRepository,
-            INotifiable notifiable,
+            INotificavel notifiable,
             IAppIdentifyUser appIdentifyUser)
         {
             _categoriaRepository = categoriaRepository;
@@ -27,7 +27,7 @@ namespace LojaVirtual.Business.Services
             //verifica se a categoria existe
             if (await _categoriaRepository.GetById(request.CategoriaId, cancellationToken) is null)
             {
-                _notifiable.AddNotification(new Notification("Categoria não existente."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Categoria não existente."));
             }
             
             request.VinculaVendedor(new Guid(_appIdentifyUser.GetUserId()));
@@ -47,7 +47,7 @@ namespace LojaVirtual.Business.Services
             var categoria = await _categoriaRepository.GetById(request.CategoriaId, cancellationToken);
             if (categoria is null)
             {
-                _notifiable.AddNotification(new Notification("Categoria não encontrada."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Categoria não encontrada."));
                 return;
             }
             
@@ -88,7 +88,7 @@ namespace LojaVirtual.Business.Services
             var produto = await _produtoRepository.GetSelfProdutoById(id, new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
             if (produto is null)
             {
-                _notifiable.AddNotification(new Notification("Produto não encontrado."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Produto não encontrado."));
                 return null;
             }
             return produto;
@@ -122,7 +122,7 @@ namespace LojaVirtual.Business.Services
             var produtoOrigem = await _produtoRepository.GetById(produto.Id, cancellationToken);
             if (produtoOrigem is null)
             {
-                _notifiable.AddNotification(new Notification("Produto não encontrado."));
+                _notifiable.AdicionarNotificacao(new Notificacao("Produto não encontrado."));
                 return;
             }
 
