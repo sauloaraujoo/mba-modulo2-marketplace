@@ -16,7 +16,7 @@ namespace LojaVirtual.Api.Controllers
 
         public ClienteController(
             IClienteService clienteService,
-            INotifiable notifiable
+            INotificavel notifiable
         ) : base(notifiable)
         {
             _clienteService = clienteService;

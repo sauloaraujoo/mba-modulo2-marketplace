@@ -25,7 +25,7 @@ namespace LojaVirtual.Api.Controllers
                               UserManager<IdentityUser> userManager,
                               IOptions<JwtSettings> jwtSettings,
                               IClienteRepository clienteRepository,
-                              INotifiable notifiable) : base(notifiable)
+                              INotificavel notifiable) : base(notifiable)
         {
             _signInManager = signInManager;
             _userManager = userManager;

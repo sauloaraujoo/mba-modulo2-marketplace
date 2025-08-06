@@ -2,7 +2,7 @@
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Notificacoes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -16,7 +16,7 @@ namespace LojaVirtual.Api.Controllers
         private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
         public ProdutosController(IProdutoService produtoService,
-                                    INotifiable notifiable,
+                                    INotificavel notifiable,
                                     IMapper mapper) : base(notifiable)
         {
             _produtoService = produtoService;

@@ -9,7 +9,7 @@ namespace LojaVirtual.Api.Controllers
     [AllowAnonymous]
     [Route("api/vendedor")]
     public class VendedorController(IVendedorService vendedorService,
-                                    INotifiable notifiable) : MainController(notifiable)
+                                    INotificavel notifiable) : MainController(notifiable)
     {
         private readonly IVendedorService _vendedorService = vendedorService;
 
@@ -18,7 +18,7 @@ namespace LojaVirtual.Api.Controllers
                                                          CancellationToken cancellationToken)
         {            
             return CustomResponse(HttpStatusCode.OK, 
-                                  VendedorViewModel.FromVendedor(await _vendedorService.GetById(id, 
+                                  VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id, 
                                                                                                 cancellationToken)));
         }
     }

@@ -16,7 +16,7 @@ namespace LojaVirtual.Api.Controllers
         private readonly ICategoriaService _categoriaService;        
         private readonly IMapper _mapper;
         public CategoriasController(ICategoriaService categoriaService,
-                                    INotifiable notifiable,
+                                    INotificavel notifiable,
                                     IMapper mapper): base(notifiable)
         {
             _categoriaService = categoriaService;

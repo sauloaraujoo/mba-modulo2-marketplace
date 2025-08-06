@@ -17,7 +17,7 @@ namespace LojaVirtual.Api.Controllers
         private readonly IMapper _mapper;
         public VitrineController(IProdutoService produtoService,
                                  ICategoriaService categoriaService,
-                                 INotifiable notifiable,
+                                 INotificavel notifiable,
                                  IMapper mapper) : base(notifiable)
         {
             _produtoService = produtoService;
