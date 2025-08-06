@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Api.Extensions;
+﻿using LojaVirtual.Api.Controllers;
+using LojaVirtual.Api.Extensions;
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Interfaces;
@@ -6,10 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/cliente")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/clientes")]
     public class ClienteController : MainController
     {
         private readonly IClienteService _clienteService;

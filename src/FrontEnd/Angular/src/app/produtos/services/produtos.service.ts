@@ -16,7 +16,7 @@ export class ProdutoService extends BaseService {
     public urlImagem = this.UrlImagemV1;
     obterProdutos(categoriaId?: string) : Observable<Produto[]>{
 
-        let url = this.UrlServiceV1 + 'api/vitrine';
+        let url = this.UrlServiceV1 + 'vitrines';
         if (categoriaId) {
             url += `?categoriaId=${categoriaId}`;
         }
@@ -27,12 +27,12 @@ export class ProdutoService extends BaseService {
     }
 
     getProdutos(pagina: number, tamanho: number): Observable<any> {
-    return this.http.get<any>(`https://localhost:5001/api/produtos?pagina=${pagina}&tamanho=${tamanho}`);
+        return this.http.get<any>(`${this.UrlServiceV1}produtos?pagina=${pagina}&tamanho=${tamanho}`);
     }
 
     obterProdutosPaginado(paginaAtual: number, tamanhoPagina: number, categoriaId?: string) : Observable<Pagined<Produto>>{
 
-        let url = this.UrlServiceV1 + 'api/vitrine';
+        let url = this.UrlServiceV1 + 'vitrines';
         if (categoriaId) {
             url += `?categoriaId=${categoriaId}&pagina=${paginaAtual}&tamanho=${tamanhoPagina}`;
         }else{
@@ -46,7 +46,7 @@ export class ProdutoService extends BaseService {
 
     obterProdutosPorVendedor(vendedorId?: string) : Observable<Produto[]>{
 
-        let url = this.UrlServiceV1 + `api/vitrine/por-vendedor/${vendedorId}`;
+        let url = this.UrlServiceV1 + `vitrines/por-vendedor/${vendedorId}`;
 
         return this.http.get<any>(url)
                         .pipe(map(response => response.data));
@@ -61,7 +61,7 @@ export class ProdutoService extends BaseService {
         if (vendedorId) {
             params = params.set('vendedorId', vendedorId);
         }
-        let url = this.UrlServiceV1 + `api/vitrine/por-vendedor/${vendedorId}`;
+        let url = this.UrlServiceV1 + `vitrines/por-vendedor/${vendedorId}`;
 
         return this.http.get<any>(url, { params })
                         .pipe(map(response => response.data));
@@ -69,7 +69,7 @@ export class ProdutoService extends BaseService {
 
     obterProduto(produtoId?: string) : Observable<Produto>{
 
-        let url = this.UrlServiceV1 + 'api/vitrine/detalhe/';
+        let url = this.UrlServiceV1 + 'vitrines/detalhe/';
         if (produtoId) {
             url += produtoId;
         }
@@ -81,7 +81,7 @@ export class ProdutoService extends BaseService {
 
     obterCategorias() : Observable<Categoria[]>{
 
-        let url = this.UrlServiceV1 + 'api/vitrine/categorias';
+        let url = this.UrlServiceV1 + 'vitrines/categorias';
 
         return this.http.get<any>(url).pipe(
             map(response => response.data)
@@ -89,7 +89,7 @@ export class ProdutoService extends BaseService {
     }
 
     obterFavoritos(): Observable<Favorito[]> {
-        let url = this.UrlServiceV1 + 'api/cliente/favoritos';
+        let url = this.UrlServiceV1 + 'clientes/favoritos';
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
             map(response => response.data as Favorito[]),
@@ -98,7 +98,7 @@ export class ProdutoService extends BaseService {
     }
 
     obterFavoritosPaginado(paginaAtual: number, tamanhoPagina: number): Observable<Pagined<Favorito>> {
-        let url = this.UrlServiceV1 + 'api/cliente/favorito';
+        let url = this.UrlServiceV1 + 'clientes/favorito';
         url += `?pagina=${paginaAtual}&tamanho=${tamanhoPagina}`;
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
@@ -109,7 +109,7 @@ export class ProdutoService extends BaseService {
 
     adicionarFavorito(produtoId: string): Observable<void> {
 
-        let url = this.UrlServiceV1 + `api/cliente/favoritos/${produtoId}`;
+        let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.post<void>(url, {}, this.ObterAuthHeaderJson()).pipe(
             catchError(super.serviceError)
@@ -118,7 +118,7 @@ export class ProdutoService extends BaseService {
 
     removerFavorito(produtoId: string): Observable<void> {
 
-        let url = this.UrlServiceV1 + `api/cliente/favoritos/${produtoId}`;
+        let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.delete<void>(url, this.ObterAuthHeaderJson()).pipe(
             catchError(super.serviceError)
