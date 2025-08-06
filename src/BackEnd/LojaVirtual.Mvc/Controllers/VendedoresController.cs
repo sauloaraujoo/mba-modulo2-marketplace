@@ -27,7 +27,7 @@ namespace LojaVirtual.Mvc.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(CancellationToken tokenDeCancelamento)
         {
-            var vendedores = _mapper.Map<IEnumerable<VendedorViewModel>>(await _vendedorService.List(tokenDeCancelamento));
+            var vendedores = _mapper.Map<IEnumerable<VendedorViewModel>>(await _vendedorService.Listar(tokenDeCancelamento));
 
             return View(vendedores);
         }
