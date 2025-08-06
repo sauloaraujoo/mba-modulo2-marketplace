@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LojaVirtual.Api.Controllers;
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
@@ -7,10 +8,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/produtos")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produtos")]
     public class ProdutosController : MainController
     {
         private readonly IProdutoService _produtoService;
