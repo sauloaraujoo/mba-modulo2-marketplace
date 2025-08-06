@@ -5,15 +5,15 @@ namespace LojaVirtual.Mvc.Controllers
 {
     public abstract class MainController : Controller
     {
-        private readonly INotifiable _notifiable;
+        private readonly INotificavel _notificavel;
 
-        protected MainController(INotifiable notifiable)
+        protected MainController(INotificavel notificavel)
         {
-            _notifiable = notifiable;
+            _notificavel = notificavel;
         }
         protected bool OperacaoValida()
         {
-            return _notifiable.Valid();
+            return _notificavel.Valido();
         }
     }
 }

@@ -11,17 +11,17 @@ namespace LojaVirtual.Api.V1.Controllers
     [ApiVersion("1.0")]
     [Route("api/v{version:apiVersion}/vendedores")]
     public class VendedorController(IVendedorService vendedorService,
-                                    INotifiable notifiable) : MainController(notifiable)
+                                    INotificavel notificavel) : MainController(notificavel)
     {
         private readonly IVendedorService _vendedorService = vendedorService;
 
         [HttpGet("{id:Guid}")]        
         public async Task<ActionResult> ObterInformacoes(Guid id, 
-                                                         CancellationToken cancellationToken)
+                                                         CancellationToken tokenDeCancelamento)
         {            
             return CustomResponse(HttpStatusCode.OK, 
-                                  VendedorViewModel.FromVendedor(await _vendedorService.GetById(id, 
-                                                                                                cancellationToken)));
+                                  VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id, 
+                                                                                                   tokenDeCancelamento)));
         }
     }
 }
