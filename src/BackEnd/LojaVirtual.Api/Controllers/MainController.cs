@@ -9,11 +9,11 @@ namespace LojaVirtual.Api.Controllers
     [ApiController]
     public class MainController : Controller
     {
-        private readonly INotificavel _notifiable;
+        private readonly INotificavel _notificavel;
 
-        protected MainController(INotificavel notifiable)
+        protected MainController(INotificavel notificavel)
         {
-            _notifiable = notifiable;
+            _notificavel = notificavel;
         }
         protected ActionResult CustomResponse(HttpStatusCode statusCode = HttpStatusCode.OK, object result = null)
         {
@@ -32,7 +32,7 @@ namespace LojaVirtual.Api.Controllers
             return BadRequest(new
             {
                 Sucesso = false,
-                Mensagens = _notifiable.ObterNotificacoes().Select(n => n.Message).ToArray()
+                Mensagens = _notificavel.ObterNotificacoes().Select(n => n.Message).ToArray()
             });
         }
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
@@ -46,9 +46,9 @@ namespace LojaVirtual.Api.Controllers
             return CustomResponse();
         }
 
-        protected ActionResult CustomResponse(List<Notificacao> notifications)
+        protected ActionResult CustomResponse(List<Notificacao> notificacoes)
         {
-            foreach (var erro in notifications)
+            foreach (var erro in notificacoes)
             {
                 AdicionarErroProcessamento(erro.Message);
             }
@@ -57,12 +57,12 @@ namespace LojaVirtual.Api.Controllers
 
         protected bool OperacaoValida()
         {
-            return _notifiable.Valido();
+            return _notificavel.Valido();
         }
 
         protected void AdicionarErroProcessamento(string erro)
         {
-            _notifiable.AdicionarNotificacao(new Notificacao(erro));
+            _notificavel.AdicionarNotificacao(new Notificacao(erro));
         }        
     }
 }

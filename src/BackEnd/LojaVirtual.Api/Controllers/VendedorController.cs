@@ -9,17 +9,17 @@ namespace LojaVirtual.Api.Controllers
     [AllowAnonymous]
     [Route("api/vendedor")]
     public class VendedorController(IVendedorService vendedorService,
-                                    INotificavel notifiable) : MainController(notifiable)
+                                    INotificavel notificavel) : MainController(notificavel)
     {
         private readonly IVendedorService _vendedorService = vendedorService;
 
         [HttpGet("{id:Guid}")]        
         public async Task<ActionResult> ObterInformacoes(Guid id, 
-                                                         CancellationToken cancellationToken)
+                                                         CancellationToken tokenDeCancelamento)
         {            
             return CustomResponse(HttpStatusCode.OK, 
                                   VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id, 
-                                                                                                cancellationToken)));
+                                                                                                   tokenDeCancelamento)));
         }
     }
 }
