@@ -16,10 +16,10 @@ namespace LojaVirtual.Business.Services
             _notifiable = notifiable;
         }
 
-        public async Task Insert(Categoria categoria, CancellationToken cancellationToken)
+        public async Task Inserir(Categoria categoria, CancellationToken cancellationToken)
         {
             //verifica se o id da categoria já existe
-            if (await _categoriaRepository.GetById(categoria.Id, cancellationToken) is not null)
+            if (await _categoriaRepository.ObterPorId(categoria.Id, cancellationToken) is not null)
             {
                 _notifiable.AddNotification(new Notification("Id da categoria já existente"));
                 return;
@@ -35,9 +35,9 @@ namespace LojaVirtual.Business.Services
             await _categoriaRepository.SaveChanges(cancellationToken);
         }
 
-        public async Task Edit(Categoria categoria, CancellationToken cancellationToken)
+        public async Task Editar(Categoria categoria, CancellationToken cancellationToken)
         {
-            var categoriaOrigem = await _categoriaRepository.GetById(categoria.Id, cancellationToken);
+            var categoriaOrigem = await _categoriaRepository.ObterPorId(categoria.Id, cancellationToken);
             if(categoriaOrigem is null)
             {
                 _notifiable.AddNotification(new Notification("Categoria não encontrada."));
@@ -58,7 +58,7 @@ namespace LojaVirtual.Business.Services
 
         public async Task Remove(Guid id, CancellationToken cancellationToken)
         {
-            var categoria = await _categoriaRepository.GetWithProduto(id, cancellationToken);
+            var categoria = await _categoriaRepository.ObterComProduto(id, cancellationToken);
             if (categoria is null)
             {
                 _notifiable.AddNotification(new Notification("Categoria não encontrada."));
@@ -79,9 +79,9 @@ namespace LojaVirtual.Business.Services
             return await _categoriaRepository.ListAsNoTracking(cancellationToken);
         }
 
-        public async Task<Categoria> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Categoria> ObterPorId(Guid id, CancellationToken cancellationToken)
         {
-            var categoria = await _categoriaRepository.GetById(id, cancellationToken);
+            var categoria = await _categoriaRepository.ObterPorId(id, cancellationToken);
             if (categoria is null)
             {
                 _notifiable.AddNotification(new Notification("Categoria não encontrada."));

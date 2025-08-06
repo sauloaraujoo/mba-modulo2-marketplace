@@ -26,9 +26,9 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("")]        
-        public async Task<ActionResult> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        public async Task<ActionResult> ListarVitrine(Guid? categoriaId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {            
-            var resultado = await _produtoService.ListVitrinePaginado(categoriaId, pagina, tamanho, cancellationToken);
+            var resultado = await _produtoService.ListarVitrinePaginado(categoriaId, pagina, tamanho, cancellationToken);
             var viewModel = new PagedResult<ProdutoModel>
             {
                 TotalItens = resultado.TotalItens,
@@ -41,9 +41,9 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("por-vendedor/{vendedorId:guid}")]
-        public async Task<ActionResult> ListVitrineByVendedor([FromRoute]Guid vendedorId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        public async Task<ActionResult> ListarVitrinePorVendedor([FromRoute]Guid vendedorId, CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {
-            var resultado = await _produtoService.ListVitrineByVendedorPaginado(vendedorId, pagina, tamanho, cancellationToken);
+            var resultado = await _produtoService.ListarVitrinePorVendedorPaginado(vendedorId, pagina, tamanho, cancellationToken);
 
             var viewModel = new PagedResult<ProdutoModel>
             {
@@ -58,9 +58,9 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("detalhe/{id:Guid}")]                
-        public async Task<IActionResult> GetDetailById(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> ObterDetalhePorId(Guid id, CancellationToken cancellationToken)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListVitrineById(id,cancellationToken)));            
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListarVitrinePorId(id,cancellationToken)));            
         }
 
         [HttpGet("categorias")]

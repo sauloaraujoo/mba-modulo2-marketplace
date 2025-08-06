@@ -7,7 +7,7 @@ namespace LojaVirtual.Business.Interfaces
 
         Task AlterarStatus(Vendedor request, CancellationToken cancellationToken);
         Task<IEnumerable<Vendedor>> List(CancellationToken cancellationToken);
-        Task<Vendedor> GetById(Guid id, CancellationToken cancellationToken);
+        Task<Vendedor> ObterPorId(Guid id, CancellationToken cancellationToken);
      
     }
 }

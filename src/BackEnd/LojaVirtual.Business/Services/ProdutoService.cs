@@ -25,7 +25,7 @@ namespace LojaVirtual.Business.Services
         public async Task Insert(Produto request, CancellationToken cancellationToken)
         {
             //verifica se a categoria existe
-            if (await _categoriaRepository.GetById(request.CategoriaId, cancellationToken) is null)
+            if (await _categoriaRepository.ObterPorId(request.CategoriaId, cancellationToken) is null)
             {
                 _notifiable.AddNotification(new Notification("Categoria não existente."));
             }
@@ -36,7 +36,7 @@ namespace LojaVirtual.Business.Services
         }
         public async Task Remove(Guid id, CancellationToken cancellationToken)
         {
-            var produto = await GetSelfProdutoById(id, cancellationToken);
+            var produto = await ObterProdutoPorId(id, cancellationToken);
             if (produto is null) { return; }
 
             await _produtoRepository.Remove(produto!, cancellationToken);
@@ -44,14 +44,14 @@ namespace LojaVirtual.Business.Services
         }
         public async Task Edit(Produto request, CancellationToken cancellationToken)
         {
-            var categoria = await _categoriaRepository.GetById(request.CategoriaId, cancellationToken);
+            var categoria = await _categoriaRepository.ObterPorId(request.CategoriaId, cancellationToken);
             if (categoria is null)
             {
                 _notifiable.AddNotification(new Notification("Categoria não encontrada."));
                 return;
             }
             
-            var produto = await GetSelfProdutoById(request.Id, cancellationToken);
+            var produto = await ObterProdutoPorId(request.Id, cancellationToken);
             if (produto is null) { return; }
 
             produto.Edit(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, true, request.CategoriaId);
@@ -79,11 +79,11 @@ namespace LojaVirtual.Business.Services
             return await _produtoRepository.GetWithCategoriaById(id, cancellationToken);
         }
 
-        public async Task<IEnumerable<Produto>> List(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> Lista(CancellationToken cancellationToken)
         {
             return await _produtoRepository.List(new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
         }
-        public async Task<Produto?> GetSelfProdutoById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto?> ObterProdutoPorId(Guid id, CancellationToken cancellationToken)
         {
             var produto = await _produtoRepository.GetSelfProdutoById(id, new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
             if (produto is null)
@@ -107,7 +107,7 @@ namespace LojaVirtual.Business.Services
             return await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken);
         }
 
-        public async Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken)
+        public async Task<Produto> ListarVitrinePorId(Guid? produtoId, CancellationToken cancellationToken)
         {
             var produto = await _produtoRepository.getProdutoWithCategoriaVendedorById(new Guid(produtoId.ToString()!), cancellationToken);
             return produto;
@@ -132,7 +132,7 @@ namespace LojaVirtual.Business.Services
             await _produtoRepository.SaveChanges(cancellationToken);
         }
 
-        public async Task<PagedResult<Produto>> ListVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
         {
             var produtos = categoriaId == null ?
                await _produtoRepository.ListWithCategoriaVendedorPagedAsNoTracking(pagina, tamanho, cancellationToken) :
@@ -140,7 +140,7 @@ namespace LojaVirtual.Business.Services
             return produtos;
         }
 
-        public async Task<PagedResult<Produto>> ListVitrineByVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarVitrinePorVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
         {
             return await _produtoRepository.ListWithCategoriaVendedorByVendedorPagedAsNoTracking(new Guid(vendedorId.ToString()!), pagina, tamanho, cancellationToken);
         }

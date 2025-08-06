@@ -38,7 +38,7 @@ namespace LojaVirtual.Business.Services
             return await _vendedorRepository.ListAsNoTracking(cancellationToken);
         }
 
-        public async Task<Vendedor> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Vendedor> ObterPorId(Guid id, CancellationToken cancellationToken)
         {
             var vendedor = await _vendedorRepository.GetById(id, cancellationToken);
             if (vendedor is null)

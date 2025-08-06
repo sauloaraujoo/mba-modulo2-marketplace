@@ -21,10 +21,10 @@ namespace LojaVirtual.Business.Services
             _notifiable = notifiable;
         }
 
-        public async Task<IEnumerable<Favorito>> GetFavoritos(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Favorito>> ObterFavoritos(CancellationToken cancellationToken)
         {
             var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, cancellationToken);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, cancellationToken);
 
             return cliente?.Favoritos ?? Enumerable.Empty<Favorito>();
         }
@@ -32,7 +32,7 @@ namespace LojaVirtual.Business.Services
         public async Task<bool> AdicionarFavorito(Guid produtoId, CancellationToken cancellationToken)
         {
             var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, cancellationToken);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, cancellationToken);
 
             if (cliente == null)
             {
@@ -57,7 +57,7 @@ namespace LojaVirtual.Business.Services
         public async Task<bool> RemoverFavorito(Guid produtoId, CancellationToken cancellationToken)
         {
             var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, cancellationToken);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, cancellationToken);
 
             if (cliente == null)
             {
@@ -79,10 +79,10 @@ namespace LojaVirtual.Business.Services
             return true;
         }
 
-        public async Task<PagedResult<Favorito>> GetFavoritosPaginado(int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Favorito>> ObterFavoritosPaginado(int pagina, int tamanho, CancellationToken cancellationToken)
         {
             var clienteId = Guid.Parse(_appIdentityUser.GetUserId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, cancellationToken);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, cancellationToken);
 
             return new PagedResult<Favorito>()
             {

@@ -24,13 +24,13 @@ namespace LojaVirtual.Api.Controllers
         }
         
         [HttpGet("lista")]        
-        public async Task<IActionResult> List(CancellationToken cancellationToken)
+        public async Task<IActionResult> Listar(CancellationToken cancellationToken)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.List(cancellationToken)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.Lista(cancellationToken)));
         }
         
         [HttpPost("novo")]
-        public async Task<IActionResult> Insert([FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Inserir([FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +38,7 @@ namespace LojaVirtual.Api.Controllers
             }
 
             var imagePrefix = Guid.NewGuid() + "_";
-            if (!await UploadFile(produtoModel.ImagemUpload, imagePrefix))
+            if (!await AtualizarArquivo(produtoModel.ImagemUpload, imagePrefix))
             {
                 return CustomResponse();
             }
@@ -48,19 +48,19 @@ namespace LojaVirtual.Api.Controllers
                 await _produtoService.Insert(_mapper.Map<Produto>(produtoModel), cancellationToken);
                 if(!OperacaoValida())
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    DeletarArquivo(produtoModel.Imagem);
                 }                
             }
             catch 
             {
-                DeleteFile(produtoModel.Imagem);
+                DeletarArquivo(produtoModel.Imagem);
 
             }            
             return CustomResponse(HttpStatusCode.Created);
         }
 
         [HttpPut("editar/{id:Guid}")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Editar(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
         {
             if (id != produtoModel.Id)
             {
@@ -68,7 +68,7 @@ namespace LojaVirtual.Api.Controllers
                 return CustomResponse();
             }
 
-            var produtoOrigem = await _produtoService.GetSelfProdutoById(id, cancellationToken);
+            var produtoOrigem = await _produtoService.ObterProdutoPorId(id, cancellationToken);
             if (produtoOrigem is null)
             {
                 return CustomResponse();
@@ -85,7 +85,7 @@ namespace LojaVirtual.Api.Controllers
             if (produtoModel.ImagemUpload != null)
             {
                 var imagePrefix = Guid.NewGuid() + "_";
-                if (!await UploadFile(produtoModel.ImagemUpload, imagePrefix))
+                if (!await AtualizarArquivo(produtoModel.ImagemUpload, imagePrefix))
                 {
                     return CustomResponse();
                 }
@@ -98,14 +98,14 @@ namespace LojaVirtual.Api.Controllers
                 await _produtoService.Edit(_mapper.Map<Produto>(produtoModel), cancellationToken);
                 if (!OperacaoValida() && produtoModel.ImagemUpload != null)
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    DeletarArquivo(produtoModel.Imagem);
                 }
             }
             catch
             {
                 if (produtoModel.ImagemUpload != null)
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    DeletarArquivo(produtoModel.Imagem);
                 }
 
             }
@@ -115,7 +115,7 @@ namespace LojaVirtual.Api.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var produto = _mapper.Map<ProdutoModel>(await _produtoService.GetSelfProdutoById(id, cancellationToken));
+            var produto = _mapper.Map<ProdutoModel>(await _produtoService.ObterProdutoPorId(id, cancellationToken));
             return CustomResponse(HttpStatusCode.OK, produto);
         }
 
@@ -127,13 +127,13 @@ namespace LojaVirtual.Api.Controllers
             return CustomResponse(HttpStatusCode.NoContent);
         }
 
-        private void DeleteFile(string imageName)
+        private void DeletarArquivo(string imageName)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageName);
 
             System.IO.File.Delete(path);            
         }
-        private async Task<bool> UploadFile(IFormFile arquivo, string imgPrefixo)
+        private async Task<bool> AtualizarArquivo(IFormFile arquivo, string imgPrefixo)
         {
             if (arquivo == null || arquivo.Length == 0)
             {

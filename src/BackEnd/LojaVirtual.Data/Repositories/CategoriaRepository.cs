@@ -23,12 +23,12 @@ namespace LojaVirtual.Data.Repositories
             return Task.FromResult(_context.CategoriaSet.Update(entity));
         }
 
-        public async Task<Categoria> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Categoria> ObterPorId(Guid id, CancellationToken cancellationToken)
         {
             return await _context.CategoriaSet.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
 
-        public async Task<Categoria> GetWithProduto(Guid id, CancellationToken cancellationToken)
+        public async Task<Categoria> ObterComProduto(Guid id, CancellationToken cancellationToken)
         {
             return await _context
                             .CategoriaSet
