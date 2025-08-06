@@ -17,7 +17,7 @@ namespace LojaVirtual.Mvc.Controllers
 
         public VendedoresController(IVendedorService vendedorService,
                                     IMapper mapper,
-                                    INotifiable notifiable) : base(notifiable)
+                                    INotificavel notificavel) : base(notificavel)
         {
             _vendedorService = vendedorService;
             _mapper = mapper;
