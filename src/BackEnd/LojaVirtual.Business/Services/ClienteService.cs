@@ -24,7 +24,7 @@ namespace LojaVirtual.Business.Services
         public async Task<IEnumerable<Favorito>> ObterFavoritos(CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, tokenDeCancelamento);
 
             return cliente?.Favoritos ?? Enumerable.Empty<Favorito>();
         }
@@ -32,7 +32,7 @@ namespace LojaVirtual.Business.Services
         public async Task<bool> AdicionarFavorito(Guid produtoId, CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, tokenDeCancelamento);
 
             if (cliente == null)
             {
@@ -57,7 +57,7 @@ namespace LojaVirtual.Business.Services
         public async Task<bool> RemoverFavorito(Guid produtoId, CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, tokenDeCancelamento);
 
             if (cliente == null)
             {
@@ -82,7 +82,7 @@ namespace LojaVirtual.Business.Services
         public async Task<PagedResult<Favorito>> ObterFavoritosPaginado(int pagina, int tamanho, CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
-            var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);
+            var cliente = await _clienteRepository.ObterClienteComFavoritos(clienteId, tokenDeCancelamento);
 
             return new PagedResult<Favorito>()
             {
@@ -93,7 +93,7 @@ namespace LojaVirtual.Business.Services
             };
 
 
-            
+
         }
     }
 }
