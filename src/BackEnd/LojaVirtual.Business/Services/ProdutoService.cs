@@ -1,7 +1,7 @@
 ﻿using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Notificacoes;
 
 namespace LojaVirtual.Business.Services
 {
@@ -9,140 +9,140 @@ namespace LojaVirtual.Business.Services
     {
         private readonly ICategoriaRepository _categoriaRepository;
         private readonly IProdutoRepository _produtoRepository;
-        private readonly INotifiable _notifiable;
+        private readonly INotificavel _notificavel;
         private readonly IAppIdentifyUser _appIdentifyUser;
         public ProdutoService(
             ICategoriaRepository categoriaRepository,
             IProdutoRepository produtoRepository,
-            INotifiable notifiable,
+            INotificavel notificavel,
             IAppIdentifyUser appIdentifyUser)
         {
             _categoriaRepository = categoriaRepository;
             _produtoRepository = produtoRepository;
-            _notifiable = notifiable;
+            _notificavel = notificavel;
             _appIdentifyUser = appIdentifyUser;
         }
-        public async Task Insert(Produto request, CancellationToken cancellationToken)
+        public async Task Inserir(Produto request, CancellationToken TokenDeCancelamento)
         {
             //verifica se a categoria existe
-            if (await _categoriaRepository.GetById(request.CategoriaId, cancellationToken) is null)
+            if (await _categoriaRepository.ObterPorId(request.CategoriaId, TokenDeCancelamento) is null)
             {
-                _notifiable.AddNotification(new Notification("Categoria não existente."));
+                _notificavel.AdicionarNotificacao(new Notificacao("Categoria não existente."));
             }
             
-            request.VinculaVendedor(new Guid(_appIdentifyUser.GetUserId()));
-            await _produtoRepository.Insert(request, cancellationToken);
-            await _produtoRepository.SaveChanges(cancellationToken);
+            request.VinculaVendedor(new Guid(_appIdentifyUser.ObterUsuarioId()));
+            await _produtoRepository.Inserir(request, TokenDeCancelamento);
+            await _produtoRepository.SalvarMudancas(TokenDeCancelamento);
         }
-        public async Task Remove(Guid id, CancellationToken cancellationToken)
+        public async Task Remover(Guid id, CancellationToken TokenDeCancelamento)
         {
-            var produto = await GetSelfProdutoById(id, cancellationToken);
+            var produto = await ObterProdutoProprioPorId(id, TokenDeCancelamento);
             if (produto is null) { return; }
 
-            await _produtoRepository.Remove(produto!, cancellationToken);
-            await _produtoRepository.SaveChanges(cancellationToken);
+            await _produtoRepository.Remover(produto!, TokenDeCancelamento);
+            await _produtoRepository.SalvarMudancas(TokenDeCancelamento);
         }
-        public async Task Edit(Produto request, CancellationToken cancellationToken)
+        public async Task Editar(Produto request, CancellationToken TokenDeCancelamento)
         {
-            var categoria = await _categoriaRepository.GetById(request.CategoriaId, cancellationToken);
+            var categoria = await _categoriaRepository.ObterPorId(request.CategoriaId, TokenDeCancelamento);
             if (categoria is null)
             {
-                _notifiable.AddNotification(new Notification("Categoria não encontrada."));
+                _notificavel.AdicionarNotificacao(new Notificacao("Categoria não encontrada."));
                 return;
             }
             
-            var produto = await GetSelfProdutoById(request.Id, cancellationToken);
+            var produto = await ObterProdutoProprioPorId(request.Id, TokenDeCancelamento);
             if (produto is null) { return; }
 
             produto.Edit(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, true, request.CategoriaId);
 
-            await _produtoRepository.Edit(produto, cancellationToken);
-            await _produtoRepository.SaveChanges(cancellationToken);
+            await _produtoRepository.Editar(produto, TokenDeCancelamento);
+            await _produtoRepository.SalvarMudancas(TokenDeCancelamento);
         }
 
-        public async Task<IEnumerable<Produto>> GetAllSelfProdutoWithCategoria(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.GetAllSelfProdutoWithCategoria(new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
+            return await _produtoRepository.ObterTodosProdutosPropriosComCategoria(new Guid(_appIdentifyUser.ObterUsuarioId()), TokenDeCancelamento);
         }
 
-        public async Task<IEnumerable<Produto>> GetAllProdutoWithCategoria(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria(CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.GetAllProdutoWithCategoria(cancellationToken);
+            return await _produtoRepository.ObterTodosProdutosComCategoria(TokenDeCancelamento);
         }
 
-        public async Task<Produto> GetSelfWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterProprioComCategoriaPorId(Guid id, CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.GetSelfWithCategoriaById(id, new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
+            return await _produtoRepository.ObterProprioComCategoriaPorId(id, new Guid(_appIdentifyUser.ObterUsuarioId()), TokenDeCancelamento);
         }
-        public async Task<Produto> GetWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.GetWithCategoriaById(id, cancellationToken);
+            return await _produtoRepository.ObterComCategoriaPorId(id, TokenDeCancelamento);
         }
 
-        public async Task<IEnumerable<Produto>> List(CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> Listar(CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.List(new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
+            return await _produtoRepository.Listar(new Guid(_appIdentifyUser.ObterUsuarioId()), TokenDeCancelamento);
         }
-        public async Task<Produto?> GetSelfProdutoById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto?> ObterProdutoProprioPorId(Guid id, CancellationToken TokenDeCancelamento)
         {
-            var produto = await _produtoRepository.GetSelfProdutoById(id, new Guid(_appIdentifyUser.GetUserId()), cancellationToken);
+            var produto = await _produtoRepository.ObterProdutoProprioPorId(id, new Guid(_appIdentifyUser.ObterUsuarioId()), TokenDeCancelamento);
             if (produto is null)
             {
-                _notifiable.AddNotification(new Notification("Produto não encontrado."));
+                _notificavel.AdicionarNotificacao(new Notificacao("Produto não encontrado."));
                 return null;
             }
             return produto;
         }
 
-        public async Task<IEnumerable<Produto>> ListVitrine(Guid? categoriaId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ListarVitrine(Guid? categoriaId, CancellationToken TokenDeCancelamento)
         {
             var produtos = categoriaId == null ?
-                await _produtoRepository.ListWithCategoriaVendedorAsNoTracking(cancellationToken) :
-                await _produtoRepository.ListWithCategoriaVendedorByCategoriaAsNoTracking(new Guid(categoriaId.ToString()!), cancellationToken);
+                await _produtoRepository.ListarComCategoriaVendedorSemContexto(TokenDeCancelamento) :
+                await _produtoRepository.ListarComCategoriaVendedorPorCategoriaSemContexto(new Guid(categoriaId.ToString()!), TokenDeCancelamento);
             return produtos;
         }
 
-        public async Task<IEnumerable<Produto>> ListVitrineByVendedor(Guid? vendedorId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ListarVitrinePorVendedor(Guid? vendedorId, CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.ListWithCategoriaVendedorByVendedorAsNoTracking(new Guid(vendedorId.ToString()!), cancellationToken);
+            return await _produtoRepository.ListarComCategoriaVendedorPorVendedorSemContexto(new Guid(vendedorId.ToString()!), TokenDeCancelamento);
         }
 
-        public async Task<Produto> ListVitrineById(Guid? produtoId, CancellationToken cancellationToken)
+        public async Task<Produto> ListarVitrinePorId(Guid? produtoId, CancellationToken TokenDeCancelamento)
         {
-            var produto = await _produtoRepository.getProdutoWithCategoriaVendedorById(new Guid(produtoId.ToString()!), cancellationToken);
+            var produto = await _produtoRepository.ObterProdutoComCategoriaVendedorPorId(new Guid(produtoId.ToString()!), TokenDeCancelamento);
             return produto;
         }
 
-        public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterPorId(Guid id, CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.GetById(id, cancellationToken);
+            return await _produtoRepository.ObterPorId(id, TokenDeCancelamento);
         }
-        public async Task AlterarStatus(Produto produto, CancellationToken cancellationToken)
+        public async Task AlterarStatus(Produto produto, CancellationToken TokenDeCancelamento)
         {
-            var produtoOrigem = await _produtoRepository.GetById(produto.Id, cancellationToken);
+            var produtoOrigem = await _produtoRepository.ObterPorId(produto.Id, TokenDeCancelamento);
             if (produtoOrigem is null)
             {
-                _notifiable.AddNotification(new Notification("Produto não encontrado."));
+                _notificavel.AdicionarNotificacao(new Notificacao("Produto não encontrado."));
                 return;
             }
 
             produtoOrigem.AlterarStatus();
 
-            await _produtoRepository.Edit(produtoOrigem, cancellationToken);
-            await _produtoRepository.SaveChanges(cancellationToken);
+            await _produtoRepository.Editar(produtoOrigem, TokenDeCancelamento);
+            await _produtoRepository.SalvarMudancas(TokenDeCancelamento);
         }
 
-        public async Task<PagedResult<Produto>> ListVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarVitrinePaginado(Guid? categoriaId, int pagina, int tamanho, CancellationToken TokenDeCancelamento)
         {
             var produtos = categoriaId == null ?
-               await _produtoRepository.ListWithCategoriaVendedorPagedAsNoTracking(pagina, tamanho, cancellationToken) :
-               await _produtoRepository.ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(new Guid(categoriaId.ToString()!), pagina, tamanho, cancellationToken);
+               await _produtoRepository.ListarComCategoriaVendedorPaginadoSemContexto(pagina, tamanho, TokenDeCancelamento) :
+               await _produtoRepository.ListarComCategoriaVendedorPorCategoriaPaginadoSemContexto(new Guid(categoriaId.ToString()!), pagina, tamanho, TokenDeCancelamento);
             return produtos;
         }
 
-        public async Task<PagedResult<Produto>> ListVitrineByVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarVitrinePorVendedorPaginado(Guid? vendedorId, int pagina, int tamanho, CancellationToken TokenDeCancelamento)
         {
-            return await _produtoRepository.ListWithCategoriaVendedorByVendedorPagedAsNoTracking(new Guid(vendedorId.ToString()!), pagina, tamanho, cancellationToken);
+            return await _produtoRepository.ListarComCategoriaVendedorPorVendedorPaginadoSemContexto(new Guid(vendedorId.ToString()!), pagina, tamanho, TokenDeCancelamento);
         }
     }
 }

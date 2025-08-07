@@ -14,54 +14,54 @@ namespace LojaVirtual.Data.Repositories
         {
             _context = context;
         }
-        public async Task Insert(Produto entity, CancellationToken cancellationToken)
+        public async Task Inserir(Produto entity, CancellationToken cancellationToken)
         {
             await _context.ProdutoSet.AddAsync(entity, cancellationToken);
         }
-        public Task Edit(Produto entity, CancellationToken cancellationToken)
+        public Task Editar(Produto entity, CancellationToken cancellationToken)
         {
             return Task.FromResult(_context.ProdutoSet.Update(entity));
         }
-        public async Task<IEnumerable<Produto>> GetAllSelfProdutoWithCategoria(Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .Where(p => p.VendedorId == vendedorId)
                 .ToListAsync(cancellationToken);
         }
-        public async Task<IEnumerable<Produto>> GetAllProdutoWithCategoria( CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria( CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .ToListAsync(cancellationToken);
         }
-        public async Task<Produto> GetSelfWithCategoriaById(Guid id, Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<Produto> ObterProprioComCategoriaPorId(Guid id, Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .FirstOrDefaultAsync(p => p.Id == id && p.VendedorId == vendedorId, cancellationToken);
         }
 
-        public async Task<Produto> GetWithCategoriaById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .FirstOrDefaultAsync(p => p.Id == id , cancellationToken);
         }
-        public async Task<Produto> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterPorId(Guid id, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
                 .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
         }
-        public async Task<Produto> GetSelfProdutoById(Guid id, Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<Produto> ObterProdutoProprioPorId(Guid id, Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
                 .FirstOrDefaultAsync(c => c.Id == id && c.VendedorId == vendedorId, cancellationToken);
         }
 
-        public async Task<List<Produto>> ListWithCategoriaVendedorAsNoTracking(CancellationToken cancellationToken)
+        public async Task<List<Produto>> ListarComCategoriaVendedorSemContexto(CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
@@ -71,7 +71,7 @@ namespace LojaVirtual.Data.Repositories
                 .Where(p => p.Ativo == true && p.Vendedor.Ativo == true)
                 .ToListAsync(cancellationToken);
         }
-        public async Task<List<Produto>> ListWithCategoriaVendedorByCategoriaAsNoTracking(Guid categoriaId, CancellationToken cancellationToken)
+        public async Task<List<Produto>> ListarComCategoriaVendedorPorCategoriaSemContexto(Guid categoriaId, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
@@ -82,7 +82,7 @@ namespace LojaVirtual.Data.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<List<Produto>> ListWithCategoriaVendedorByVendedorAsNoTracking(Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<List<Produto>> ListarComCategoriaVendedorPorVendedorSemContexto(Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
@@ -93,7 +93,7 @@ namespace LojaVirtual.Data.Repositories
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<Produto> getProdutoWithCategoriaVendedorById(Guid produtoId, CancellationToken cancellationToken)
+        public async Task<Produto> ObterProdutoComCategoriaVendedorPorId(Guid produtoId, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
@@ -103,16 +103,16 @@ namespace LojaVirtual.Data.Repositories
                 .FirstOrDefaultAsync(p => p.Id == produtoId && p.Ativo == true && p.Vendedor.Ativo == true, cancellationToken);
         }
 
-        public async Task Remove(Produto produto, CancellationToken cancellationToken)
+        public async Task Remover(Produto produto, CancellationToken cancellationToken)
         {
             Task.FromResult(_context.ProdutoSet.Remove(produto));
         }
-        public async Task<bool> Exists(string nome, CancellationToken cancellationToken)
+        public async Task<bool> Existe(string nome, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet.AnyAsync(c => c.Nome == nome, cancellationToken);
         }
 
-        public async Task<List<Produto>> List(Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<List<Produto>> Listar(Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context
                 .ProdutoSet
@@ -120,12 +120,12 @@ namespace LojaVirtual.Data.Repositories
                 .Where(p => p.VendedorId == vendedorId)
                 .ToListAsync(cancellationToken);            
         }
-        public async Task<int> SaveChanges(CancellationToken cancellationToken)
+        public async Task<int> SalvarMudancas(CancellationToken cancellationToken)
         {
             return await _context.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorPagedAsNoTracking(int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarComCategoriaVendedorPaginadoSemContexto(int pagina, int tamanho, CancellationToken cancellationToken)
         {
             var query = _context
                 .ProdutoSet
@@ -151,7 +151,7 @@ namespace LojaVirtual.Data.Repositories
             };
         }
 
-        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(Guid categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarComCategoriaVendedorPorCategoriaPaginadoSemContexto(Guid categoriaId, int pagina, int tamanho, CancellationToken cancellationToken)
         {
             var query = _context
                 .ProdutoSet
@@ -177,7 +177,7 @@ namespace LojaVirtual.Data.Repositories
             };
         }
 
-        public async Task<PagedResult<Produto>> ListWithCategoriaVendedorByVendedorPagedAsNoTracking(Guid vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
+        public async Task<PagedResult<Produto>> ListarComCategoriaVendedorPorVendedorPaginadoSemContexto(Guid vendedorId, int pagina, int tamanho, CancellationToken cancellationToken)
         {
             var query = _context
                 .ProdutoSet

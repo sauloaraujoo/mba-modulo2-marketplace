@@ -4,13 +4,13 @@ namespace LojaVirtual.Business.Interfaces
 {
     public interface ICategoriaRepository : IDisposable
     {
-        public Task Insert(Categoria categoria, CancellationToken cancellationToken);
-        public Task<Categoria> GetById(Guid id, CancellationToken cancellationToken);
-        public Task<IList<Categoria>> ListAsNoTracking(CancellationToken cancellationToken);
-        public Task Edit(Categoria categoria, CancellationToken cancellationToken);
-        public Task Remove(Categoria categoria, CancellationToken cancellationToken);
-        public Task<Categoria> GetWithProduto(Guid id, CancellationToken cancellationToken);
-        public Task<bool> Exists(string nome, CancellationToken cancellationToken);
-        public Task<int> SaveChanges(CancellationToken cancellationToken);
+        public Task Inserir(Categoria categoria, CancellationToken cancellationToken);
+        public Task<Categoria> ObterPorId(Guid id, CancellationToken cancellationToken);
+        public Task<IList<Categoria>> ListarSemContexto(CancellationToken cancellationToken);
+        public Task Editar(Categoria categoria, CancellationToken cancellationToken);
+        public Task Remover(Categoria categoria, CancellationToken cancellationToken);
+        public Task<Categoria> ObterComProduto(Guid id, CancellationToken cancellationToken);
+        public Task<bool> Existe(string nome, CancellationToken cancellationToken);
+        public Task<int> SalvarMudancas(CancellationToken cancellationToken);
     }
 }
