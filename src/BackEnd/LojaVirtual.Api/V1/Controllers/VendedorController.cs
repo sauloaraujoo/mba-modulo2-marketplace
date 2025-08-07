@@ -20,8 +20,8 @@ namespace LojaVirtual.Api.V1.Controllers
                                                          CancellationToken tokenDeCancelamento)
         {            
             return CustomResponse(HttpStatusCode.OK, 
-                                  VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id, 
-                                                                                                   tokenDeCancelamento)));
+                                  VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id,
+                                                                                                tokenDeCancelamento)));
         }
     }
 }

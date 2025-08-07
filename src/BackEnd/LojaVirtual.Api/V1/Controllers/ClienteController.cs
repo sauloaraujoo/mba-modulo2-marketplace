@@ -26,17 +26,17 @@ namespace LojaVirtual.Api.V1.Controllers
 
         [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
         [HttpGet("favoritos")]
-        public async Task<IActionResult> GetFavoritos(CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> ObterFavoritos(CancellationToken tokenDeCancelamento)
         {
-            var favoritos = await _clienteService.GetFavoritos(tokenDeCancelamento);
+            var favoritos = await _clienteService.ObterFavoritos(tokenDeCancelamento);
             return CustomResponse(HttpStatusCode.OK, favoritos.Select(FavoritoViewModel.FromFavorito));
         }
 
         [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
         [HttpGet("favorito")]
-        public async Task<IActionResult> GetFavoritosPaginado(CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        public async Task<IActionResult> ObterFavoritosPaginado(CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {
-            var resultado = await _clienteService.GetFavoritosPaginado(pagina, tamanho, tokenDeCancelamento);
+            var resultado = await _clienteService.ObterFavoritosPaginado(pagina, tamanho, tokenDeCancelamento);
             var viewModel = new PagedResult<FavoritoViewModel>
             {
                 TotalItens = resultado.TotalItens,

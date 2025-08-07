@@ -21,7 +21,7 @@ namespace LojaVirtual.Business.Services
             _notificavel = notificavel;
         }
 
-        public async Task<IEnumerable<Favorito>> GetFavoritos(CancellationToken tokenDeCancelamento)
+        public async Task<IEnumerable<Favorito>> ObterFavoritos(CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
             var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);
@@ -79,7 +79,7 @@ namespace LojaVirtual.Business.Services
             return true;
         }
 
-        public async Task<PagedResult<Favorito>> GetFavoritosPaginado(int pagina, int tamanho, CancellationToken tokenDeCancelamento)
+        public async Task<PagedResult<Favorito>> ObterFavoritosPaginado(int pagina, int tamanho, CancellationToken tokenDeCancelamento)
         {
             var clienteId = Guid.Parse(_appIdentityUser.ObterUsuarioId());
             var cliente = await _clienteRepository.GetClienteComFavoritos(clienteId, tokenDeCancelamento);

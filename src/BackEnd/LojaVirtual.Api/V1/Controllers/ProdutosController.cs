@@ -61,7 +61,7 @@ namespace LojaVirtual.Api.V1.Controllers
         }
 
         [HttpPut("editar/{id:Guid}")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> Editar(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
         {
             if (id != produtoModel.Id)
             {
