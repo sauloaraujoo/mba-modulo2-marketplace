@@ -1,29 +1,29 @@
-<div class="container main-container">
-    <h1>Informações do Vendedor</h1>
-
-    <div class="row">
-        <div class="col-md-6">
-            <dl>
-                <dt>
-                    Nome
-                </dt>
-                <dd>
-                   {{ vendedor.nome }} 
-                </dd>
-                <dt>
-                    E-mail
-                </dt>
-                <dd>
-                    {{ vendedor.email }} 
-                </dd>
-            </dl>
+<div class="container main-container py-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-10 col-md-12 p-4 rounded shadow-sm bg-white">
+      
+      <div class="vendedor-info-header d-flex align-items-center mb-4">
+        <div class="vendedor-icon-wrapper me-3">
+          <i class="bi bi-person-circle" style="font-size: 4rem; color: #007bff;"></i>
         </div>
-    </div>
+        <div class="vendedor-text">
+          <h1 class="text-primary fw-bold mb-0">{{ vendedor.nome }}</h1>
+          <p class="vendedor-email mb-0">{{ vendedor.email }}</p>
+        </div>
+      </div>
+      
+      <h4 class="mt-4 mb-4 text-center">Produtos do vendedor</h4>
+      
+      <div>
+        <app-lista [categoriaId]="" [vendedorId]="vendedorId" contexto="vendedor"></app-lista>
+      </div>
 
-    <h4>Produtos do vendedor</h4>
-    <app-lista [categoriaId]="" [vendedorId]="vendedorId" contexto="vendedor"></app-lista>
-    
-    <div>
-        <a class="btn btn-info" href="javascript:window.history.back();">Voltar</a>
+      <div class="mt-4 text-center">
+        <a class="btn btn-outline-primary" href="javascript:window.history.back();">
+          <span class="fa fa-arrow-left"></span> ← Voltar
+        </a>
+      </div>
+      
     </div>
+  </div>
 </div>

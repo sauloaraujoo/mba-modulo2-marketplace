@@ -1,0 +1,58 @@
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #007bff; /* Azul */
+}
+
+.vendedor-email {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.btn-outline-primary {
+  background-color: #007bff;
+  color: white;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+
+.btn-outline-primary:hover {
+  background-color: #0056b3;
+}
+
+.vendedor-info-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.vendedor-icon-wrapper {
+  margin-right: 15px;
+}
+
+/* A classe vendedor-icon-small foi removida pois o estilo foi movido para o HTML. */
+
+/* Media query para telas menores */
+@media (max-width: 768px) {
+  .vendedor-info-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .vendedor-icon-wrapper {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}
