@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
+using LojaVirtual.Business.Notificacoes;
 using LojaVirtual.Mvc.Extensions;
 using LojaVirtual.Mvc.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,7 @@ namespace LojaVirtual.Mvc.Controllers
 
         public CategoriasController(ICategoriaService categoriaService, 
             IMapper mapper,
-            INotifiable notifiable) : base(notifiable)
+            INotificavel notificavel) : base(notificavel)
         {
             _categoriaService = categoriaService;
             _mapper = mapper;

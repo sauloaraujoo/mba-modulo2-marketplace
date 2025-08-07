@@ -20,7 +20,7 @@ namespace LojaVirtual.Mvc.Controllers
         public ProdutosController(IProdutoService produtoService,
             ICategoriaService categoriaService,
             IMapper mapper,
-            INotifiable notifiable) : base(notifiable)
+            INotificavel notificavel) : base(notificavel)
         {
             _produtoService = produtoService;
             _categoriaService = categoriaService;
