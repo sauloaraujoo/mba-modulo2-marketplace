@@ -5,9 +5,9 @@ namespace LojaVirtual.Business.Interfaces
     public interface IVendedorService
     {
 
-        Task AlterarStatus(Vendedor request, CancellationToken cancellationToken);
-        Task<IEnumerable<Vendedor>> List(CancellationToken cancellationToken);
-        Task<Vendedor> ObterPorId(Guid id, CancellationToken cancellationToken);
+        Task AlterarStatus(Vendedor request, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Vendedor>> Listar(CancellationToken tokenDeCancelamento);
+        Task<Vendedor> ObterPorId(Guid id, CancellationToken tokenDeCancelamento);
      
     }
 }

@@ -1,4 +1,5 @@
-﻿using LojaVirtual.Api.Extensions;
+﻿using LojaVirtual.Api.Controllers;
+using LojaVirtual.Api.Extensions;
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Common;
 using LojaVirtual.Business.Interfaces;
@@ -6,35 +7,36 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/cliente")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/clientes")]
     public class ClienteController : MainController
     {
         private readonly IClienteService _clienteService;
 
         public ClienteController(
             IClienteService clienteService,
-            INotifiable notifiable
-        ) : base(notifiable)
+            INotificavel notificavel
+        ) : base(notificavel)
         {
             _clienteService = clienteService;
         }
 
         [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
         [HttpGet("favoritos")]
-        public async Task<IActionResult> ObterFavoritos(CancellationToken cancellationToken)
+        public async Task<IActionResult> ObterFavoritos(CancellationToken tokenDeCancelamento)
         {
-            var favoritos = await _clienteService.ObterFavoritos(cancellationToken);
+            var favoritos = await _clienteService.ObterFavoritos(tokenDeCancelamento);
             return CustomResponse(HttpStatusCode.OK, favoritos.Select(FavoritoViewModel.FromFavorito));
         }
 
         [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
         [HttpGet("favorito")]
-        public async Task<IActionResult> ObterFavoritosPaginado(CancellationToken cancellationToken, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        public async Task<IActionResult> ObterFavoritosPaginado(CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {
-            var resultado = await _clienteService.ObterFavoritosPaginado(pagina, tamanho, cancellationToken);
+            var resultado = await _clienteService.ObterFavoritosPaginado(pagina, tamanho, tokenDeCancelamento);
             var viewModel = new PagedResult<FavoritoViewModel>
             {
                 TotalItens = resultado.TotalItens,
@@ -47,9 +49,9 @@ namespace LojaVirtual.Api.Controllers
 
         [ClaimsAuthorize("Clientes", "EDITAR_FAVORITOS")]
         [HttpPost("favoritos/{produtoId:guid}")]
-        public async Task<IActionResult> AdicionarFavorito(Guid produtoId, CancellationToken cancellationToken)
+        public async Task<IActionResult> AdicionarFavorito(Guid produtoId, CancellationToken tokenDeCancelamento)
         {
-            var adicionado = await _clienteService.AdicionarFavorito(produtoId, cancellationToken);
+            var adicionado = await _clienteService.AdicionarFavorito(produtoId, tokenDeCancelamento);
 
             if (!adicionado)
             {
@@ -62,9 +64,9 @@ namespace LojaVirtual.Api.Controllers
 
         [ClaimsAuthorize("Clientes", "EDITAR_FAVORITOS")]
         [HttpDelete("favoritos/{produtoId:guid}")]
-        public async Task<IActionResult> RemoverFavorito(Guid produtoId, CancellationToken cancellationToken)
+        public async Task<IActionResult> RemoverFavorito(Guid produtoId, CancellationToken tokenDeCancelamento)
         {
-            var removido = await _clienteService.RemoverFavorito(produtoId, cancellationToken);
+            var removido = await _clienteService.RemoverFavorito(produtoId, tokenDeCancelamento);
 
             if (!removido)
             {
