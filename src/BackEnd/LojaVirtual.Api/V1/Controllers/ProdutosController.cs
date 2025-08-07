@@ -25,13 +25,13 @@ namespace LojaVirtual.Api.V1.Controllers
         }
         
         [HttpGet("lista")]        
-        public async Task<IActionResult> List(CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> Listar(CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.List(tokenDeCancelamento)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.Listar(tokenDeCancelamento)));
         }
         
         [HttpPost("novo")]
-        public async Task<IActionResult> Insert([FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> Inserir([FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
         {
             if (!ModelState.IsValid)
             {
@@ -39,22 +39,22 @@ namespace LojaVirtual.Api.V1.Controllers
             }
 
             var imagePrefix = Guid.NewGuid() + "_";
-            if (!await UploadFile(produtoModel.ImagemUpload, imagePrefix))
+            if (!await CarregarArquivo(produtoModel.ImagemUpload, imagePrefix))
             {
                 return CustomResponse();
             }
             try
             {
                 produtoModel.Imagem = imagePrefix + produtoModel.ImagemUpload.FileName;
-                await _produtoService.Insert(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
+                await _produtoService.Inserir(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
                 if(!OperacaoValida())
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    ApagarArquivo(produtoModel.Imagem);
                 }                
             }
             catch 
             {
-                DeleteFile(produtoModel.Imagem);
+                ApagarArquivo(produtoModel.Imagem);
 
             }            
             return CustomResponse(HttpStatusCode.Created);
@@ -69,7 +69,7 @@ namespace LojaVirtual.Api.V1.Controllers
                 return CustomResponse();
             }
 
-            var produtoOrigem = await _produtoService.GetSelfProdutoById(id, tokenDeCancelamento);
+            var produtoOrigem = await _produtoService.ObterProdutoProprioPorId(id, tokenDeCancelamento);
             if (produtoOrigem is null)
             {
                 return CustomResponse();
@@ -86,7 +86,7 @@ namespace LojaVirtual.Api.V1.Controllers
             if (produtoModel.ImagemUpload != null)
             {
                 var imagePrefix = Guid.NewGuid() + "_";
-                if (!await UploadFile(produtoModel.ImagemUpload, imagePrefix))
+                if (!await CarregarArquivo(produtoModel.ImagemUpload, imagePrefix))
                 {
                     return CustomResponse();
                 }
@@ -96,17 +96,17 @@ namespace LojaVirtual.Api.V1.Controllers
 
             try
             {
-                await _produtoService.Edit(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
+                await _produtoService.Editar(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
                 if (!OperacaoValida() && produtoModel.ImagemUpload != null)
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    ApagarArquivo(produtoModel.Imagem);
                 }
             }
             catch
             {
                 if (produtoModel.ImagemUpload != null)
                 {
-                    DeleteFile(produtoModel.Imagem);
+                    ApagarArquivo(produtoModel.Imagem);
                 }
 
             }
@@ -116,25 +116,25 @@ namespace LojaVirtual.Api.V1.Controllers
         [HttpGet("{id:Guid}")]
         public async Task<ActionResult> GetById(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var produto = _mapper.Map<ProdutoModel>(await _produtoService.GetSelfProdutoById(id, tokenDeCancelamento));
+            var produto = _mapper.Map<ProdutoModel>(await _produtoService.ObterProdutoProprioPorId(id, tokenDeCancelamento));
             return CustomResponse(HttpStatusCode.OK, produto);
         }
 
         [HttpDelete("{id:Guid}")]
         public async Task<ActionResult> Remove(Guid id, CancellationToken tokenDeCancelamento)
         {
-            await _produtoService.Remove(id, tokenDeCancelamento);
+            await _produtoService.Remover(id, tokenDeCancelamento);
 
             return CustomResponse(HttpStatusCode.NoContent);
         }
 
-        private void DeleteFile(string imageName)
+        private void ApagarArquivo(string imageName)
         {
             var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", imageName);
 
             System.IO.File.Delete(path);            
         }
-        private async Task<bool> UploadFile(IFormFile arquivo, string imgPrefixo)
+        private async Task<bool> CarregarArquivo(IFormFile arquivo, string imgPrefixo)
         {
             if (arquivo == null || arquivo.Length == 0)
             {

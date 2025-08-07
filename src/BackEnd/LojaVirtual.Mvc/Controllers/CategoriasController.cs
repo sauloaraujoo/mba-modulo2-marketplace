@@ -17,47 +17,47 @@ namespace LojaVirtual.Mvc.Controllers
 
         public CategoriasController(ICategoriaService categoriaService, 
             IMapper mapper,
-            INotifiable notifiable) : base(notifiable)
+            INotificavel notificavel) : base(notificavel)
         {
             _categoriaService = categoriaService;
             _mapper = mapper;
         }
 
-        [ClaimsAuthorize("Categorias", "VI")]
+        [ClaimsAuthorize("Categorias", "VISUALIZAR")]
         [HttpGet]
-        public async Task<IActionResult> Index(CancellationToken cancellationToken)
+        public async Task<IActionResult> Index(CancellationToken tokenDeCancelamento)
         {
-            var categorias = _mapper.Map<IEnumerable<CategoriaViewModel>>(await _categoriaService.List(cancellationToken));
+            var categorias = _mapper.Map<IEnumerable<CategoriaViewModel>>(await _categoriaService.Listar(tokenDeCancelamento));
             
             return View(categorias);
         }
 
-        [ClaimsAuthorize("Categorias", "AD")]
+        [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [Route("novo")]
-        public IActionResult Create()
+        public IActionResult Adicionar()
         {
             return View();
         }
 
-        [ClaimsAuthorize("Categorias", "AD")]
+        [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [Route("novo")]
         [HttpPost]
-        public async Task<IActionResult> Create(CategoriaViewModel categoriaViewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Adicionar(CategoriaViewModel categoriaViewModel, CancellationToken tokenDeCancelamento)
         {
             if (!ModelState.IsValid) return View(categoriaViewModel);
 
-            await _categoriaService.Insert(_mapper.Map<Categoria>(categoriaViewModel), cancellationToken);
+            await _categoriaService.Inserir(_mapper.Map<Categoria>(categoriaViewModel), tokenDeCancelamento);
 
             if (!OperacaoValida()) return View(categoriaViewModel);
 
             return RedirectToAction("Index");
         }
 
-        [ClaimsAuthorize("Categorias", "AD")]
+        [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [Route("detalhes/{id:guid}")]
-        public async Task<IActionResult> Details(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Detalhes(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.GetById(id, cancellationToken));
+            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
             
             if (categoriaViewModel == null)
             {
@@ -67,11 +67,11 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "ED")]
+        [ClaimsAuthorize("Categorias", "EDITAR")]
         [Route("editar/{id:guid}")]
-        public async Task<IActionResult> Edit(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Editar(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.GetById(id, cancellationToken));
+            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
 
             if (categoriaViewModel == null)
             {
@@ -81,28 +81,28 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "ED")]
+        [ClaimsAuthorize("Categorias", "EDITAR")]
         [Route("editar/{id:guid}")]
         [HttpPost]
-        public async Task<IActionResult> Edit(Guid id, CategoriaViewModel categoriaViewModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Editar(Guid id, CategoriaViewModel categoriaViewModel, CancellationToken tokenDeCancelamento)
         {
             if (id != categoriaViewModel.Id) return NotFound();
 
             if (!ModelState.IsValid) return View(categoriaViewModel);
 
             var categoria = _mapper.Map<Categoria>(categoriaViewModel);
-            await _categoriaService.Edit(categoria, cancellationToken);
+            await _categoriaService.Editar(categoria, tokenDeCancelamento);
 
             if (!OperacaoValida()) return View(categoriaViewModel);
 
             return RedirectToAction("Index");
         }
 
-        [ClaimsAuthorize("Categorias", "EX")]
+        [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [Route("excluir/{id:guid}")]
-        public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> Excluir(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.GetById(id, cancellationToken));
+            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
 
             if (categoriaViewModel == null)
             {
@@ -112,16 +112,16 @@ namespace LojaVirtual.Mvc.Controllers
             return View(categoriaViewModel);
         }
 
-        [ClaimsAuthorize("Categorias", "EX")]
+        [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [Route("excluir/{id:guid}")]
         [HttpPost, ActionName("Delete")]
-        public async Task<IActionResult> DeleteConfirmed(Guid id, CancellationToken cancellationToken)
+        public async Task<IActionResult> ConfirmarExclusao(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.GetById(id, cancellationToken));
+            var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
 
             if (categoriaViewModel == null) return NotFound();
 
-            await _categoriaService.Remove(id, cancellationToken);
+            await _categoriaService.Remover(id, tokenDeCancelamento);
 
             if (!OperacaoValida()) return View(categoriaViewModel);
 

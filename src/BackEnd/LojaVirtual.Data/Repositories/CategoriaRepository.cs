@@ -14,45 +14,45 @@ namespace LojaVirtual.Data.Repositories
             _context = context;
         }
 
-        public async Task Insert(Categoria entity, CancellationToken cancellationToken)
+        public async Task Inserir(Categoria entity, CancellationToken tokenDeCancelamento)
         {
-            await _context.CategoriaSet.AddAsync(entity, cancellationToken);
+            await _context.CategoriaSet.AddAsync(entity, tokenDeCancelamento);
         }
-        public Task Edit(Categoria entity, CancellationToken cancellationToken)
+        public Task Editar(Categoria entity, CancellationToken tokenDeCancelamento)
         {
             return Task.FromResult(_context.CategoriaSet.Update(entity));
         }
 
-        public async Task<Categoria> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Categoria> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            return await _context.CategoriaSet.FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+            return await _context.CategoriaSet.FirstOrDefaultAsync(c => c.Id == id, tokenDeCancelamento);
         }
 
-        public async Task<Categoria> GetWithProduto(Guid id, CancellationToken cancellationToken)
+        public async Task<Categoria> ObterComProduto(Guid id, CancellationToken tokenDeCancelamento)
         {
             return await _context
                             .CategoriaSet
                             .Include(c => c.Produtos)
-                            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+                            .FirstOrDefaultAsync(c => c.Id == id, tokenDeCancelamento);
         }
-        public async Task<IList<Categoria>> ListAsNoTracking(CancellationToken cancellationToken)
+        public async Task<IList<Categoria>> ListarSemContexto(CancellationToken tokenDeCancelamento)
         {
             return await _context
                             .CategoriaSet
                             .AsNoTracking()
-                            .ToListAsync(cancellationToken);
+                            .ToListAsync(tokenDeCancelamento);
         }
-        public async Task Remove(Categoria categoria, CancellationToken cancellationToken)
+        public async Task Remover(Categoria categoria, CancellationToken tokenDeCancelamento)
         {
-            Task.FromResult(_context.CategoriaSet.Remove(categoria));
+            await Task.FromResult(_context.CategoriaSet.Remove(categoria)).ConfigureAwait(false);
         }
-        public async Task<bool> Exists(string nome, CancellationToken cancellationToken)
+        public async Task<bool> Existe(string nome, CancellationToken tokenDeCancelamento)
         {
-            return await _context.CategoriaSet.AnyAsync(c => c.Nome == nome, cancellationToken);
+            return await _context.CategoriaSet.AnyAsync(c => c.Nome == nome, tokenDeCancelamento);
         }
-        public async Task<int> SaveChanges(CancellationToken cancellationToken)
+        public async Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento)
         {
-            return await _context.SaveChangesAsync(cancellationToken);
+            return await _context.SaveChangesAsync(tokenDeCancelamento);
         }
         public void Dispose()
         {

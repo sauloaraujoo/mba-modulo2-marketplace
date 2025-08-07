@@ -5,25 +5,24 @@ namespace LojaVirtual.Business.Interfaces
 {
     public interface IProdutoRepository : IDisposable
     {
-        public Task Insert(Produto produto, CancellationToken tokenDeCancelamento);
-        public Task<Produto> GetById(Guid id, CancellationToken tokenDeCancelamento);
-        Task<Produto> GetSelfProdutoById(Guid id, Guid vendedorId, CancellationToken tokenDeCancelamento);
-        public Task<List<Produto>> ListWithCategoriaVendedorAsNoTracking(CancellationToken tokenDeCancelamento);
-        public Task<PagedResult<Produto>> ListWithCategoriaVendedorPagedAsNoTracking(int pagina, int tamanho, CancellationToken tokenDeCancelamento);
-        public Task<PagedResult<Produto>> ListWithCategoriaVendedorByCategoriaPagedAsNoTracking(Guid categoriaId, int pagina, int tamanho, CancellationToken tokenDeCancelamento);
-        public Task<PagedResult<Produto>> ListWithCategoriaVendedorByVendedorPagedAsNoTracking(Guid vendedorId, int pagina, int tamanho, CancellationToken tokenDeCancelamento);
-        public Task<Produto> getProdutoWithCategoriaVendedorById(Guid produtoId, CancellationToken tokenDeCancelamento);
-
-        public Task<List<Produto>> ListWithCategoriaVendedorByCategoriaAsNoTracking(Guid categoriaId, CancellationToken tokenDeCancelamento);
-        public Task<List<Produto>> ListWithCategoriaVendedorByVendedorAsNoTracking(Guid vendedorId, CancellationToken tokenDeCancelamento);
-        public Task<List<Produto>> List(Guid vendedorId, CancellationToken tokenDeCancelamento);
-        public Task Edit(Produto produto, CancellationToken tokenDeCancelamento);
-        public Task Remove(Produto produto, CancellationToken tokenDeCancelamento);
-        public Task<bool> Exists(string nome, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> GetAllSelfProdutoWithCategoria(Guid vendedorid, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> GetAllProdutoWithCategoria(CancellationToken tokenDeCancelamento);
-        Task<Produto> GetSelfWithCategoriaById(Guid id, Guid vendedorid, CancellationToken tokenDeCancelamento);
-        Task<Produto> GetWithCategoriaById(Guid id, CancellationToken tokenDeCancelamento);
-        public Task<int> SaveChanges(CancellationToken tokenDeCancelamento);
+        public Task Inserir(Produto produto, CancellationToken tokenDeCancelamento);
+        public Task<Produto> ObterPorId(Guid id, CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterProdutoProprioPorId(Guid id, Guid vendedorId, CancellationToken tokenDeCancelamento);
+        public Task<List<Produto>> ListarComCategoriaVendedorSemContexto(CancellationToken tokenDeCancelamento);
+        public Task<PagedResult<Produto>> ListarComCategoriaVendedorPaginadoSemContexto(int pagina, int tamanho, CancellationToken tokenDeCancelamento);
+        public Task<PagedResult<Produto>> ListarComCategoriaVendedorPorCategoriaPaginadoSemContexto(Guid categoriaId, int pagina, int tamanho, CancellationToken tokenDeCancelamento);
+        public Task<PagedResult<Produto>> ListarComCategoriaVendedorPorVendedorPaginadoSemContexto(Guid vendedorId, int pagina, int tamanho, CancellationToken tokenDeCancelamento);
+        public Task<Produto> ObterProdutoComCategoriaVendedorPorId(Guid produtoId, CancellationToken tokenDeCancelamento);
+        public Task<List<Produto>> ListarComCategoriaVendedorPorCategoriaSemContexto(Guid categoriaId, CancellationToken tokenDeCancelamento);
+        public Task<List<Produto>> ListarComCategoriaVendedorPorVendedorSemContexto(Guid vendedorId, CancellationToken tokenDeCancelamento);
+        public Task<List<Produto>> Listar(Guid vendedorId, CancellationToken tokenDeCancelamento);
+        public Task Editar(Produto produto, CancellationToken tokenDeCancelamento);
+        public Task Remover(Produto produto, CancellationToken tokenDeCancelamento);
+        public Task<bool> Existe(string nome, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(Guid vendedorid, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria(CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterProprioComCategoriaPorId(Guid id, Guid vendedorid, CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento);
+        public Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento);
     }
 }

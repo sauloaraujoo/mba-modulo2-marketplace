@@ -16,35 +16,35 @@ namespace LojaVirtual.Business.Services
             _notificavel = notificavel;
         }
 
-        public async Task Insert(Categoria categoria, CancellationToken tokenDeCancelamento)
+        public async Task Inserir(Categoria categoria, CancellationToken tokenDeCancelamento)
         {
             //verifica se o id da categoria já existe
-            if (await _categoriaRepository.GetById(categoria.Id, tokenDeCancelamento) is not null)
+            if (await _categoriaRepository.ObterPorId(categoria.Id, tokenDeCancelamento) is not null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Id da categoria já existente"));
                 return;
             }
 
             //verifica se o nome da categoria já existe
-            if (await _categoriaRepository.Exists(categoria.Nome, tokenDeCancelamento))
+            if (await _categoriaRepository.Existe(categoria.Nome, tokenDeCancelamento))
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Nome da categoria já existente"));
                 return;
             }
-            await _categoriaRepository.Insert(categoria, tokenDeCancelamento);
-            await _categoriaRepository.SaveChanges(tokenDeCancelamento);
+            await _categoriaRepository.Inserir(categoria, tokenDeCancelamento);
+            await _categoriaRepository.SalvarMudancas(tokenDeCancelamento);
         }
 
-        public async Task Edit(Categoria categoria, CancellationToken tokenDeCancelamento)
+        public async Task Editar(Categoria categoria, CancellationToken tokenDeCancelamento)
         {
-            var categoriaOrigem = await _categoriaRepository.GetById(categoria.Id, tokenDeCancelamento);
+            var categoriaOrigem = await _categoriaRepository.ObterPorId(categoria.Id, tokenDeCancelamento);
             if(categoriaOrigem is null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Categoria não encontrada."));
                 return;
             }
             if (categoriaOrigem.Nome != categoria.Nome &&
-                await _categoriaRepository.Exists(categoria.Nome, tokenDeCancelamento))
+                await _categoriaRepository.Existe(categoria.Nome, tokenDeCancelamento))
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Nome da categoria já existente."));
                 return;
@@ -52,13 +52,13 @@ namespace LojaVirtual.Business.Services
 
             categoriaOrigem.Edit(categoria.Nome, categoria.Descricao);
 
-            await _categoriaRepository.Edit(categoriaOrigem, tokenDeCancelamento);
-            await _categoriaRepository.SaveChanges(tokenDeCancelamento);
+            await _categoriaRepository.Editar(categoriaOrigem, tokenDeCancelamento);
+            await _categoriaRepository.SalvarMudancas(tokenDeCancelamento);
         }
 
-        public async Task Remove(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task Remover(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoria = await _categoriaRepository.GetWithProduto(id, tokenDeCancelamento);
+            var categoria = await _categoriaRepository.ObterComProduto(id, tokenDeCancelamento);
             if (categoria is null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Categoria não encontrada."));
@@ -70,18 +70,18 @@ namespace LojaVirtual.Business.Services
                 return;
             }
 
-            await _categoriaRepository.Remove(categoria, tokenDeCancelamento);
-            await _categoriaRepository.SaveChanges(tokenDeCancelamento);
+            await _categoriaRepository.Remover(categoria, tokenDeCancelamento);
+            await _categoriaRepository.SalvarMudancas(tokenDeCancelamento);
         }        
 
-        public async Task<IEnumerable<Categoria>> List(CancellationToken tokenDeCancelamento)
+        public async Task<IEnumerable<Categoria>> Listar(CancellationToken tokenDeCancelamento)
         {
-            return await _categoriaRepository.ListAsNoTracking(tokenDeCancelamento);
+            return await _categoriaRepository.ListarSemContexto(tokenDeCancelamento);
         }
 
-        public async Task<Categoria> GetById(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<Categoria> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoria = await _categoriaRepository.GetById(id, tokenDeCancelamento);
+            var categoria = await _categoriaRepository.ObterPorId(id, tokenDeCancelamento);
             if (categoria is null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Categoria não encontrada."));
