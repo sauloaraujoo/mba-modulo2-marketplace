@@ -27,9 +27,9 @@ namespace LojaVirtual.Api.V1.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("")]        
+        [HttpGet("")]
         public async Task<ActionResult> ListarVitrine(Guid? categoriaId, CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
-        {            
+        {
             var resultado = await _produtoService.ListarVitrinePaginado(categoriaId, pagina, tamanho, tokenDeCancelamento);
             var viewModel = new PagedResult<ProdutoModel>
             {
@@ -43,7 +43,7 @@ namespace LojaVirtual.Api.V1.Controllers
         }
 
         [HttpGet("por-vendedor/{vendedorId:guid}")]
-        public async Task<ActionResult> ListarVitrinePorVendedor([FromRoute]Guid vendedorId, CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
+        public async Task<ActionResult> ListarVitrinePorVendedor([FromRoute] Guid vendedorId, CancellationToken tokenDeCancelamento, [FromQuery] int pagina = 1, [FromQuery] int tamanho = 10)
         {
             var resultado = await _produtoService.ListarVitrinePorVendedorPaginado(vendedorId, pagina, tamanho, tokenDeCancelamento);
 
@@ -59,16 +59,16 @@ namespace LojaVirtual.Api.V1.Controllers
             //return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrineByVendedor(vendedorId, cancellationToken)));
         }
 
-        [HttpGet("detalhe/{id:Guid}")]                
-        public async Task<IActionResult> ObterDetalhePorId(Guid id, CancellationToken tokenDeCancelamento)
+        [HttpGet("detalhe/{id:Guid}")]
+        public async Task<IActionResult> ObterDetalhesPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListarVitrinePorId(id, tokenDeCancelamento)));            
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListarVitrinePorId(id, tokenDeCancelamento)));
         }
 
         [HttpGet("categorias")]
         public async Task<ActionResult> ListarCategorias(CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.List(tokenDeCancelamento)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
         }
 
     }

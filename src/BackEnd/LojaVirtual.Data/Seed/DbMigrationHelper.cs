@@ -79,7 +79,7 @@ namespace LojaVirtual.Data.Seed
                 {
                     UserId = idUser.ToString(),
                     ClaimType = "Produtos",
-                    ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
+                    ClaimValue = "VISUALIZAR,ADICIONAR,EDITAR,EXCLUIR,ATUALIZAR_STATUS"
                 };
                 await context.UserClaims.AddAsync(claimVendedorProdutos);
 
@@ -190,13 +190,13 @@ namespace LojaVirtual.Data.Seed
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Vendedores",
-                ClaimValue = "VI,ATUALIZAR_STATUS"
+                ClaimValue = "VISUALIZAR,ATUALIZAR_STATUS"
             },
             new IdentityUserClaim<string>
             {
                 UserId = idAdminUser.ToString(),
                 ClaimType = "Produtos",
-                ClaimValue = "AD,VI,ED,EX,TODOS_PRODUTOS,ATUALIZAR_STATUS"
+                ClaimValue = "VISUALIZAR,TODOS_PRODUTOS,ATUALIZAR_STATUS"
             }
           };
             await context.UserClaims.AddRangeAsync(claimsAdmin);

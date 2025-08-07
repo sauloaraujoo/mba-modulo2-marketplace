@@ -6,8 +6,8 @@ namespace LojaVirtual.Business.Interfaces
     {
         Task Inserir(Categoria request, CancellationToken tokenDeCancelamento);
         Task Editar(Categoria request, CancellationToken tokenDeCancelamento);
-        Task Remove(Guid id, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Categoria>> List(CancellationToken tokenDeCancelamento);        
+        Task Remover(Guid id, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Categoria>> Listar(CancellationToken tokenDeCancelamento);        
         Task<Categoria> ObterPorId(Guid id, CancellationToken tokenDeCancelamento);
     }
 }

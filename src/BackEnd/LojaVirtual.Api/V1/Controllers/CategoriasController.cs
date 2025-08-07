@@ -27,27 +27,27 @@ namespace LojaVirtual.Api.V1.Controllers
 
         [ClaimsAuthorize("Categorias", "ADICIONAR")]
         [HttpPost]
-        public async Task<ActionResult> Inserir([FromBody] CategoriaModel request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Inserir([FromBody] CategoriaModel request, CancellationToken tokenDeCancelamento)
         {
             if (!ModelState.IsValid)
             {
                 return CustomResponse(ModelState);
             }
             
-            await _categoriaService.Inserir(_mapper.Map<Categoria>(request), cancellationToken);                        
+            await _categoriaService.Inserir(_mapper.Map<Categoria>(request), tokenDeCancelamento);                        
             
             return CustomResponse(HttpStatusCode.Created);            
         }
 
         [HttpGet]
-        public async Task<ActionResult> Listar(CancellationToken cancellationToken)
+        public async Task<ActionResult> Listar(CancellationToken tokenDeCancelamento)
         {            
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.List(cancellationToken)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
         }
 
         [ClaimsAuthorize("Categorias", "EDITAR")]
         [HttpPut("{id:Guid}")]
-        public async Task<IActionResult> Editar(Guid id, [FromBody] CategoriaModel request, CancellationToken cancellationToken)
+        public async Task<IActionResult> Editar(Guid id, [FromBody] CategoriaModel request, CancellationToken tokenDeCancelamento)
         {
             if (id != request.Id)
             {
@@ -59,24 +59,24 @@ namespace LojaVirtual.Api.V1.Controllers
                 return CustomResponse(ModelState);
             }
 
-            await _categoriaService.Editar(_mapper.Map<Categoria>(request), cancellationToken);
+            await _categoriaService.Editar(_mapper.Map<Categoria>(request), tokenDeCancelamento);
             
             return CustomResponse(HttpStatusCode.NoContent);            
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> ObterId(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var categoria = _mapper.Map<CategoriaModel>(await _categoriaService.ObterPorId(id, cancellationToken));
+            var categoria = _mapper.Map<CategoriaModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
             
             return CustomResponse(HttpStatusCode.OK, categoria);
         }
 
         [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> Remover(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Remove(Guid id, CancellationToken tokenDeCancelamento)
         {
-            await _categoriaService.Remove(id, cancellationToken);
+            await _categoriaService.Remover(id, tokenDeCancelamento);
             
             return CustomResponse(HttpStatusCode.NoContent);
         }
