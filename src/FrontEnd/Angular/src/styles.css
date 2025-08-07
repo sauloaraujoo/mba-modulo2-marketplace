@@ -1,1 +1,139 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global Styles */
+:root {
+  --color-primary: #2C3E50;
+  --color-secondary: #2f60c2;
+  --color-bg: #ECF0F1;
+  --color-text: #1C1C1C;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+}
+
+/* app-root precisa ocupar toda a altura e usar flexbox */
+app-root {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header fixo */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: var(--color-primary) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Compensar altura da navbar */
+body {
+  padding-top: 70px;
+}
+
+/* Conteúdo principal */
+.main-content {
+  flex: 1;
+  padding: 2rem 1rem;
+}
+
+/* Footer fixo no final da tela (não flutuando) */
+app-footer {
+  background-color: var(--color-primary);
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.9rem;
+}
+
+/* Navegação */
+.navbar .nav-link {
+  color: #ffffff !important;
+  transition: color 0.3s ease;
+}
+
+.navbar .nav-link:hover {
+  color: var(--color-secondary) !important;
+}
+
+.site-name {
+  font-family: 'Segoe UI Semibold', 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: normal;
+  font-size: 1.6rem;
+  letter-spacing: 0.3px;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botões */
+.btn-success {
+  background-color: var(--color-secondary) !important;
+  border: none;
+  color: white !important;
+}
+
+.btn-success:hover {
+  background-color: #104a9b !important;
+}
+
+.btn {
+  border-radius: 6px;
+}
+
+/* Cartões de produto */
+.card {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+.imagem-produto {
+  max-height: 200px;
+  object-fit: contain;
+  padding: 1rem;
+}
+
+/* Nome e preço do produto */
+.produto-nome {
+  font-weight: bold;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.produto-preco {
+  font-size: 1.2rem;
+  color: var(--color-secondary);
+  margin-bottom: 1rem;
+}
+
+/* Botão de detalhes */
+.botao-detalhe {
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+}
+
+.botao-detalhe:hover {
+  background-color: var(--color-secondary);
+  color: white;
+}
+
+/* Responsividade adicional */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem 0.5rem;
+  }
+}

@@ -1,14 +1,14 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Produto } from '../models/produto';
 import { ActivatedRoute } from '@angular/router';
 import { ProdutoService } from '../services/produtos.service';
 import { LocalStorageUtils } from 'src/app/utils/localstorage';
 import { NotificacaoService } from 'src/app/services/notificacao.service';
+
 @Component({
   selector: 'app-produto',
   templateUrl: './produto.component.html',
-  styles: [
-  ]
+  styleUrls: ['./produto.component.css']
 })
 export class ProdutoComponent {
 
@@ -19,11 +19,18 @@ export class ProdutoComponent {
   public id: string = "";
   private localStorageUtils = new LocalStorageUtils();
   favoritosIds = new Set<string>();
-  
-  constructor(private produtoService: ProdutoService, private route: ActivatedRoute, private notificacaoService: NotificacaoService) { 
+
+  imagemModalAberta = false;
+  imagemSelecionada = '';
+
+  constructor(
+    private produtoService: ProdutoService,
+    private route: ActivatedRoute,
+    private notificacaoService: NotificacaoService
+  ) {
     this.route.params.subscribe(res => {
-    this.produtoId = res["id"];
-    });
+      this.produtoId = res["id"];
+    });
   }
 
   ngOnInit() {
@@ -31,20 +38,18 @@ export class ProdutoComponent {
     this.carregarFavoritos();
   }
 
-
-  private carregarProduto(): void {  
-      this.produtoService.obterProduto(this.produtoId)
-        .subscribe({
-          next: (produto) => {
-            this.produto = produto;
-            console.log(produto);
-          },
-          error: (error) => console.error(error)
-        });  
-  }  
+  private carregarProduto(): void {
+    this.produtoService.obterProduto(this.produtoId)
+      .subscribe({
+        next: (produto) => {
+          this.produto = produto;
+        },
+        error: (error) => console.error(error)
+      });
+  }
 
   carregarFavoritos() {
-  if (!this.ehUsuarioLogado()) return;
+    if (!this.ehUsuarioLogado()) return;
 
     this.produtoService.obterFavoritos().subscribe({
       next: favoritos => {
@@ -64,7 +69,6 @@ export class ProdutoComponent {
         complete: () => {
           this.favoritosIds.delete(produtoId);
           this.favoritosIds = new Set(this.favoritosIds);
-
           this.notificacaoService.showSuccess('Produto removido dos favoritos.');
         },
         error: (err) => {
@@ -77,7 +81,6 @@ export class ProdutoComponent {
         next: () => {
           this.favoritosIds.add(produtoId);
           this.favoritosIds = new Set(this.favoritosIds);
-
           this.notificacaoService.showSuccess('Produto adicionado aos favoritos!');
         },
         error: (err) => {
@@ -92,4 +95,13 @@ export class ProdutoComponent {
     return this.localStorageUtils.obterTokenUsuario() !== null;
   }
 
+  abrirImagemModal(imagem: string): void {
+    this.imagemSelecionada = this.urlImagem + imagem;
+    this.imagemModalAberta = true;
+  }
+
+  fecharImagemModal(): void {
+    this.imagemModalAberta = false;
+    this.imagemSelecionada = '';
+  }
 }

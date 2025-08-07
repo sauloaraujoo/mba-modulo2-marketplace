@@ -1,0 +1,64 @@
+.imagem-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+
+.imagem-modal-conteudo {
+  position: relative;
+  background-color: #fff;
+  padding: 0;
+  border-radius: 8px;
+  max-width: 90%;
+  max-height: 90%;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.imagem-modal-conteudo img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.fechar-modal {
+  position: absolute;
+  top: 4px;
+  right: 8px;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.vendedor-botao {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 6px 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #007bff;
+  border: 1px solid #007bff;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: 0.2s ease-in-out;
+}
+
+.vendedor-botao:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.vendedor-botao i {
+  font-size: 1.2rem;
+}
+

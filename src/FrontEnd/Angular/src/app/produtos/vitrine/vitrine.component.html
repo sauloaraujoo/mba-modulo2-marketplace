@@ -1,18 +1,21 @@
 <div class="container main-container">
-    <h2>Produtos</h2>
+  <h2 class="titulo-vitrine">Produtos</h2>
 
-    <div class="form-group">
-        <label class="col-md-2 control-label">Categoria</label>
-        <div class="col-md-10">
-            <select id="selCategoria" class="form-control" (change)="onCategoriaChange($event)">
-                <option value="">Selecione uma categoria</option>
-                <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</option>
-            </select>
-        </div>
+  <div class="form-group row align-items-center">
+    <label class="col-sm-2 col-form-label">Categoria</label>
+    <div class="col-sm-10">
+      <select id="selCategoria" class="form-control" (change)="onCategoriaChange($event)">
+        <option value="">Selecione uma categoria</option>
+        <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</option>
+      </select>
     </div>
+  </div>
 
-    <br>
+  <br />
 
-    <app-lista [categoriaId]="categoriaSelecionada" [vendedorId]="" contexto="produtos"></app-lista>
+  <app-lista
+    [categoriaId]="categoriaSelecionada"
+    [vendedorId]="''"
+    contexto="produtos"
+  ></app-lista>
 </div>
-
