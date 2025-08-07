@@ -6,22 +6,22 @@ namespace LojaVirtual.Business.Extensions.IdentityUser
 {
     public class AppIdentityUser : IAppIdentifyUser
     {
-        private readonly IHttpContextAccessor _accessor;        
+        private readonly IHttpContextAccessor _accessor;
         public AppIdentityUser(IHttpContextAccessor accessor)
         {
             _accessor = accessor;
         }
 
-        public string GetUserId()
+        public string ObterUsuarioId()
         {
-            if (!IsAuthenticated()) return string.Empty;
+            if (!EAutenticado()) return string.Empty;
 
             var claim = _accessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             return claim ?? string.Empty;
         }
 
-        public bool IsAuthenticated()
+        public bool EAutenticado()
         {
             return _accessor.HttpContext?.User.Identity is { IsAuthenticated: true };
         }
