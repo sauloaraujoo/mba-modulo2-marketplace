@@ -5,16 +5,16 @@ namespace LojaVirtual.Mvc.Components
 {
     public class SummaryViewComponent : ViewComponent
     {
-        private readonly INotifiable _notifiable;
+        private readonly INotificavel _notificavel;
 
-        public SummaryViewComponent(INotifiable notifiable)
+        public SummaryViewComponent(INotificavel notificavel)
         {
-            _notifiable = notifiable;
+            _notificavel = notificavel;
         }
 
         public IViewComponentResult Invoke()
         {
-            var notificacoes = _notifiable.GetNotifications();
+            var notificacoes = _notificavel.ObterNotificacoes();
             notificacoes.ForEach(c => ViewData.ModelState.AddModelError(string.Empty, c.Message));
 
             return View();

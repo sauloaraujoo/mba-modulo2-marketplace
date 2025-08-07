@@ -4,10 +4,10 @@ namespace LojaVirtual.Business.Interfaces
 {
     public interface ICategoriaService
     {
-        Task Inserir(Categoria request, CancellationToken cancellationToken);
-        Task Editar(Categoria request, CancellationToken cancellationToken);
-        Task Remover(Guid id, CancellationToken cancellationToken);
-        Task<IEnumerable<Categoria>> Listar(CancellationToken cancellationToken);        
-        Task<Categoria> ObterPorId(Guid id, CancellationToken cancellationToken);
+        Task Inserir(Categoria request, CancellationToken tokenDeCancelamento);
+        Task Editar(Categoria request, CancellationToken tokenDeCancelamento);
+        Task Remover(Guid id, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Categoria>> Listar(CancellationToken tokenDeCancelamento);        
+        Task<Categoria> ObterPorId(Guid id, CancellationToken tokenDeCancelamento);
     }
 }

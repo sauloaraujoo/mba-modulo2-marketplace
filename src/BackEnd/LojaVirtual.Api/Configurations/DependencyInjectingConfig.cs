@@ -1,6 +1,6 @@
 ﻿using LojaVirtual.Business.Extensions.IdentityUser;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
+using LojaVirtual.Business.Notificacoes;
 using LojaVirtual.Business.Services;
 using LojaVirtual.Data.Repositories;
 
@@ -17,7 +17,7 @@ namespace LojaVirtual.Api.Configurations
             services.AddScoped<IClienteRepository, ClienteRepository>();
 
             //Notification
-            services.AddScoped<INotifiable, Notifiable>();
+            services.AddScoped<INotificavel, Notificavel>();
 
             //Services
             services.AddScoped<ICategoriaService, CategoriaService>();

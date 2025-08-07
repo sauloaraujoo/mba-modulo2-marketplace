@@ -4,9 +4,9 @@ namespace LojaVirtual.Business.Interfaces
 {
     public interface IClienteRepository : IDisposable
     {
-        Task Insert(Cliente cliente, CancellationToken cancellationToken);
-        Task<Cliente?> GetClienteComFavoritos(Guid id, CancellationToken cancellationToken);
-        public Task<int> SaveChanges(CancellationToken cancellationToken);
+        Task Insert(Cliente cliente, CancellationToken tokenDeCancelamento);
+        Task<Cliente?> GetClienteComFavoritos(Guid id, CancellationToken tokenDeCancelamento);
+        public Task<int> SaveChanges(CancellationToken tokenDeCancelamento);
         void Update(Cliente cliente);
     }
 }

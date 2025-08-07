@@ -11,7 +11,7 @@ namespace LojaVirtual.Mvc.Controllers
        
 
         public HomeController(
-                              INotifiable notifiable) : base(notifiable)
+                              INotificavel notificavel) : base(notificavel)
         {
            
         }

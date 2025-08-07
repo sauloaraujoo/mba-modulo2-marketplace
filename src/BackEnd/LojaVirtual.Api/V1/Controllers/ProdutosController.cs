@@ -1,36 +1,37 @@
 ﻿using AutoMapper;
+using LojaVirtual.Api.Controllers;
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Entities;
 using LojaVirtual.Business.Interfaces;
-using LojaVirtual.Business.Notifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/produtos")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/produtos")]
     public class ProdutosController : MainController
     {
         private readonly IProdutoService _produtoService;
         private readonly IMapper _mapper;
         public ProdutosController(IProdutoService produtoService,
-                                    INotifiable notifiable,
-                                    IMapper mapper) : base(notifiable)
+                                    INotificavel notificavel,
+                                    IMapper mapper) : base(notificavel)
         {
             _produtoService = produtoService;
             _mapper = mapper;
         }
         
         [HttpGet("lista")]        
-        public async Task<IActionResult> List(CancellationToken cancellationToken)
+        public async Task<IActionResult> List(CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.List(cancellationToken)));
+            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.List(tokenDeCancelamento)));
         }
         
         [HttpPost("novo")]
-        public async Task<IActionResult> Insert([FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Insert([FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
         {
             if (!ModelState.IsValid)
             {
@@ -45,7 +46,7 @@ namespace LojaVirtual.Api.Controllers
             try
             {
                 produtoModel.Imagem = imagePrefix + produtoModel.ImagemUpload.FileName;
-                await _produtoService.Insert(_mapper.Map<Produto>(produtoModel), cancellationToken);
+                await _produtoService.Insert(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
                 if(!OperacaoValida())
                 {
                     DeleteFile(produtoModel.Imagem);
@@ -60,7 +61,7 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpPut("editar/{id:Guid}")]
-        public async Task<IActionResult> Edit(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken cancellationToken)
+        public async Task<IActionResult> Edit(Guid id, [FromForm] ProdutoModel produtoModel, CancellationToken tokenDeCancelamento)
         {
             if (id != produtoModel.Id)
             {
@@ -68,7 +69,7 @@ namespace LojaVirtual.Api.Controllers
                 return CustomResponse();
             }
 
-            var produtoOrigem = await _produtoService.GetSelfProdutoById(id, cancellationToken);
+            var produtoOrigem = await _produtoService.GetSelfProdutoById(id, tokenDeCancelamento);
             if (produtoOrigem is null)
             {
                 return CustomResponse();
@@ -95,7 +96,7 @@ namespace LojaVirtual.Api.Controllers
 
             try
             {
-                await _produtoService.Edit(_mapper.Map<Produto>(produtoModel), cancellationToken);
+                await _produtoService.Edit(_mapper.Map<Produto>(produtoModel), tokenDeCancelamento);
                 if (!OperacaoValida() && produtoModel.ImagemUpload != null)
                 {
                     DeleteFile(produtoModel.Imagem);
@@ -113,16 +114,16 @@ namespace LojaVirtual.Api.Controllers
         }
 
         [HttpGet("{id:Guid}")]
-        public async Task<ActionResult> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> GetById(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var produto = _mapper.Map<ProdutoModel>(await _produtoService.GetSelfProdutoById(id, cancellationToken));
+            var produto = _mapper.Map<ProdutoModel>(await _produtoService.GetSelfProdutoById(id, tokenDeCancelamento));
             return CustomResponse(HttpStatusCode.OK, produto);
         }
 
         [HttpDelete("{id:Guid}")]
-        public async Task<ActionResult> Remove(Guid id, CancellationToken cancellationToken)
+        public async Task<ActionResult> Remove(Guid id, CancellationToken tokenDeCancelamento)
         {
-            await _produtoService.Remove(id, cancellationToken);
+            await _produtoService.Remove(id, tokenDeCancelamento);
 
             return CustomResponse(HttpStatusCode.NoContent);
         }

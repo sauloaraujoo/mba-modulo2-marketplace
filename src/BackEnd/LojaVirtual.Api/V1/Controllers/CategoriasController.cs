@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LojaVirtual.Api.Controllers;
 using LojaVirtual.Api.Extensions;
 using LojaVirtual.Api.Models;
 using LojaVirtual.Business.Entities;
@@ -7,16 +8,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace LojaVirtual.Api.Controllers
+namespace LojaVirtual.Api.V1.Controllers
 {
     [Authorize]
-    [Route("api/categorias")]
+    [ApiVersion("1.0")]
+    [Route("api/v{version:apiVersion}/categorias")]
     public class CategoriasController : MainController
     {
         private readonly ICategoriaService _categoriaService;        
         private readonly IMapper _mapper;
         public CategoriasController(ICategoriaService categoriaService,
-                                    INotifiable notifiable,
+                                    INotificavel notifiable,
                                     IMapper mapper): base(notifiable)
         {
             _categoriaService = categoriaService;
