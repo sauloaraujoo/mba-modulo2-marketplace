@@ -20,7 +20,7 @@ namespace LojaVirtual.Business.Services
       
         public async Task AlterarStatus(Vendedor vendedor, CancellationToken tokenDeCancelamento)
         {
-            var vendedorOrigem = await _vendedorRepository.GetById(vendedor.Id, tokenDeCancelamento);
+            var vendedorOrigem = await _vendedorRepository.ObterPorIdSemContexto(vendedor.Id, tokenDeCancelamento);
             if (vendedorOrigem is null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Vendedor não encontrado."));
@@ -29,18 +29,18 @@ namespace LojaVirtual.Business.Services
 
             vendedorOrigem.AlterarStatus();
 
-            await _vendedorRepository.Edit(vendedorOrigem, tokenDeCancelamento);
-            await _vendedorRepository.SaveChanges(tokenDeCancelamento);
+            await _vendedorRepository.Editar(vendedorOrigem, tokenDeCancelamento);
+            await _vendedorRepository.SalvarMudancas(tokenDeCancelamento);
         }
 
         public async Task<IEnumerable<Vendedor>> Listar(CancellationToken tokenDeCancelamento)
         {
-            return await _vendedorRepository.ListAsNoTracking(tokenDeCancelamento);
+            return await _vendedorRepository.ListarSemContexto(tokenDeCancelamento);
         }
 
         public async Task<Vendedor> ObterPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var vendedor = await _vendedorRepository.GetById(id, tokenDeCancelamento);
+            var vendedor = await _vendedorRepository.ObterPorIdSemContexto(id, tokenDeCancelamento);
             if (vendedor is null)
             {
                 _notificavel.AdicionarNotificacao(new Notificacao("Vendedor não encontrado."));

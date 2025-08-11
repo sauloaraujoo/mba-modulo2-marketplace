@@ -22,30 +22,37 @@ namespace LojaVirtual.Data.Repositories
         {
             return Task.FromResult(_context.ProdutoSet.Update(entity));
         }
-        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoriaVendedor(Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
                 .Where(p => p.VendedorId == vendedorId)
+                .OrderBy(p => p.Nome)
                 .ToListAsync(cancellationToken);
         }
-        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria( CancellationToken cancellationToken)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoriaVendedor( CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
+                .OrderBy(p => p.Categoria.Nome)
+                .ThenBy(p => p.Nome)
                 .ToListAsync(cancellationToken);
         }
-        public async Task<Produto> ObterProprioComCategoriaPorId(Guid id, Guid vendedorId, CancellationToken cancellationToken)
+        public async Task<Produto> ObterProprioComCategoriaVendedorPorId(Guid id, Guid vendedorId, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
                 .FirstOrDefaultAsync(p => p.Id == id && p.VendedorId == vendedorId, cancellationToken);
         }
 
-        public async Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken cancellationToken)
+        public async Task<Produto> ObterComCategoriaVendedorPorId(Guid id, CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
+                .Include(p => p.Vendedor)
                 .FirstOrDefaultAsync(p => p.Id == id , cancellationToken);
         }
         public async Task<Produto> ObterPorId(Guid id, CancellationToken cancellationToken)

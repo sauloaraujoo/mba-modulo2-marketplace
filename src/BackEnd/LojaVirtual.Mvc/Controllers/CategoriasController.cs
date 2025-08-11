@@ -115,7 +115,7 @@ namespace LojaVirtual.Mvc.Controllers
 
         [ClaimsAuthorize("Categorias", "EXCLUIR")]
         [Route("excluir/{id:guid}")]
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Excluir")]
         public async Task<IActionResult> ConfirmarExclusao(Guid id, CancellationToken tokenDeCancelamento)
         {
             var categoriaViewModel = _mapper.Map<CategoriaViewModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));

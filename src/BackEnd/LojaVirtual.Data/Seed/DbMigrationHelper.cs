@@ -34,21 +34,18 @@ namespace LojaVirtual.Data.Seed
             {
                 await context.Database.MigrateAsync();
 
-                await EnsureSeedTables(context);                
+                await EnsureSeedTables(context);
             }
-        }        
+        }
 
         private static async Task EnsureSeedTables(LojaVirtualContext context)
-        {            
+        {
             if (await context.CategoriaSet.AnyAsync()) return;
 
             var categorias = new List<Categoria>
             {
-            new Categoria("Informática", "Descrição da categoria Informática"),
-            new Categoria("Eletrodomésticos", "Descrição da categoria Eletrodomésticos"),
             new Categoria("Celulares", "Descrição da categoria Celulares"),
-            new Categoria("Áudio e Vídeo", "Descrição da categoria Áudio e Vídeo"),
-            new Categoria("Eletroportáteis", "Descrição da categoria Eletroportáteis")
+            new Categoria("Tablets", "Descrição da categoria Tablets"),
             };
 
             await context.CategoriaSet.AddRangeAsync(categorias);
@@ -83,43 +80,75 @@ namespace LojaVirtual.Data.Seed
                 };
                 await context.UserClaims.AddAsync(claimVendedorProdutos);
 
-                // Criação de 5 produtos, distribuindo entre categorias
-                int categoriaIndex = 0;                
+                var produtosLoja = new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>();
 
-                var produtosLoja = new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade)>
+                switch (v)
                 {
-                    ("Monitor LG 24'' Full HD", "Monitor LG LED 24 polegadas Full HD HDMI", "monitor.jpg", 699.90m, 20),
-                    ("Mouse Logitech M170", "Mouse sem fio Logitech M170 cinza", "mouse.jpg", 79.99m, 50),
-                    ("Micro-ondas Electrolux 20L", "Micro-ondas Electrolux branco 20 litros", "microondas.jpg", 599.90m, 15),
-                    ("Cabo HDMI 2.0 2M", "Cabo HDMI 2.0 2 metros 4K Ultra HD", "cabo_video.jpg", 25.70m, 100),
-                    ("Sanduicheira Mondial", "Sanduicheira Mondial inox antiaderente", "sanduicheira.jpg", 49.90m, 25)
-                };
-
+                    case 1:
+                        // Adiciona produtos da categoria Celulares para o Vendedor 1
+                        produtosLoja.AddRange(new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>
+                        {
+                            ("iPhone 16 256GB", "Mais detalhes do produto iPhone 16 256GB", "iphone16.jpg", 7799.00m, 20, categorias[0].Id),
+                            ("iPhone 16 PRO 256GB", "Mais detalhes do produto iPhone 16 PRO 256GB", "iphone16pro.jpg", 10499.00m, 50, categorias[0].Id)
+                        });
+                        break;
+                    case 2:
+                        // Adiciona produtos da categoria Celulares para o Vendedor 2
+                        produtosLoja.AddRange(new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>
+                        {
+                            ("Samsung S24 Ultra 256GB", "Mais detalhes do produto Samsung S24 Ultra 256GB", "samsungs24.jpg", 5219.13m, 20, categorias[0].Id),
+                            ("Samsung S25 Ultra 256GB", "Mais detalhes do produto Samsung S25 Ultra 256GB", "samsungs25.jpg", 8299.00m, 50, categorias[0].Id)
+                        });
+                        break;
+                    case 3:
+                        // Adiciona produtos da categoria Celulares para o Vendedor 3
+                        produtosLoja.AddRange(new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>
+                        {
+                            ("Motorola Edge 60 Fusion 256GB", "Mais detalhes do produto Motorola Edge 60 Fusion 256GB", "motorolaedge60.jpg", 2099.90m, 20, categorias[0].Id),
+                            ("Motorola Moto G75 5g 256gb", "Mais detalhes do produto Motorola Moto G75 5g 256gb", "motog75.jpg", 1656.95m, 50, categorias[0].Id)
+                        });
+                        break;
+                    case 4:
+                        // Adiciona produtos da categoria Tablet para o Vendedor 4
+                        produtosLoja.AddRange(new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>
+                        {
+                            ("iPad Apple 10th 64GB", "Mais detalhes do produto iPad Apple 10th 64GB", "ipad10.jpg", 6899.50m, 20, categorias[1].Id),
+                            ("iPad 11th 128GB", "Mais detalhes do produto iPad 11th 128GB", "ipad11.jpg", 8599.79m, 50, categorias[1].Id)
+                        });
+                        break;
+                    case 5:
+                        // Adiciona produtos da categoria Tablet para o Vendedor 5
+                        produtosLoja.AddRange(new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>
+                        {
+                            ("Samsung Galaxy Tab A9+ 128GB", "Mais detalhes do produto Samsung Galaxy Tab A9+ 128GB", "galaxytabA9.jpg", 1831.20m, 20, categorias[1].Id),
+                            ("Galaxy Tab S10 FE 128GB", "Mais detalhes do produto Galaxy Tab S10 FE 128GB", "galaxytabS10.jpg", 2799.01m, 50, categorias[1].Id)
+                        });
+                        break;
+                    default:
+                        break;
+                }
 
                 for (int p = 0; p < produtosLoja.Count; p++)
                 {
-                    var categoria = categorias[categoriaIndex];
-
                     var produtoReal = produtosLoja[p];
+                    var categoria = categorias.Where(c => c.Id == produtoReal.CategoriaId).FirstOrDefault();
 
-                    var produto = new Produto(
-                        produtoReal.Nome,
-                        produtoReal.Descricao,
-                        produtoReal.Imagem,
-                        produtoReal.Preco,
-                        produtoReal.Quantidade,
-                        true,
-                        categoria.Id
-                    );
+                    if (categoria != null)
+                    {
+                        var produto = new Produto(
+                            produtoReal.Nome,
+                            produtoReal.Descricao,
+                            produtoReal.Imagem,
+                            produtoReal.Preco,
+                            produtoReal.Quantidade,
+                            true,
+                            produtoReal.CategoriaId
+                        );
 
-                    produto.VinculaVendedor(vendedor.Id);
-                    categoria.AddProduto(produto);
-
-                    categoriaIndex++;
-
-                    if (categoriaIndex >= categorias.Count)
-                        categoriaIndex = 0;
-                }               
+                        produto.VinculaVendedor(vendedor.Id);
+                        categoria.AddProduto(produto);
+                    }
+                }
             }
 
             var idClienteUser = Guid.NewGuid();
@@ -137,7 +166,7 @@ namespace LojaVirtual.Data.Seed
             await context.Users.AddAsync(userCliente);
 
             var cliente = new Cliente(idClienteUser, "Cliente", "cliente@teste.com");
-            
+
             Produto? primeiroProduto = null;
 
             foreach (var categoria in categorias)

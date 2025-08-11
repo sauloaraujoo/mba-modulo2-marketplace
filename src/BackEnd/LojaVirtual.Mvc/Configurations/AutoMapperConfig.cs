@@ -10,7 +10,9 @@ namespace LojaVirtual.Mvc.Configurations
         {
             CreateMap<Vendedor, VendedorViewModel>().ReverseMap();
             CreateMap<Categoria, CategoriaViewModel>().ReverseMap();
-            CreateMap<Produto, ProdutoViewModel>().ForMember(dest => dest.NomeCategoria, opt => opt.MapFrom(src => src.Categoria.Nome));
+            CreateMap<Produto, ProdutoViewModel>()
+                .ForMember(dest => dest.NomeCategoria, opt => opt.MapFrom(src => src.Categoria.Nome))
+                .ForMember(dest => dest.NomeVendedor, opt => opt.MapFrom(src => src.Vendedor.Nome));
             CreateMap<ProdutoViewModel, Produto>();
             CreateMap<Produto, ProdutoVitrineViewModel>()
                 .ForMember(dest => dest.Categoria, opt => opt.MapFrom(src => src.Categoria.Nome))

@@ -1,13 +1,11 @@
 ﻿@using LojaVirtual.Mvc.Extensions
 @model ProdutoViewModel
 @{
-    ViewData["Title"] = "Exclusão do Produto - " + Model.Nome;
+    ViewData["Title"] = "Detalhe do Produto - " + Model.Nome;
 }
 
 <h4 style="padding-top: 50px">@ViewData["Title"]</h4>
-<h5>Você tem certeza disso?</h5>
 <hr />
-<vc:Summary></vc:Summary>
 <div class="row">
     <div class="col-md-4">
         <img src="~/images/@Model.Imagem" alt="@Model.Imagem" style="width: 300px; height: 300px" />
@@ -38,14 +36,17 @@
             <dd>
                 @this.FormatoMoeda(Model.Preco)
             </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.NomeVendedor)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.NomeVendedor)
+            </dd>
         </dl>
 
         <div>
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Id" />
-                <input type="submit" value="Excluir" class="btn btn-danger" />
-                <a class="btn btn-info" asp-action="Index">Voltar</a>
-            </form>
+            
+            <a class="btn btn-info" asp-action="Index">Voltar</a>
         </div>
     </div>
 </div>

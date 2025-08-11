@@ -34,9 +34,9 @@ namespace LojaVirtual.Mvc.Controllers
             IEnumerable<ProdutoViewModel> produtos;
 
             if (CustomAuthorization.ValidarClaimsUsuario(this.HttpContext, "Produtos", "TODOS_PRODUTOS"))
-                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.ObterTodosProdutosComCategoria(tokenDeCancelamento));
+                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.ObterTodosProdutosComCategoriaVendedor(tokenDeCancelamento));
             else
-                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.ObterTodosProdutosPropriosComCategoria(tokenDeCancelamento));
+                produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoService.ObterTodosProdutosPropriosComCategoriaVendedor(tokenDeCancelamento));
 
 
 
@@ -89,9 +89,9 @@ namespace LojaVirtual.Mvc.Controllers
             ProdutoViewModel produtoViewModel;
 
             if (CustomAuthorization.ValidarClaimsUsuario(this.HttpContext, "Produtos", "TODOS_PRODUTOS"))
-                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterComCategoriaPorId(id, tokenDeCancelamento));
+                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterComCategoriaVendedorPorId(id, tokenDeCancelamento));
             else
-                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaPorId(id, tokenDeCancelamento));
+                produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaVendedorPorId(id, tokenDeCancelamento));
 
 
             if (produtoViewModel == null)
@@ -106,7 +106,7 @@ namespace LojaVirtual.Mvc.Controllers
         [Route("excluir/{id:guid}")]
         public async Task<IActionResult> Excluir(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaPorId(id, tokenDeCancelamento));
+            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaVendedorPorId(id, tokenDeCancelamento));
 
             if (produtoViewModel == null)
             {
@@ -120,7 +120,7 @@ namespace LojaVirtual.Mvc.Controllers
         [HttpPost, ActionName("Delete")]
         public async Task<IActionResult> ConfirmarExclusao(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaPorId(id, tokenDeCancelamento));
+            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaVendedorPorId(id, tokenDeCancelamento));
 
             if (produtoViewModel == null) return NotFound();
 
@@ -150,9 +150,9 @@ namespace LojaVirtual.Mvc.Controllers
 
         [ClaimsAuthorize("Produtos", "EDITAR")]
         [Route("editar/{id:guid}")]
-        public async Task<IActionResult> Edit(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> Editar(Guid id, CancellationToken tokenDeCancelamento)
         {
-            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaPorId(id, tokenDeCancelamento));
+            var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaVendedorPorId(id, tokenDeCancelamento));
             if (produtoViewModel == null)
             {
                 return NotFound();

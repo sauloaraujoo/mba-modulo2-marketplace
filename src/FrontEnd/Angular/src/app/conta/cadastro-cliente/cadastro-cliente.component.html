@@ -4,10 +4,10 @@
         <h4>Crie sua conta</h4>
         <hr>
 
-        <div class="alert alert-danger" *ngIf="errors.length > 0">
+        <div class="alert alert-danger" *ngIf="erros.length > 0">
             <h3 id="msgRetorno">Opa! Alguma coisa não deu certo:</h3>
             <ul>
-                <li *ngFor="let error of errors">{{ error }}</li>
+                <li *ngFor="let erro of erros">{{ erro }}</li>
             </ul>
         </div>
 
@@ -34,9 +34,9 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Senha</label>
             <div class="col-md-10">
-                <input class="form-control" id="password" type="password" placeholder="Senha (requerido)" formControlName="password" [ngClass]="{'is-invalid': displayMessage['password'] }" />
-                <span class="text-danger" *ngIf="displayMessage['password']">
-                    <p [innerHTML]="displayMessage['password']"></p>
+                <input class="form-control" id="password" type="password" placeholder="Senha (requerido)" formControlName="senha" [ngClass]="{'is-invalid': displayMessage['senha'] }" />
+                <span class="text-danger" *ngIf="displayMessage['senha']">
+                    <p [innerHTML]="displayMessage['senha']"></p>
                 </span>
             </div>
         </div>
@@ -44,9 +44,9 @@
         <div class="form-group">
             <label class="col-md-2 control-label">Confirme a Senha</label>
             <div class="col-md-10">
-                <input class="form-control" id="confirmPassword" type="password" placeholder="Confirme a Senha (requerido)" formControlName="confirmPassword" [ngClass]="{'is-invalid': displayMessage['confirmPassword'] }" />
-                <span class="text-danger" *ngIf="displayMessage['confirmPassword']">
-                    <p [innerHTML]="displayMessage['confirmPassword']"></p>
+                <input class="form-control" id="confirmPassword" type="password" placeholder="Confirme a Senha (requerido)" formControlName="confirmacaoSenha" [ngClass]="{'is-invalid': displayMessage['confirmacaoSenha'] }" />
+                <span class="text-danger" *ngIf="displayMessage['confirmacaoSenha']">
+                    <p [innerHTML]="displayMessage['confirmacaoSenha']"></p>
                 </span>
             </div>
         </div>

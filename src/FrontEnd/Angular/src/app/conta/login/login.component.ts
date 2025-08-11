@@ -14,7 +14,7 @@ import { NotificacaoService } from 'src/app/services/notificacao.service';
 })
 export class LoginComponent extends FormBaseComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
-  errors: any[] = [];
+  erros: any[] = [];
   loginForm!: FormGroup;
   usuario!: Usuario;
 
@@ -33,7 +33,7 @@ export class LoginComponent extends FormBaseComponent implements OnInit {
           required: 'Informe o e-mail',
           email: 'Email inválido'
         },
-        password: {
+        senha: {
           required: 'Informe a senha',
           minlength: 'A senha deve possuir no mínimo 6 caracteres',
           maxlength: 'A senha deve possuir no máximo 15 caracteres'
@@ -48,7 +48,7 @@ export class LoginComponent extends FormBaseComponent implements OnInit {
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]]
+      senha: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]]
     });
   }
 
@@ -59,7 +59,7 @@ export class LoginComponent extends FormBaseComponent implements OnInit {
   login() {
     if (this.loginForm.dirty && this.loginForm.valid) {
       this.usuario = Object.assign({}, this.usuario, this.loginForm.value);
-
+      
       this.contaService.login(this.usuario)
       .subscribe(
           sucesso => {this.processarSucesso(sucesso)},
@@ -70,10 +70,10 @@ export class LoginComponent extends FormBaseComponent implements OnInit {
 
   processarSucesso(response: any) {
     this.loginForm.reset();
-    this.errors = [];
+    this.erros = [];
     this.contaService.LocalStorage.salvarDadosLocaisUsuario(response);
 
-    this.notificacaoService.showSuccess('Login realizado com Sucesso!');
+    this.notificacaoService.mostrarSucesso('Login realizado com Sucesso!');
     
     if (this.returnUrl) {
       this.router.navigate([this.returnUrl]);
@@ -83,7 +83,7 @@ export class LoginComponent extends FormBaseComponent implements OnInit {
   }
 
   processarFalha(fail: any){
-    this.errors = fail.error.mensagens;
-    this.notificacaoService.showError('Ocorreu um erro!');
+    this.erros = fail.error.mensagens;
+    this.notificacaoService.mostrarErro('Ocorreu um erro!');
   }
 }

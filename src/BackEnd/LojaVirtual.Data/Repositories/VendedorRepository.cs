@@ -3,7 +3,6 @@ using LojaVirtual.Business.Interfaces;
 using LojaVirtual.Data.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace LojaVirtual.Data.Repositories
 {
@@ -15,52 +14,52 @@ namespace LojaVirtual.Data.Repositories
         {
             _context = context;
         }
-        public async Task Insert(Vendedor request, CancellationToken cancellationToken)
+        public async Task Inserir(Vendedor request, CancellationToken tokenDeCancelamento)
         {
             
             var claimProduto = new IdentityUserClaim<string>
             {
                 UserId = request.Id.ToString(),
                 ClaimType = "Produtos",
-                ClaimValue = "AD,VI,ED,EX,ATUALIZAR_STATUS"
+                ClaimValue = "ADICIONAR,VISUALIZAR,EDITAR,EXCLUIR,ATUALIZAR_STATUS"
             };
 
             await _context.UserClaims.AddRangeAsync(claimProduto);
-            await _context.VendedorSet.AddAsync(request, cancellationToken);
+            await _context.VendedorSet.AddAsync(request, tokenDeCancelamento);
         }
 
-        public async Task<int> SaveChanges(CancellationToken cancellationToken)
+        public async Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento)
         {
-            return await _context.SaveChangesAsync(cancellationToken);
+            return await _context.SaveChangesAsync(tokenDeCancelamento);
         }
-        public async Task<Vendedor> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Vendedor> ObterPorIdSemContexto(Guid id, CancellationToken tokenDeCancelamento)
         {            
             return await _context
                     .VendedorSet
                     .AsNoTracking()
-                    .FirstOrDefaultAsync(v => v.Id == id, cancellationToken);
+                    .FirstOrDefaultAsync(v => v.Id == id, tokenDeCancelamento);
         }
         public void Dispose()
         {
             _context.Dispose();
         }
 
-        public async Task<IList<Vendedor>> ListAsNoTracking(CancellationToken cancellationToken)
+        public async Task<IList<Vendedor>> ListarSemContexto(CancellationToken tokenDeCancelamento)
         {
             return await _context
                            .VendedorSet
                            .AsNoTracking()
-                           .ToListAsync(cancellationToken);
+                           .ToListAsync(tokenDeCancelamento);
         }
 
-        public Task Edit(Vendedor vendedor, CancellationToken cancellationToken)
+        public Task Editar(Vendedor vendedor, CancellationToken tokenDeCancelamento)
         {
             return Task.FromResult(_context.VendedorSet.Update(vendedor));
         }
 
-        public async Task<bool> Exists(string nome, CancellationToken cancellationToken)
+        public async Task<bool> Existe(string nome, CancellationToken tokenDeCancelamento)
         {
-            return await _context.VendedorSet.AnyAsync(c => c.Nome == nome, cancellationToken);
+            return await _context.VendedorSet.AnyAsync(c => c.Nome == nome, tokenDeCancelamento);
         }
     }
 }

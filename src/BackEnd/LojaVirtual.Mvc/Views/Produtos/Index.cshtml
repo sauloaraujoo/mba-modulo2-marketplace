@@ -9,7 +9,7 @@
 @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ADICIONAR")))
 {
     <div class="d-flex justify-content-end mb-3">
-        <a class="btn btn-info" asp-action="Create">Novo</a>
+        <a class="btn btn-info" asp-action="Adicionar">Novo</a>
     </div>
 }
 <table class="table table-hover">
@@ -26,6 +26,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NomeCategoria)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeVendedor)
             </th>
             @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
             {
@@ -52,6 +55,9 @@
                 <td>
                     @Html.DisplayFor(_ => produto.NomeCategoria)
                 </td>
+                <td>
+                    @Html.DisplayFor(_ => produto.NomeVendedor)
+                </td>
                 @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
                 {
                     <td>
@@ -63,14 +69,14 @@
                     </td>
                 }
                 <td class="text-end">
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>
+                    <a class="btn btn-info" asp-action="Detalhes" asp-route-id="@produto.Id"><spam class="fa fa-search"></spam></a>
                     @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("EDITAR")))
                     {
-                        <a class="btn btn-warning" asp-action="Edit" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                        <a class="btn btn-warning" asp-action="Editar" asp-route-id="@produto.Id"><spam class="fa fa-pencil-alt"></spam></a>
                     }
                     @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("EXCLUIR")))
                     {
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
+                        <a class="btn btn-danger" asp-action="Excluir" asp-route-id="@produto.Id"><spam class="fa fa-trash"></spam></a>
                     }
                 </td>
             </tr>

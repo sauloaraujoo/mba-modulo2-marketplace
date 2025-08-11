@@ -15,7 +15,7 @@ export class ContaService extends BaseService {
         let response = this.http
             .post(this.UrlServiceV1 + 'auth/registrar', usuario, this.ObterHeaderJson())
             .pipe(
-                map(this.extractData),
+                map(this.extrairDados),
                 catchError(this.serviceError));
 
         return response;
@@ -25,7 +25,7 @@ export class ContaService extends BaseService {
         let response = this.http
             .post(this.UrlServiceV1 + 'auth/login', usuario, this.ObterHeaderJson())
             .pipe(
-                map(this.extractData),
+                map(this.extrairDados),
                 catchError(this.serviceError));
 
         return response;
