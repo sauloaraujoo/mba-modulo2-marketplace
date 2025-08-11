@@ -27,12 +27,15 @@ namespace LojaVirtual.Data.Repositories
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
                 .Where(p => p.VendedorId == vendedorId)
+                .OrderBy(p => p.Nome)
                 .ToListAsync(cancellationToken);
         }
         public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria( CancellationToken cancellationToken)
         {
             return await _context.ProdutoSet
                 .Include(p => p.Categoria)
+                .OrderBy(p => p.Categoria.Nome)
+                .ThenBy(p => p.Nome)
                 .ToListAsync(cancellationToken);
         }
         public async Task<Produto> ObterProprioComCategoriaPorId(Guid id, Guid vendedorId, CancellationToken cancellationToken)
