@@ -1,1 +1,193 @@
-/* You can add global styles to this file, and also import other style files */
+:root{
+  --page-max:1280px;
+  --bg:#ffffff;
+  --text:#111;
+  --muted:#6b7280;
+  --border:#e6e6e6;
+  --accent:#0f172a;
+  --radius:12px;
+}
+
+html,body{
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+.container.main-container{
+  max-width:var(--page-max);
+  margin:0 auto;
+  padding-top:40px;
+  padding-bottom:48px;
+}
+
+h1,h2{
+  font-weight:800;
+  letter-spacing:.2px;
+  color:var(--text);
+  margin-bottom:20px;
+}
+
+.form-group label,.control-label{
+  color:var(--muted);
+  font-weight:600;
+}
+
+.form-control{
+  background:#fff;
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:.6rem .8rem;
+  box-shadow:none;
+}
+.form-control:focus{
+  outline:0;
+  border-color:#cfd2d6;
+  box-shadow:0 0 0 3px rgba(15,23,42,.08);
+}
+
+.row.text-center>[class*="col-"]{padding-bottom:28px;}
+
+.card{
+  background:#fff;
+  border:1px solid var(--border) !important;
+  border-radius:var(--radius) !important;
+  box-shadow:none !important;
+  transition:transform .08s ease,border-color .12s ease;
+}
+.card:hover{
+  transform:translateY(-1px);
+  border-color:#d8d8d8 !important;
+}
+
+.card .card-body h5,
+.card .titulo,
+.card .nome{
+  margin:12px 8px 6px;
+  font-weight:800;
+  font-size:1rem;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+  color:var(--text);
+}
+
+.card .card-body p,.card small{
+  color:var(--muted);
+  margin-bottom:.25rem;
+}
+
+.preco-bloco{margin-top:2px;}
+.preco-de,.de{
+  color:#9ca3af;
+  font-size:.92rem;
+  text-decoration:line-through;
+  margin-right:.5rem;
+}
+.preco-por,.por,.card .preco,.price,.valor{
+  color:var(--text);
+  font-size:1.15rem;
+  font-weight:900;
+}
+.parcelado,.juros,.parcelas{
+  color:var(--muted);
+  font-size:.92rem;
+}
+
+.btn-primary{
+  background:#1f2937 !important;
+  border-color:#1f2937 !important;
+  color:#fff !important;
+  border-radius:999px !important;
+  font-weight:700;
+  padding:.5rem 1rem;
+}
+.btn-primary:hover{
+  background:#111827 !important;
+  border-color:#111827 !important;
+}
+.btn-info{
+  background:#fff !important;
+  color:var(--text) !important;
+  border:1px solid var(--border) !important;
+  border-radius:999px !important;
+  font-weight:700;
+}
+
+.bi-heart,.bi-heart-fill{filter:drop-shadow(0 1px 1px rgba(0,0,0,.08));}
+
+.pagination{
+  --bs-pagination-bg:#fff;
+  --bs-pagination-border-color:var(--border);
+  --bs-pagination-color:var(--text);
+}
+.page-item .page-link{
+  border-radius:10px;
+  margin:0 4px;
+  padding:.45rem .7rem;
+  border:1px solid var(--border);
+  box-shadow:none;
+}
+.page-item .page-link:hover{background:#f3f4f6;border-color:#d1d5db;}
+.page-item.active .page-link{
+  background:#1f2937;
+  border-color:#1f2937;
+  color:#fff;
+  font-weight:800;
+}
+
+dl{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:16px 18px;
+}
+dt{color:var(--muted);font-weight:600;margin-top:.5rem;}
+dd{color:var(--text);font-weight:800;margin-bottom:.6rem;}
+
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+
+@media (max-width:992px){
+  .card img{height:300px;}
+}
+@media (max-width:768px){
+  .container.main-container{padding-top:32px;}
+  .card img{height:260px;}
+}
+
+.navbar-brand.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-weight:700;
+  letter-spacing:.2px;
+}
+.brand-logo{width:28px;height:28px;object-fit:contain;display:block;}
+.brand-text{line-height:1;}
+@media (min-width:992px){
+  .brand-logo{width:32px;height:32px;}
+}
+
+.navbar .btn.btn-success{
+  background:#e5e7eb !important;
+  border-color:#d1d5db !important;
+  color:#111 !important;
+  border-radius:8px !important;
+  box-shadow:none !important;
+  font-weight:800 !important;
+  letter-spacing:.3px !important;
+  font-size:1rem !important;
+}
+.navbar .btn.btn-success:hover,
+.navbar .btn.btn-success:focus{
+  background:#d1d5db !important;
+  border-color:#cbd5e1 !important;
+  color:#111 !important;
+}
+.navbar .btn.btn-success:active{
+  background:#cfd2d6 !important;
+  border-color:#cbd5e1 !important;
+}
+

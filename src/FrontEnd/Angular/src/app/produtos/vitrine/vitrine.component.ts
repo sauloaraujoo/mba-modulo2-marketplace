@@ -5,8 +5,8 @@ import { ProdutoService } from '../services/produtos.service';
 @Component({
   selector: 'app-vitrine',
   templateUrl: './vitrine.component.html',
-  styles: [
-  ]
+  //styleUrls: ['./vitrine.component.css']
+
 })
 export class VitrineComponent implements OnInit {
 

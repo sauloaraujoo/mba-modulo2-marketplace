@@ -10,7 +10,8 @@ import { CustomValidator } from 'src/app/utils/custom.validator';
 
 @Component({
   selector: 'app-cadastro-cliente',
-  templateUrl: './cadastro-cliente.component.html'
+  templateUrl: './cadastro-cliente.component.html',
+  styleUrls: ['./cadastro-cliente.component.css'] 
 })
 export class CadastroClienteComponent extends FormBaseComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
