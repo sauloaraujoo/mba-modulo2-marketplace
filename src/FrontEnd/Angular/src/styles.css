@@ -62,20 +62,6 @@ h1,h2{
   border-color:#d8d8d8 !important;
 }
 
-.card img,
-.produto-imagem,
-.produto-detalhe img,
-img[width][height]{
-  display:block;
-  width:100%;
-  height:340px;
-  object-fit:cover;
-  border-bottom:1px solid var(--border);
-  border-top-left-radius:var(--radius);
-  border-top-right-radius:var(--radius);
-  background:#fff;
-}
-
 .card .card-body h5,
 .card .titulo,
 .card .nome{
@@ -205,41 +191,3 @@ a:hover{text-decoration:underline;}
   border-color:#cbd5e1 !important;
 }
 
-/* Detalhe do produto: layout lado a lado */
-.container.main-container > .row > .col-md-12{
-  display:grid;
-  grid-template-columns:minmax(320px,560px) 1fr;
-  gap:24px;
-  align-items:start;
-  padding-bottom:18px;
-}
-.container.main-container > .row > .col-md-12 > h2{grid-column:1/-1;margin-bottom:12px;font-weight:800}
-
-/* foto (a que está dentro da .col-md-4) */
-.container.main-container .col-md-4 img{
-  width:100% !important;
-  height:auto !important;
-  max-height:520px;
-  object-fit:contain !important;
-  background:#fff;
-  border:1px solid #e6e6e6;
-  border-radius:12px;
-  padding:10px;
-  display:block;
-}
-
-/* infos (o <dl>) vão para a coluna da direita */
-.container.main-container > .row > .col-md-12 > dl{grid-column:2}
-
-/* Voltar sempre à mão */
-.container.main-container a.btn.btn-info[href*="history.back"]{
-  position:sticky; bottom:12px; z-index:2;
-  border-radius:999px; border:1px solid #d1d5db !important;
-  background:#fff !important; color:#111 !important; font-weight:700;
-}
-.container.main-container a.btn.btn-info[href*="history.back"]:hover{
-  background:#f3f4f6 !important; border-color:#cbd5e1 !important;
-}
-
-/* Estrela preta (igual à lista) */
-.favorito-icone{color:#111 !important;font-size:1.8em;line-height:1}

@@ -10,6 +10,7 @@ import { NotificacaoService } from 'src/app/services/notificacao.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent extends FormBaseComponent implements OnInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];

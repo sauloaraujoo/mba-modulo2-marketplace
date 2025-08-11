@@ -7,8 +7,7 @@ import { NotificacaoService } from 'src/app/services/notificacao.service';
 @Component({
   selector: 'app-produto',
   templateUrl: './produto.component.html',
-  styles: [
-  ]
+   styleUrls: ['./produto.component.css'] 
 })
 export class ProdutoComponent {
 
