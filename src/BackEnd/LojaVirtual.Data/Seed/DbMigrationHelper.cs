@@ -80,9 +80,6 @@ namespace LojaVirtual.Data.Seed
                 };
                 await context.UserClaims.AddAsync(claimVendedorProdutos);
 
-                int categoriaIndex = 0;
-
-
                 var produtosLoja = new List<(string Nome, string Descricao, string Imagem, decimal Preco, int Quantidade, Guid CategoriaId)>();
 
                 switch (v)
@@ -133,27 +130,24 @@ namespace LojaVirtual.Data.Seed
 
                 for (int p = 0; p < produtosLoja.Count; p++)
                 {
-                    var categoria = categorias[categoriaIndex];
-
                     var produtoReal = produtosLoja[p];
+                    var categoria = categorias.Where(c => c.Id == produtoReal.CategoriaId).FirstOrDefault();
 
-                    var produto = new Produto(
-                        produtoReal.Nome,
-                        produtoReal.Descricao,
-                        produtoReal.Imagem,
-                        produtoReal.Preco,
-                        produtoReal.Quantidade,
-                        true,
-                        categoria.Id
-                    );
+                    if (categoria != null)
+                    {
+                        var produto = new Produto(
+                            produtoReal.Nome,
+                            produtoReal.Descricao,
+                            produtoReal.Imagem,
+                            produtoReal.Preco,
+                            produtoReal.Quantidade,
+                            true,
+                            produtoReal.CategoriaId
+                        );
 
-                    produto.VinculaVendedor(vendedor.Id);
-                    categoria.AddProduto(produto);
-
-                    categoriaIndex++;
-
-                    if (categoriaIndex >= categorias.Count)
-                        categoriaIndex = 0;
+                        produto.VinculaVendedor(vendedor.Id);
+                        categoria.AddProduto(produto);
+                    }
                 }
             }
 
