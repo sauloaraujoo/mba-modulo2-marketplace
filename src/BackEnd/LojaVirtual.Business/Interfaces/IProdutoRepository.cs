@@ -19,10 +19,10 @@ namespace LojaVirtual.Business.Interfaces
         public Task Editar(Produto produto, CancellationToken tokenDeCancelamento);
         public Task Remover(Produto produto, CancellationToken tokenDeCancelamento);
         public Task<bool> Existe(string nome, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(Guid vendedorid, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria(CancellationToken tokenDeCancelamento);
-        Task<Produto> ObterProprioComCategoriaPorId(Guid id, Guid vendedorid, CancellationToken tokenDeCancelamento);
-        Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoriaVendedor(Guid vendedorid, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosComCategoriaVendedor(CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterProprioComCategoriaVendedorPorId(Guid id, Guid vendedorid, CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterComCategoriaVendedorPorId(Guid id, CancellationToken tokenDeCancelamento);
         public Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento);
     }
 }

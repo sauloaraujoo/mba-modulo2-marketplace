@@ -18,10 +18,10 @@ namespace LojaVirtual.Business.Interfaces
         Task<Produto> ListarVitrinePorId(Guid? produtoId, CancellationToken tokenDeCancelamento);
 
         Task<Produto> ObterPorId(Guid id, CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(CancellationToken tokenDeCancelamento);
-        Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria(CancellationToken tokenDeCancelamento);
-        Task<Produto> ObterProprioComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento);
-        Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoriaVendedor(CancellationToken tokenDeCancelamento);
+        Task<IEnumerable<Produto>> ObterTodosProdutosComCategoriaVendedor(CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterProprioComCategoriaVendedorPorId(Guid id, CancellationToken tokenDeCancelamento);
+        Task<Produto> ObterComCategoriaVendedorPorId(Guid id, CancellationToken tokenDeCancelamento);
 
         Task<Produto?> ObterProdutoProprioPorId(Guid id, CancellationToken tokenDeCancelamento);
 

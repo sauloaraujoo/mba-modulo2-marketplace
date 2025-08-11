@@ -27,6 +27,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.NomeCategoria)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeVendedor)
+            </th>
             @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
             {
                 <th>
@@ -51,6 +54,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(_ => produto.NomeCategoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(_ => produto.NomeVendedor)
                 </td>
                 @if (User.Claims.Any(c => c.Type == "Produtos" && c.Value.Contains("ATUALIZAR_STATUS")))
                 {
