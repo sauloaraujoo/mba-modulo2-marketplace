@@ -3,16 +3,16 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { MenuComponent } from './menu/menu.component';
-import { FooterComponent } from './footer/footer.component';
 
 import { MenuLoginComponent } from './menu-login/menu-login.component';
 import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
+import { RodapeComponent } from "./rodape/rodape.component";
 
 @NgModule({
     declarations: [
         MenuComponent,
         MenuLoginComponent,
-        FooterComponent,
+        RodapeComponent,
         AcessoNegadoComponent
     ],
     imports: [
@@ -22,7 +22,7 @@ import { AcessoNegadoComponent } from './acesso-negado/acesso-negado.component';
     exports: [
         MenuComponent,
         MenuLoginComponent,
-        FooterComponent,
+        RodapeComponent,
         AcessoNegadoComponent
     ]
 })
