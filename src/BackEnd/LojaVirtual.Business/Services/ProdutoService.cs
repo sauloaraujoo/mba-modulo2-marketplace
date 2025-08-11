@@ -60,23 +60,23 @@ namespace LojaVirtual.Business.Services
             await _produtoRepository.SalvarMudancas(tokenDeCancelamento);
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoria(CancellationToken tokenDeCancelamento)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosPropriosComCategoriaVendedor(CancellationToken tokenDeCancelamento)
         {
-            return await _produtoRepository.ObterTodosProdutosPropriosComCategoria(new Guid(_appIdentifyUser.ObterUsuarioId()), tokenDeCancelamento);
+            return await _produtoRepository.ObterTodosProdutosPropriosComCategoriaVendedor(new Guid(_appIdentifyUser.ObterUsuarioId()), tokenDeCancelamento);
         }
 
-        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoria(CancellationToken tokenDeCancelamento)
+        public async Task<IEnumerable<Produto>> ObterTodosProdutosComCategoriaVendedor(CancellationToken tokenDeCancelamento)
         {
-            return await _produtoRepository.ObterTodosProdutosComCategoria(tokenDeCancelamento);
+            return await _produtoRepository.ObterTodosProdutosComCategoriaVendedor(tokenDeCancelamento);
         }
 
-        public async Task<Produto> ObterProprioComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<Produto> ObterProprioComCategoriaVendedorPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            return await _produtoRepository.ObterProprioComCategoriaPorId(id, new Guid(_appIdentifyUser.ObterUsuarioId()), tokenDeCancelamento);
+            return await _produtoRepository.ObterProprioComCategoriaVendedorPorId(id, new Guid(_appIdentifyUser.ObterUsuarioId()), tokenDeCancelamento);
         }
-        public async Task<Produto> ObterComCategoriaPorId(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<Produto> ObterComCategoriaVendedorPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            return await _produtoRepository.ObterComCategoriaPorId(id, tokenDeCancelamento);
+            return await _produtoRepository.ObterComCategoriaVendedorPorId(id, tokenDeCancelamento);
         }
 
         public async Task<IEnumerable<Produto>> Listar(CancellationToken tokenDeCancelamento)

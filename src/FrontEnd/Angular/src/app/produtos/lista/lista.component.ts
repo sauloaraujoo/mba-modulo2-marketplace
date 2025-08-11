@@ -33,6 +33,7 @@ export class ListaComponent implements OnInit, OnChanges  {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.paginaAtual = 1;
     if (changes['categoriaId'] && !changes['categoriaId'].firstChange) {
       this.carregarProdutos();
     }

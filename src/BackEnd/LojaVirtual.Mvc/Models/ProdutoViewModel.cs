@@ -43,5 +43,8 @@ namespace LojaVirtual.Mvc.Models
         [DisplayName("Categoria")]
         public string NomeCategoria { get; set; } = string.Empty;
         public IEnumerable<CategoriaViewModel> Categorias { get; set; } =  Enumerable.Empty<CategoriaViewModel>();
+
+        [DisplayName("Vendedor")]
+        public string NomeVendedor { get; set; } = string.Empty;
     }
 }
