@@ -26,9 +26,9 @@ export class ProdutoService extends BaseService {
         );
     }
 
-    getProdutos(pagina: number, tamanho: number): Observable<any> {
-        return this.http.get<any>(`${this.UrlServiceV1}produtos?pagina=${pagina}&tamanho=${tamanho}`);
-    }
+    // listarProdutos(pagina: number, tamanho: number): Observable<any> {
+    //     return this.http.get<any>(`${this.UrlServiceV1}produtos?pagina=${pagina}&tamanho=${tamanho}`);
+    // }
 
     obterProdutosPaginado(paginaAtual: number, tamanhoPagina: number, categoriaId?: string) : Observable<Pagined<Produto>>{
 

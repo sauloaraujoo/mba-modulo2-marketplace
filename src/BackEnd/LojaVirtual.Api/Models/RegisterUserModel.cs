@@ -15,10 +15,10 @@ namespace LojaVirtual.Api.Models
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 6)]
         [Display(Name = "Senha")]
-        public string Password { get; set; }
+        public string Senha { get; set; }
 
-        [Compare("Password", ErrorMessage = "As senhas não conferem.")]
+        [Compare("Senha", ErrorMessage = "As senhas não conferem.")]
         [Display(Name = "Confirmação da senha")]
-        public string ConfirmPassword { get; set; }
+        public string ConfirmacaoSenha { get; set; }
     }
 }

@@ -26,7 +26,7 @@ export abstract class BaseService {
         };
     }
 
-    protected extractData(response: any) {
+    protected extrairDados(response: any) {
         return response.data || {};
     }
 

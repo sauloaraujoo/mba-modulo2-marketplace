@@ -14,23 +14,23 @@ export class NotificacaoService {
   private toastSubject = new Subject<Toast>();
   public toast$ = this.toastSubject.asObservable();
 
-  private show(message: string, type: TypeMessage, duration: number = 5000) {
+  private mostrar(message: string, type: TypeMessage, duration: number = 5000) {
     this.toastSubject.next({message, type, duration});
   }
 
-  showSuccess(message: string, duration: number = 3000) {
-    this.show(message, 'success', duration);
+  mostrarSucesso(message: string, duration: number = 3000) {
+    this.mostrar(message, 'success', duration);
   }
 
-  showError(message: string, duration: number = 3000) {
-    this.show(message, 'error', duration);
+  mostrarErro(message: string, duration: number = 3000) {
+    this.mostrar(message, 'error', duration);
   }
 
-  showInfo(message: string, duration: number = 3000) {
-    this.show(message, 'info', duration);
+  mostrarInfo(message: string, duration: number = 3000) {
+    this.mostrar(message, 'info', duration);
   }
 
-  showWarning(message: string, duration: number = 3000) {
-    this.show(message, 'warning', duration);
+  mostrarAviso(message: string, duration: number = 3000) {
+    this.mostrar(message, 'warning', duration);
   }
 }

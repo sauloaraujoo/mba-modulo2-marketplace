@@ -140,11 +140,11 @@ export class ListaComponent implements OnInit, OnChanges  {
               this.mudarPagina(this.paginaAtual - 1);
             }
           }
-          this.notificacaoService.showSuccess('Produto removido dos favoritos.');
+          this.notificacaoService.mostrarSucesso('Produto removido dos favoritos.');
         },
         error: (err) => {
           console.error('Erro ao remover favorito:', err);
-          this.notificacaoService.showError('Erro ao remover dos favoritos.');
+          this.notificacaoService.mostrarErro('Erro ao remover dos favoritos.');
         } 
       });
     } else {
@@ -153,11 +153,11 @@ export class ListaComponent implements OnInit, OnChanges  {
           this.favoritosIds.add(produtoId);
           this.favoritosIds = new Set(this.favoritosIds); 
 
-          this.notificacaoService.showSuccess('Produto adicionado aos favoritos!');
+          this.notificacaoService.mostrarSucesso('Produto adicionado aos favoritos!');
         },
         error: (err) => {
           console.error('Erro ao adicionar favorito:', err)
-          this.notificacaoService.showError('Erro ao adicionar aos favoritos.');
+          this.notificacaoService.mostrarErro('Erro ao adicionar aos favoritos.');
         }
       });
     }

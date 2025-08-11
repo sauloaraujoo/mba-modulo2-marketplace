@@ -41,7 +41,7 @@ namespace LojaVirtual.Api.V1.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Password, false, true);
+            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Senha, false, true);
 
             if (result.Succeeded)
             {
@@ -77,7 +77,7 @@ namespace LojaVirtual.Api.V1.Controllers
                 NormalizedUserName = registerUser.Email.ToUpper(),
             };
 
-            var result = await _userManager.CreateAsync(user, registerUser.Password);
+            var result = await _userManager.CreateAsync(user, registerUser.Senha);
             if (result.Succeeded)
             {
                 var cliente = new Cliente(idUser, registerUser.Nome, registerUser.Email);

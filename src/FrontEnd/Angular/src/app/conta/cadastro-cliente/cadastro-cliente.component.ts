@@ -15,7 +15,7 @@ import { CustomValidator } from 'src/app/utils/custom.validator';
 export class CadastroClienteComponent extends FormBaseComponent implements OnInit, AfterViewInit {
   @ViewChildren(FormControlName, { read: ElementRef }) formInputElements!: ElementRef[];
 
-  errors: any[] = [];
+  erros: any[] = [];
   cadastroForm!: FormGroup;
   usuario!: Usuario;
 
@@ -36,12 +36,12 @@ export class CadastroClienteComponent extends FormBaseComponent implements OnIni
         required: 'Informe o e-mail',
         email: 'Email inválido'
       },
-      password: {
+      senha: {
         required: 'Informe a senha',
         minlength: 'A senha deve possuir no mínimo 6 caracteres',
         maxlength: 'A senha deve possuir no máximo 15 caracteres'
       },
-      confirmPassword: {
+      confirmacaoSenha: {
         required: 'Informe a senha novamente',
         senhasNaoConferem: 'As senhas não conferem'
       }
@@ -58,10 +58,10 @@ export class CadastroClienteComponent extends FormBaseComponent implements OnIni
     this.cadastroForm = this.fb.group({
       nome: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(255)]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]],
-      confirmPassword: ['', Validators.required]
+      senha: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(15)]],
+      confirmacaoSenha: ['', Validators.required]
     }, { validators:[
-          CustomValidator.SenhasConferem('password', 'confirmPassword')
+          CustomValidator.SenhasConferem('senha', 'confirmacaoSenha')
         ] 
       });
   }
@@ -83,17 +83,17 @@ export class CadastroClienteComponent extends FormBaseComponent implements OnIni
   
   processarSucesso(response: any) {
     this.cadastroForm.reset();
-    this.errors = [];
+    this.erros = [];
     this.contaService.LocalStorage.salvarDadosLocaisUsuario(response);
 
-    this.notificacaoService.showSuccess('Login realizado com Sucesso!');
+    this.notificacaoService.mostrarSucesso('Login realizado com Sucesso!');
     
     this.router.navigate(['/produtos']);
     
   }
 
   processarFalha(fail: any){
-    this.errors = fail.error.mensagens;
-    this.notificacaoService.showError('Ocorreu um erro!');
+    this.erros = fail.error.mensagens;
+    this.notificacaoService.mostrarErro('Ocorreu um erro!');
   }
 }
