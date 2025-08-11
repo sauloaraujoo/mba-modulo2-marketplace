@@ -10,9 +10,13 @@
       <div *ngFor="let produto of produtos" class="col-md-4" style="padding-bottom: 30px;">
         <div class="card h-100">
 
-          <button *ngIf="ehUsuarioLogado()" class="btn btn-link position-absolute" style="right: 10px; top: 10px; z-index: 2;" (click)="AdicionarRemoverFavorito(produto.id)">
-            <i class="bi" [ngClass]="{ 'bi-heart-fill': ehFavorito(produto.id),'bi-heart': !ehFavorito(produto.id)}" style="color: red; font-size: 1.4em;"></i>
-          </button>
+        <button *ngIf="ehUsuarioLogado()"
+                class="favorito-btn position-absolute"
+                style="right:10px; top:10px; z-index:2;"
+                (click)="AdicionarRemoverFavorito(produto.id)">
+          <i class="bi" [ngClass]="ehFavorito(produto.id) ? 'bi-star-fill' : 'bi-star'"></i>
+        </button>
+
 
           <a class="text-decoration-none" [routerLink]="['/produto', produto.id]">
             <div style="align-content:center;">

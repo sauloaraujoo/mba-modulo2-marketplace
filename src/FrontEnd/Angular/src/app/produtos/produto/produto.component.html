@@ -1,4 +1,4 @@
-<div class="container main-container">
+<div class="container main-container produto-page">
     <div class="row">
         <div class="col-md-12">
             <h2>Detalhes do Produto</h2>        
@@ -7,14 +7,13 @@
                 <img src="{{urlImagem}}{{ produto.imagem }}" height="164px" width="253px" alt=""> 
             </div>
 
-            <button *ngIf="ehUsuarioLogado()" class="btn btn-link position-absolute"
-                    style="right: 10px; top: 10px; z-index: 2;"
-                    (click)="AdicionarRemoverFavorito(produto.id)">
-                <i class="bi" [ngClass]="{ 'bi-heart-fill': ehFavorito(produto.id), 'bi-heart': !ehFavorito(produto.id) }"
-                style="color: red; font-size: 1.4em;"></i>
-            </button>
+            
         </div>
         <div class="col-md-6">
+            <button *ngIf="ehUsuarioLogado()" class="btn btn-link favorito-btn"
+        (click)="AdicionarRemoverFavorito(produto.id)">
+  <i class="bi favorito-icone" [ngClass]="ehFavorito(produto.id) ? 'bi-star-fill' : 'bi-star'"></i>
+</button>
             <dl>
                 <dt>
                     Categoria

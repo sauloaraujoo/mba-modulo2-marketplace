@@ -1,0 +1,78 @@
+/* layout: imagem grande à esquerda, infos à direita */
+.produto-page .col-md-12{
+  display:flex;
+  gap:28px;
+  align-items:flex-start;
+  padding-bottom:18px;
+}
+.produto-page h2{flex-basis:100%; margin-bottom:12px; font-weight:800}
+
+/* controla larguras (desktop) */
+.produto-page .col-md-4{flex:0 0 44%; max-width:44%}
+.produto-page .col-md-6{flex:1 0 56%; max-width:56%; position:relative}
+
+/* imagem maior e nítida */
+.produto-page .col-md-4 img{
+  width:100% !important;
+  height:auto !important;
+  max-height:640px;
+  object-fit:contain !important;
+  background:#fff;
+  border:1px solid #e6e6e6;
+  border-radius:12px;
+  padding:12px;
+  display:block;
+}
+
+/* infos (dl) em cartão claro */
+.produto-page .col-md-6 dl{
+  background:#fff;
+  border:1px solid #e6e6e6;
+  border-radius:12px;
+  padding:18px;
+}
+.produto-page dt{color:#6b7280;font-weight:600;margin-top:.5rem}
+.produto-page dd{color:#111;font-weight:700;margin:0 0 .6rem}
+.produto-page dd.produto-preco{font-size:1.3rem;font-weight:800}
+
+/* vendedor com cara de link */
+.produto-page dd a{
+  color:#111;
+  text-decoration:underline;
+  font-weight:800;
+}
+.produto-page dd a:hover{
+  text-decoration:none;
+  background:#f3f4f6;
+  border-radius:6px;
+  padding:2px 6px;
+}
+
+/* favorito no canto do painel de infos (estrela preta) */
+.favorito-icone{color:#111 !important; font-size:1.8em; line-height:1}
+.favorito-btn{position:absolute; right:8px; top:8px; padding:0; color:#111 !important}
+
+/* botão Voltar sempre visível */
+.produto-page .btn.btn-info{
+  position:sticky; bottom:12px; z-index:2;
+  border-radius:999px;
+  border:1px solid #d1d5db !important;
+  background:#fff !important;
+  color:#111 !important;
+  font-weight:700;
+}
+.produto-page .btn.btn-info:hover{
+  background:#f3f4f6 !important;
+  border-color:#cbd5e1 !important;
+}
+
+/* responsivo */
+@media (max-width:992px){
+  .produto-page .col-md-12{flex-direction:column; gap:14px}
+  .produto-page .col-md-4,
+  .produto-page .col-md-6{max-width:100%; flex-basis:auto}
+  .produto-page .col-md-4 img{max-height:380px}
+}
+@media (max-width:768px){
+  .produto-page .col-md-4 img{max-height:300px}
+}
