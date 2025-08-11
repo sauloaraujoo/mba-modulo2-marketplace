@@ -37,57 +37,57 @@ namespace LojaVirtual.Api.V1.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult> Login(LoginUserViewModel loginUser)
+        public async Task<ActionResult> Login(LoginUserViewModel usuarioLogin)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            var result = await _signInManager.PasswordSignInAsync(loginUser.Email, loginUser.Senha, false, true);
+            var resultado = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha, false, true);
 
-            if (result.Succeeded)
+            if (resultado.Succeeded)
             {
-                return CustomResponse(HttpStatusCode.OK, await GerarJwt(loginUser.Email));
+                return CustomResponse(HttpStatusCode.OK, await GerarJwt(usuarioLogin.Email));
             }
             AdicionarErroProcessamento("E-mail ou senha inválidos.");
             return CustomResponse();
         }
 
         [HttpPost("registrar")]
-        public async Task<ActionResult> Registrar(RegisterUserModel registerUser, CancellationToken cancellationToken)
+        public async Task<ActionResult> Registrar(RegisterUserModel usuarioRegistro, CancellationToken tokenDeCancelamento)
         {
             if (!ModelState.IsValid)
             {
                 return CustomResponse(ModelState);
             }
-            var idUser = Guid.NewGuid();
-            var userIden = await _userManager.FindByIdAsync(registerUser.Email);
-            if (await _userManager.FindByEmailAsync(registerUser.Email) != null)
+            var idUsuarioNovo = Guid.NewGuid();
+            var usuarioPreexistente = await _userManager.FindByIdAsync(usuarioRegistro.Email);
+            if (await _userManager.FindByEmailAsync(usuarioRegistro.Email) != null)
             {
                 AdicionarErroProcessamento("E-mail já cadastrado.");
                 return CustomResponse();
             }
 
-            var user = new IdentityUser
+            var usuarioNovo = new IdentityUser
             {
-                Id = idUser.ToString(),
-                UserName = registerUser.Email,
-                Email = registerUser.Email,
+                Id = idUsuarioNovo.ToString(),
+                UserName = usuarioRegistro.Email,
+                Email = usuarioRegistro.Email,
                 EmailConfirmed = true,
-                NormalizedEmail = registerUser.Email.ToUpper(),
+                NormalizedEmail = usuarioRegistro.Email.ToUpper(),
                 AccessFailedCount = 0,
-                NormalizedUserName = registerUser.Email.ToUpper(),
+                NormalizedUserName = usuarioRegistro.Email.ToUpper(),
             };
 
-            var result = await _userManager.CreateAsync(user, registerUser.Senha);
-            if (result.Succeeded)
+            var resultado = await _userManager.CreateAsync(usuarioNovo, usuarioRegistro.Senha);
+            if (resultado.Succeeded)
             {
-                var cliente = new Cliente(idUser, registerUser.Nome, registerUser.Email);
+                var cliente = new Cliente(idUsuarioNovo, usuarioRegistro.Nome, usuarioRegistro.Email);
 
-                await _clienteRepository.Insert(cliente, cancellationToken);
-                await _clienteRepository.SaveChanges(cancellationToken);
-                await _signInManager.SignInAsync(user, false);
-                return CustomResponse(HttpStatusCode.OK, await GerarJwt(user.Email));
+                await _clienteRepository.Inserir(cliente, tokenDeCancelamento);
+                await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
+                await _signInManager.SignInAsync(usuarioNovo, false);
+                return CustomResponse(HttpStatusCode.OK, await GerarJwt(usuarioNovo.Email));
             }
-            foreach (var item in result.Errors)
+            foreach (var item in resultado.Errors)
             {
                 AdicionarErroProcessamento(item.Description);
             }
@@ -96,21 +96,19 @@ namespace LojaVirtual.Api.V1.Controllers
         }
         private async Task<LoginResponseViewModel> GerarJwt(string email)
         {
-            var user = await _userManager.FindByEmailAsync(email);
-            var claims = await _userManager.GetClaimsAsync(user);
-            var userRoles = await _userManager.GetRolesAsync(user);
+            var usuario = await _userManager.FindByEmailAsync(email);
+            var declaracoes = await _userManager.GetClaimsAsync(usuario);
+            var papeisDoUsuario = await _userManager.GetRolesAsync(usuario);
 
-            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.Id));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Email, user.Email));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
-            foreach (var userRole in userRoles)
+            declaracoes.Add(new Claim(JwtRegisteredClaimNames.Sub, usuario.Id));
+            declaracoes.Add(new Claim(JwtRegisteredClaimNames.Email, usuario.Email));
+            declaracoes.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            declaracoes.Add(new Claim(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()));
+            declaracoes.Add(new Claim(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64));
+            foreach (var papelDoUsuario in papeisDoUsuario)
             {
-                claims.Add(new Claim("role", userRole));
+                declaracoes.Add(new Claim("role", papelDoUsuario));
             }
-            var identityClaims = new ClaimsIdentity();
-            identityClaims.AddClaims(claims);
 
             var tokenHandler = new JwtSecurityTokenHandler();
 
@@ -118,7 +116,7 @@ namespace LojaVirtual.Api.V1.Controllers
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(claims),
+                Subject = new ClaimsIdentity(declaracoes),
                 Issuer = _jwtSettings.Issuer,
                 Audience = _jwtSettings.Audience,
                 Expires = DateTime.UtcNow.AddHours(_jwtSettings.ExpiracaoHoras),
@@ -133,9 +131,9 @@ namespace LojaVirtual.Api.V1.Controllers
                 ExpiresIn = TimeSpan.FromHours(_jwtSettings.ExpiracaoHoras).TotalSeconds,
                 UserToken = new UserTokenViewModel
                 {
-                    Id = user.Id,
-                    Email = user.Email,
-                    Claims = claims.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
+                    Id = usuario.Id,
+                    Email = usuario.Email,
+                    Claims = declaracoes.Select(c => new ClaimViewModel { Type = c.Type, Value = c.Value })
                 }
             };
 
