@@ -6,7 +6,8 @@ import { NotificacaoService } from 'src/app/services/notificacao.service';
 
 @Component({
   selector: 'app-lista',
-  templateUrl: './lista.component.html'
+  templateUrl: './lista.component.html',
+  styleUrls: ['./lista.component.css']
 })
 export class ListaComponent implements OnInit, OnChanges  {
   
