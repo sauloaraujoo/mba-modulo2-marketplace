@@ -150,7 +150,7 @@ namespace LojaVirtual.Mvc.Controllers
 
         [ClaimsAuthorize("Produtos", "EDITAR")]
         [Route("editar/{id:guid}")]
-        public async Task<IActionResult> Edit(Guid id, CancellationToken tokenDeCancelamento)
+        public async Task<IActionResult> Editar(Guid id, CancellationToken tokenDeCancelamento)
         {
             var produtoViewModel = _mapper.Map<ProdutoViewModel>(await _produtoService.ObterProprioComCategoriaPorId(id, tokenDeCancelamento));
             if (produtoViewModel == null)

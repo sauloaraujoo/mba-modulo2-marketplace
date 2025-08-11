@@ -6,7 +6,7 @@
 <h1>@ViewData["Title"]</h1>
 <hr />
 <div class="d-flex justify-content-end mb-3">
-    <a class="btn btn-info" asp-action="Create">Nova</a>
+    <a class="btn btn-info" asp-action="Adicionar">Nova</a>
 </div>
 
 
@@ -33,9 +33,9 @@
                     @(categoria.Descricao is { Length: > 99 } ? categoria.Descricao[..99] + "..." : categoria.Descricao)
                 </td>
                 <td class="text-end">
-                    <a class="btn btn-info" asp-action="Details" asp-route-id="@categoria.Id"><spam class="fa fa-search"></spam></a>
-                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@categoria.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@categoria.Id"><spam class="fa fa-trash"></spam></a>
+                    <a class="btn btn-info" asp-action="Detalhes" asp-route-id="@categoria.Id"><spam class="fa fa-search"></spam></a>
+                    <a class="btn btn-warning" asp-action="Editar" asp-route-id="@categoria.Id"><spam class="fa fa-pencil-alt"></spam></a>
+                    <a class="btn btn-danger" asp-action="Excluir" asp-route-id="@categoria.Id"><spam class="fa fa-trash"></spam></a>
                 </td>
             </tr>
         }
