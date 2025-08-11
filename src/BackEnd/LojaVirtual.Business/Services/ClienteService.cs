@@ -48,8 +48,8 @@ namespace LojaVirtual.Business.Services
             }
 
             cliente.AddFavorito(produtoId);
-            _clienteRepository.Update(cliente);
-            await _clienteRepository.SaveChanges(tokenDeCancelamento);
+            _clienteRepository.Editar(cliente);
+            await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
 
             return true;
         }
@@ -73,8 +73,8 @@ namespace LojaVirtual.Business.Services
             }
 
             cliente.RemoveFavorito(favorito);
-            _clienteRepository.Update(cliente);
-            await _clienteRepository.SaveChanges(tokenDeCancelamento);
+            _clienteRepository.Editar(cliente);
+            await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
 
             return true;
         }

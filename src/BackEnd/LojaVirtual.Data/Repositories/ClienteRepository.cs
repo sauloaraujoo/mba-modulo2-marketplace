@@ -14,7 +14,7 @@ namespace LojaVirtual.Data.Repositories
         {
             _context = context;
         }
-        public async Task<Cliente?> ObterClienteComFavoritos(Guid id, CancellationToken cancellationToken)
+        public async Task<Cliente?> ObterClienteComFavoritos(Guid id, CancellationToken tokenDeCancelamento)
         {
             var cliente = await _context.ClienteSet
                 .Include(c => c.Favoritos)
@@ -23,7 +23,7 @@ namespace LojaVirtual.Data.Repositories
                 .Include(c => c.Favoritos)
                     .ThenInclude(f => f.Produto)
                         .ThenInclude(p => p.Categoria)
-                .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+                .FirstOrDefaultAsync(c => c.Id == id, tokenDeCancelamento);
 
             if (cliente != null)
             {
@@ -36,26 +36,26 @@ namespace LojaVirtual.Data.Repositories
 
             return cliente;
         }
-        public void Update(Cliente cliente)
+        public void Editar(Cliente cliente)
         {
             _context.ClienteSet.Update(cliente);
         }
 
-        public async Task Insert(Cliente request, CancellationToken cancellationToken)
+        public async Task Inserir(Cliente cliente, CancellationToken tokenDeCancelamento)
         {
             var claimCliente = new IdentityUserClaim<string>
             {
-                UserId = request.Id.ToString(),
+                UserId = cliente.Id.ToString(),
                 ClaimType = "Clientes",
                 ClaimValue = "VISUALIZAR_FAVORITOS,EDITAR_FAVORITOS"
             };
             await _context.UserClaims.AddAsync(claimCliente);
-            await _context.ClienteSet.AddAsync(request, cancellationToken);
+            await _context.ClienteSet.AddAsync(cliente, tokenDeCancelamento);
         }
 
-        public async Task<int> SaveChanges(CancellationToken cancellationToken)
+        public async Task<int> SalvarMudancas(CancellationToken tokenDeCancelamento)
         {
-            return await _context.SaveChangesAsync(cancellationToken);
+            return await _context.SaveChangesAsync(tokenDeCancelamento);
         }
 
         public void Dispose()
