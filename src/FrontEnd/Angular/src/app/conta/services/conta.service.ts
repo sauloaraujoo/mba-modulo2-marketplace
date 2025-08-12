@@ -6,10 +6,12 @@ import { Observable } from 'rxjs';
 import { catchError, map } from "rxjs/operators";
 import { BaseService } from 'src/app/services/base.service';
 
+import { Router } from '@angular/router';
+
 @Injectable()
 export class ContaService extends BaseService {
 
-    constructor(private http: HttpClient) { super(); }
+    constructor(private http: HttpClient, router: Router) { super(router); }
 
     registrarUsuario(usuario: Usuario): Observable<Usuario> {
         let response = this.http

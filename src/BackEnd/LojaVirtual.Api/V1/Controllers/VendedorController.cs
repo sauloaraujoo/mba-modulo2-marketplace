@@ -19,7 +19,7 @@ namespace LojaVirtual.Api.V1.Controllers
         public async Task<ActionResult> ObterInformacoes(Guid id, 
                                                          CancellationToken tokenDeCancelamento)
         {            
-            return CustomResponse(HttpStatusCode.OK, 
+            return RespostaCustomizada(HttpStatusCode.OK, 
                                   VendedorViewModel.FromVendedor(await _vendedorService.ObterPorId(id,
                                                                                                 tokenDeCancelamento)));
         }

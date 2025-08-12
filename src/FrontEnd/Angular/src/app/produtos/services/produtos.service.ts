@@ -9,9 +9,11 @@ import { BaseService } from 'src/app/services/base.service';
 import { Favorito } from "../models/favorito";
 import { Pagined } from "../models/pagined";
 
+import { Router } from '@angular/router';
+
 @Injectable()
 export class ProdutoService extends BaseService {
-    constructor(private http: HttpClient) { super(); }
+    constructor(private http: HttpClient, router: Router) { super(router); }
 
     public urlImagem = this.UrlImagemV1;
     obterProdutos(categoriaId?: string) : Observable<Produto[]>{
@@ -25,10 +27,6 @@ export class ProdutoService extends BaseService {
             map(response => response.data)
         );
     }
-
-    // listarProdutos(pagina: number, tamanho: number): Observable<any> {
-    //     return this.http.get<any>(`${this.UrlServiceV1}produtos?pagina=${pagina}&tamanho=${tamanho}`);
-    // }
 
     obterProdutosPaginado(paginaAtual: number, tamanhoPagina: number, categoriaId?: string) : Observable<Pagined<Produto>>{
 
@@ -75,7 +73,8 @@ export class ProdutoService extends BaseService {
         }
 
         return this.http.get<any>(url).pipe(
-            map(response => response.data)
+            map(response => response.data),
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -93,7 +92,7 @@ export class ProdutoService extends BaseService {
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
             map(response => response.data as Favorito[]),
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -103,7 +102,7 @@ export class ProdutoService extends BaseService {
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
             map(response => response.data as Pagined<Favorito>),
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -112,7 +111,7 @@ export class ProdutoService extends BaseService {
         let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.post<void>(url, {}, this.ObterAuthHeaderJson()).pipe(
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -121,7 +120,7 @@ export class ProdutoService extends BaseService {
         let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.delete<void>(url, this.ObterAuthHeaderJson()).pipe(
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 }

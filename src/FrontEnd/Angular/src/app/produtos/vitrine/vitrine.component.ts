@@ -4,9 +4,7 @@ import { ProdutoService } from '../services/produtos.service';
 
 @Component({
   selector: 'app-vitrine',
-  templateUrl: './vitrine.component.html',
-  //styleUrls: ['./vitrine.component.css']
-
+  templateUrl: './vitrine.component.html'
 })
 export class VitrineComponent implements OnInit {
 
@@ -20,7 +18,6 @@ export class VitrineComponent implements OnInit {
         .subscribe({
           next: (categorias) => {
             this.categorias = categorias;
-            console.log(categorias);
           },
           error: (error) => console.error(error)
         });    

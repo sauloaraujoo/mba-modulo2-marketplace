@@ -15,7 +15,7 @@ namespace LojaVirtual.Api.Controllers
         {
             _notificavel = notificavel;
         }
-        protected ActionResult CustomResponse(HttpStatusCode statusCode = HttpStatusCode.OK, object result = null)
+        protected ActionResult RespostaCustomizada(HttpStatusCode statusCode = HttpStatusCode.OK, object result = null)
         {
             if (OperacaoValida())
             {
@@ -35,7 +35,7 @@ namespace LojaVirtual.Api.Controllers
                 Mensagens = _notificavel.ObterNotificacoes().Select(n => n.Message).ToArray()
             });
         }
-        protected ActionResult CustomResponse(ModelStateDictionary modelState)
+        protected ActionResult RespostaCustomizada(ModelStateDictionary modelState)
         {
             var erros = modelState.Values.SelectMany(e => e.Errors);
             foreach (var erro in erros)
@@ -43,16 +43,16 @@ namespace LojaVirtual.Api.Controllers
                 var errorMsg = erro.Exception == null ? erro.ErrorMessage : erro.Exception.Message;
                 AdicionarErroProcessamento(errorMsg);
             }
-            return CustomResponse();
+            return RespostaCustomizada();
         }
 
-        protected ActionResult CustomResponse(List<Notificacao> notificacoes)
+        protected ActionResult RespostaCustomizada(List<Notificacao> notificacoes)
         {
             foreach (var erro in notificacoes)
             {
                 AdicionarErroProcessamento(erro.Message);
             }
-            return CustomResponse();
+            return RespostaCustomizada();
         }
 
         protected bool OperacaoValida()

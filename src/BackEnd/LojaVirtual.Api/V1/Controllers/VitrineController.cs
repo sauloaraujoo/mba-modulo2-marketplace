@@ -38,7 +38,7 @@ namespace LojaVirtual.Api.V1.Controllers
                 TamanhoPagina = resultado.TamanhoPagina,
                 Itens = _mapper.Map<IEnumerable<ProdutoModel>>(resultado.Itens)
             };
-            return CustomResponse(HttpStatusCode.OK, viewModel);
+            return RespostaCustomizada(HttpStatusCode.OK, viewModel);
             //return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrine(categoriaId, cancellationToken)));
         }
 
@@ -54,7 +54,7 @@ namespace LojaVirtual.Api.V1.Controllers
                 TamanhoPagina = resultado.TamanhoPagina,
                 Itens = _mapper.Map<IEnumerable<ProdutoModel>>(resultado.Itens)
             };
-            return CustomResponse(HttpStatusCode.OK, viewModel);
+            return RespostaCustomizada(HttpStatusCode.OK, viewModel);
 
             //return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<ProdutoModel>>(await _produtoService.ListVitrineByVendedor(vendedorId, cancellationToken)));
         }
@@ -62,13 +62,17 @@ namespace LojaVirtual.Api.V1.Controllers
         [HttpGet("detalhe/{id:Guid}")]
         public async Task<IActionResult> ObterDetalhesPorId(Guid id, CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListarVitrinePorId(id, tokenDeCancelamento)));
+            var produto = await _produtoService.ListarVitrinePorId(id, tokenDeCancelamento);
+            if (produto == null)
+                return NotFound();
+            else
+                return RespostaCustomizada(HttpStatusCode.OK, _mapper.Map<ProdutoModel>(await _produtoService.ListarVitrinePorId(id, tokenDeCancelamento)));
         }
 
         [HttpGet("categorias")]
         public async Task<ActionResult> ListarCategorias(CancellationToken tokenDeCancelamento)
         {
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
+            return RespostaCustomizada(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
         }
 
     }
