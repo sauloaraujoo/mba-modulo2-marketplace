@@ -6,10 +6,12 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import { BaseService } from 'src/app/services/base.service';
 
+import { Router } from '@angular/router';
+
 @Injectable()
 export class VendedorService extends BaseService {
 
-    constructor(private http: HttpClient) { super(); }
+    constructor(private http: HttpClient, router: Router) { super(router); }
 
     obter(vendedorId: string) : Observable<Vendedor>{
 

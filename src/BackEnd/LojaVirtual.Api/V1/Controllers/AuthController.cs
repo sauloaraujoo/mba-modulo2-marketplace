@@ -39,16 +39,16 @@ namespace LojaVirtual.Api.V1.Controllers
         [HttpPost("login")]
         public async Task<ActionResult> Login(LoginUserViewModel usuarioLogin)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid) return RespostaCustomizada(ModelState);
 
             var resultado = await _signInManager.PasswordSignInAsync(usuarioLogin.Email, usuarioLogin.Senha, false, true);
 
             if (resultado.Succeeded)
             {
-                return CustomResponse(HttpStatusCode.OK, await GerarJwt(usuarioLogin.Email));
+                return RespostaCustomizada(HttpStatusCode.OK, await GerarJwt(usuarioLogin.Email));
             }
             AdicionarErroProcessamento("E-mail ou senha inválidos.");
-            return CustomResponse();
+            return RespostaCustomizada();
         }
 
         [HttpPost("registrar")]
@@ -56,14 +56,14 @@ namespace LojaVirtual.Api.V1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return CustomResponse(ModelState);
+                return RespostaCustomizada(ModelState);
             }
             var idUsuarioNovo = Guid.NewGuid();
             var usuarioPreexistente = await _userManager.FindByIdAsync(usuarioRegistro.Email);
             if (await _userManager.FindByEmailAsync(usuarioRegistro.Email) != null)
             {
                 AdicionarErroProcessamento("E-mail já cadastrado.");
-                return CustomResponse();
+                return RespostaCustomizada();
             }
 
             var usuarioNovo = new IdentityUser
@@ -85,14 +85,14 @@ namespace LojaVirtual.Api.V1.Controllers
                 await _clienteRepository.Inserir(cliente, tokenDeCancelamento);
                 await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
                 await _signInManager.SignInAsync(usuarioNovo, false);
-                return CustomResponse(HttpStatusCode.OK, await GerarJwt(usuarioNovo.Email));
+                return RespostaCustomizada(HttpStatusCode.OK, await GerarJwt(usuarioNovo.Email));
             }
             foreach (var item in resultado.Errors)
             {
                 AdicionarErroProcessamento(item.Description);
             }
             
-            return CustomResponse();
+            return RespostaCustomizada();
         }
         private async Task<LoginResponseViewModel> GerarJwt(string email)
         {

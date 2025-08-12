@@ -9,9 +9,11 @@ import { BaseService } from 'src/app/services/base.service';
 import { Favorito } from "../models/favorito";
 import { Pagined } from "../models/pagined";
 
+import { Router } from '@angular/router';
+
 @Injectable()
 export class ProdutoService extends BaseService {
-    constructor(private http: HttpClient) { super(); }
+    constructor(private http: HttpClient, router: Router) { super(router); }
 
     public urlImagem = this.UrlImagemV1;
     obterProdutos(categoriaId?: string) : Observable<Produto[]>{
@@ -75,7 +77,8 @@ export class ProdutoService extends BaseService {
         }
 
         return this.http.get<any>(url).pipe(
-            map(response => response.data)
+            map(response => response.data),
+            catchError(this.serviceError)
         );
     }
 

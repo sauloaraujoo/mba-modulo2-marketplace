@@ -38,7 +38,8 @@ export class ProdutoComponent {
             this.produto = produto;
             console.log(produto);
           },
-          error: (error) => console.error(error)
+          error: (error) => 
+            console.error(error)
         });  
   }  
 

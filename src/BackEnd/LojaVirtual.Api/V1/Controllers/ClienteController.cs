@@ -29,7 +29,7 @@ namespace LojaVirtual.Api.V1.Controllers
         public async Task<IActionResult> ObterFavoritos(CancellationToken tokenDeCancelamento)
         {
             var favoritos = await _clienteService.ObterFavoritos(tokenDeCancelamento);
-            return CustomResponse(HttpStatusCode.OK, favoritos.Select(FavoritoViewModel.FromFavorito));
+            return RespostaCustomizada(HttpStatusCode.OK, favoritos.Select(FavoritoViewModel.FromFavorito));
         }
 
         [ClaimsAuthorize("Clientes", "VISUALIZAR_FAVORITOS")]
@@ -44,7 +44,7 @@ namespace LojaVirtual.Api.V1.Controllers
                 TamanhoPagina = resultado.TamanhoPagina,
                 Itens = resultado.Itens.Select(FavoritoViewModel.FromFavorito)
             };
-            return CustomResponse(HttpStatusCode.OK, viewModel);
+            return RespostaCustomizada(HttpStatusCode.OK, viewModel);
         }
 
         [ClaimsAuthorize("Clientes", "EDITAR_FAVORITOS")]
@@ -56,10 +56,10 @@ namespace LojaVirtual.Api.V1.Controllers
             if (!adicionado)
             {
                 AdicionarErroProcessamento("Este produto já está nos seus favoritos.");
-                return CustomResponse(HttpStatusCode.Conflict);
+                return RespostaCustomizada(HttpStatusCode.Conflict);
             }
 
-            return CustomResponse(HttpStatusCode.Created);
+            return RespostaCustomizada(HttpStatusCode.Created);
         }
 
         [ClaimsAuthorize("Clientes", "EDITAR_FAVORITOS")]
@@ -71,10 +71,10 @@ namespace LojaVirtual.Api.V1.Controllers
             if (!removido)
             {
                 AdicionarErroProcessamento("Produto não estava nos favoritos.");
-                return CustomResponse(HttpStatusCode.NotFound);
+                return RespostaCustomizada(HttpStatusCode.NotFound);
             }
 
-            return CustomResponse(HttpStatusCode.OK);
+            return RespostaCustomizada(HttpStatusCode.OK);
         }
 
     }

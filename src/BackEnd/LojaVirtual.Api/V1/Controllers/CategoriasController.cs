@@ -31,18 +31,18 @@ namespace LojaVirtual.Api.V1.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return CustomResponse(ModelState);
+                return RespostaCustomizada(ModelState);
             }
             
             await _categoriaService.Inserir(_mapper.Map<Categoria>(request), tokenDeCancelamento);                        
             
-            return CustomResponse(HttpStatusCode.Created);            
+            return RespostaCustomizada(HttpStatusCode.Created);            
         }
 
         [HttpGet]
         public async Task<ActionResult> Listar(CancellationToken tokenDeCancelamento)
         {            
-            return CustomResponse(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
+            return RespostaCustomizada(HttpStatusCode.OK, _mapper.Map<IEnumerable<CategoriaModel>>(await _categoriaService.Listar(tokenDeCancelamento)));
         }
 
         [ClaimsAuthorize("Categorias", "EDITAR")]
@@ -52,16 +52,16 @@ namespace LojaVirtual.Api.V1.Controllers
             if (id != request.Id)
             {
                 AdicionarErroProcessamento("O id informado não é o mesmo que foi passado no body");                
-                return CustomResponse();
+                return RespostaCustomizada();
             }
             if (!ModelState.IsValid)
             {
-                return CustomResponse(ModelState);
+                return RespostaCustomizada(ModelState);
             }
 
             await _categoriaService.Editar(_mapper.Map<Categoria>(request), tokenDeCancelamento);
             
-            return CustomResponse(HttpStatusCode.NoContent);            
+            return RespostaCustomizada(HttpStatusCode.NoContent);            
         }
 
         [HttpGet("{id:Guid}")]
@@ -69,7 +69,7 @@ namespace LojaVirtual.Api.V1.Controllers
         {
             var categoria = _mapper.Map<CategoriaModel>(await _categoriaService.ObterPorId(id, tokenDeCancelamento));
             
-            return CustomResponse(HttpStatusCode.OK, categoria);
+            return RespostaCustomizada(HttpStatusCode.OK, categoria);
         }
 
         [ClaimsAuthorize("Categorias", "EXCLUIR")]
@@ -78,7 +78,7 @@ namespace LojaVirtual.Api.V1.Controllers
         {
             await _categoriaService.Remover(id, tokenDeCancelamento);
             
-            return CustomResponse(HttpStatusCode.NoContent);
+            return RespostaCustomizada(HttpStatusCode.NoContent);
         }
     }
 }
