@@ -12,7 +12,7 @@
     <link href="~/lib/font-awesome/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/LojaVirtual.Mvc.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container">
@@ -41,17 +41,19 @@
             </div>
         </div>
     </nav>
-    
-    <div class="container">
-    @RenderBody()
-    </div>
 
-    
+    <main class="container flex-grow-1">
+        @RenderBody()
+    </main>
+
+
     <!-- Footer-->
-    <footer class="text-center mt-5">
-        <p>&copy; @DateTime.Now.Year Minha Loja - Todos os direitos reservados.</p>
+    <footer class="text-center mt-auto py-3 bg-dark text-white">
+        <div class="container">
+            <p class="mb-0">&copy; @DateTime.Now.Year Minha Loja - Todos os direitos reservados.</p>
+        </div>
     </footer>
-    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
