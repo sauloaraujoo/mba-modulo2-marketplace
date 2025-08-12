@@ -3,7 +3,6 @@ import { throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { LocalStorageUtils } from '../utils/localstorage';
 import { Router } from '@angular/router';
-import { inject } from "@angular/core";
 
 export abstract class BaseService {
 
@@ -39,8 +38,6 @@ export abstract class BaseService {
         let customError: string[] = [];
         let customResponse: { error: { errors: string[] } } = { error: { errors: [] } }
 
-        //const router = inject(Router);
-
         if (response instanceof HttpErrorResponse) {
 
             if (response.statusText === "Unknown Error") {
@@ -48,31 +45,15 @@ export abstract class BaseService {
                 response.error.errors = customError;
             }
         }
-        console.log(response);
+
         if (response.status === 500) {
             customError.push("Ocorreu um erro no processamento, tente novamente mais tarde ou contate o nosso suporte.");
-            
-            // Erros do tipo 500 não possuem uma lista de erros
-            // A lista de erros do HttpErrorResponse é readonly                
             customResponse.error.errors = customError;
             return throwError(customResponse);
         }
         else if (response.status === 404) {
-            
-            //var router = new Router();
-
-            //window.location.href = '/nao-encontrado';
             this.router.navigate(['/nao-encontrado']);
-            customError.push("Ocorreu um erro no processamento, tente novamente mais tarde ou contate o nosso suporte.");
-            
-            // Erros do tipo 500 não possuem uma lista de erros
-            // A lista de erros do HttpErrorResponse é readonly                
-            customResponse.error.errors = customError;
-            return throwError(customResponse);
         }
-
-
-        console.error(response);
         return throwError(response);
     }
 

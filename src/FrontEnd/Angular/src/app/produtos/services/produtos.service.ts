@@ -28,10 +28,6 @@ export class ProdutoService extends BaseService {
         );
     }
 
-    // listarProdutos(pagina: number, tamanho: number): Observable<any> {
-    //     return this.http.get<any>(`${this.UrlServiceV1}produtos?pagina=${pagina}&tamanho=${tamanho}`);
-    // }
-
     obterProdutosPaginado(paginaAtual: number, tamanhoPagina: number, categoriaId?: string) : Observable<Pagined<Produto>>{
 
         let url = this.UrlServiceV1 + 'vitrines';
@@ -78,7 +74,7 @@ export class ProdutoService extends BaseService {
 
         return this.http.get<any>(url).pipe(
             map(response => response.data),
-            catchError(this.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -96,7 +92,7 @@ export class ProdutoService extends BaseService {
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
             map(response => response.data as Favorito[]),
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -106,7 +102,7 @@ export class ProdutoService extends BaseService {
 
         return this.http.get<any>(url, this.ObterAuthHeaderJson()).pipe(
             map(response => response.data as Pagined<Favorito>),
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -115,7 +111,7 @@ export class ProdutoService extends BaseService {
         let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.post<void>(url, {}, this.ObterAuthHeaderJson()).pipe(
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 
@@ -124,7 +120,7 @@ export class ProdutoService extends BaseService {
         let url = this.UrlServiceV1 + `clientes/favoritos/${produtoId}`;
 
         return this.http.delete<void>(url, this.ObterAuthHeaderJson()).pipe(
-            catchError(super.serviceError)
+            catchError(this.serviceError.bind(this))
         );
     }
 }

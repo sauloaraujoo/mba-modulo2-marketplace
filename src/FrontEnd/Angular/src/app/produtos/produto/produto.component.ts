@@ -36,7 +36,6 @@ export class ProdutoComponent {
         .subscribe({
           next: (produto) => {
             this.produto = produto;
-            console.log(produto);
           },
           error: (error) => 
             console.error(error)
