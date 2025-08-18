@@ -146,7 +146,7 @@ namespace LojaVirtual.Data.Seed
                         );
 
                         produto.VinculaVendedor(vendedor.Id);
-                        categoria.AddProduto(produto);
+                        categoria.AdicionarProduto(produto);
                     }
                 }
             }
@@ -180,7 +180,7 @@ namespace LojaVirtual.Data.Seed
 
             if (primeiroProduto != null)
             {
-                cliente.AddFavorito(primeiroProduto.Id);
+                cliente.AdicionarFavorito(primeiroProduto.Id);
             }
 
             await context.ClienteSet.AddAsync(cliente);

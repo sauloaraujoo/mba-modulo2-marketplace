@@ -50,7 +50,7 @@ namespace LojaVirtual.Business.Services
                 return;
             }
 
-            categoriaOrigem.Edit(categoria.Nome, categoria.Descricao);
+            categoriaOrigem.Editar(categoria.Nome, categoria.Descricao);
 
             await _categoriaRepository.Editar(categoriaOrigem, tokenDeCancelamento);
             await _categoriaRepository.SalvarMudancas(tokenDeCancelamento);

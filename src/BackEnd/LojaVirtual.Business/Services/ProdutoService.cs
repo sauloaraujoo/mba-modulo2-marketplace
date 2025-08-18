@@ -54,7 +54,7 @@ namespace LojaVirtual.Business.Services
             var produto = await ObterProdutoProprioPorId(request.Id, tokenDeCancelamento);
             if (produto is null) { return; }
 
-            produto.Edit(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, true, request.CategoriaId);
+            produto.Editar(request.Nome, request.Descricao, request.Imagem, request.Preco, request.Estoque, true, request.CategoriaId);
 
             await _produtoRepository.Editar(produto, tokenDeCancelamento);
             await _produtoRepository.SalvarMudancas(tokenDeCancelamento);
