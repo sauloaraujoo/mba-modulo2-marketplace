@@ -2,11 +2,12 @@
 {
     public class Cliente : Entity
     {
-        protected Cliente() { _favoritos = new List<Favorito>(); }
         public string Nome { get; private set; }
         public string Email { get; private set; }
         private readonly List<Favorito> _favoritos = new();
         public IReadOnlyCollection<Favorito> Favoritos => _favoritos;
+        
+        protected Cliente() { _favoritos = new List<Favorito>(); }
 
         public Cliente(Guid id, string nome, string email)
         {

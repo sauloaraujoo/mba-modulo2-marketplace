@@ -2,26 +2,6 @@
 {
     public class Produto : Entity
     {
-        protected Produto()
-        { }
-        public Produto(
-            string nome,
-            string descricao,
-            string imagem,
-            decimal preco,
-            int estoque,
-            bool ativo,
-            Guid categoriaId)
-        {
-            Nome = nome;
-            Descricao = descricao;
-            Imagem = imagem;
-            Preco = preco;
-            Estoque = estoque;
-            Ativo = ativo;
-            CategoriaId = categoriaId;
-        }
-
         public string Nome { get; private set; }
         public string Descricao { get; private set; }
         public string Imagem { get; private set; }
@@ -35,13 +15,15 @@
 
         public IReadOnlyCollection<Favorito> Favoritos;
 
-        public void Editar(string nome,
-            string descricao,
-            string imagem,
-            decimal preco,
-            int estoque,
-            bool ativo,
-            Guid categoriaId)
+        protected Produto() { }
+
+        public Produto(string nome,
+                       string descricao,
+                       string imagem,
+                       decimal preco,
+                       int estoque,
+                       bool ativo,
+                       Guid categoriaId)
         {
             Nome = nome;
             Descricao = descricao;
@@ -51,6 +33,24 @@
             Ativo = ativo;
             CategoriaId = categoriaId;
         }
+
+        public void Editar(string nome, 
+                           string descricao,
+                           string imagem, 
+                           decimal preco, 
+                           int estoque, 
+                           bool ativo, 
+                           Guid categoriaId)
+        {
+            Nome = nome;
+            Descricao = descricao;
+            Imagem = imagem;
+            Preco = preco;
+            Estoque = estoque;
+            Ativo = ativo;
+            CategoriaId = categoriaId;
+        }
+
         public void VinculaVendedor(Guid vendedorId)
         {
             VendedorId = vendedorId;
@@ -60,7 +60,5 @@
         {
             Ativo = !Ativo;
         }
-
-
     }
 }
