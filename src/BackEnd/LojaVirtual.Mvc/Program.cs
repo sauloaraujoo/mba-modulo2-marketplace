@@ -40,6 +40,6 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
-app.UseDbMigrationHelper();
+//app.UseDbMigrationHelper();
 
 app.Run();
