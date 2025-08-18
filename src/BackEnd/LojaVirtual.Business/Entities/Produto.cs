@@ -35,7 +35,7 @@
 
         public IReadOnlyCollection<Favorito> Favoritos;
 
-        public void Edit(string nome,
+        public void Editar(string nome,
             string descricao,
             string imagem,
             decimal preco,
