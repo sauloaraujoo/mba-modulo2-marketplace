@@ -146,7 +146,7 @@ namespace LojaVirtual.Data.Seed
                         );
 
                         produto.VinculaVendedor(vendedor.Id);
-                        categoria.AddProduto(produto);
+                        categoria.AdicionarProduto(produto);
                     }
                 }
             }

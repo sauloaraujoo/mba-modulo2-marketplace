@@ -15,12 +15,12 @@
         private readonly List<Produto> _produtos;
         public IReadOnlyCollection<Produto> Produtos => _produtos;
 
-        public void Edit(string nome, string descricao)
+        public void Editar(string nome, string descricao)
         {
             Nome = nome.Trim();
             Descricao = descricao.Trim();
         }
-        public void AddProduto(Produto produto)
+        public void AdicionarProduto(Produto produto)
         {
             _produtos.Add(produto);
         }
