@@ -31,7 +31,7 @@ namespace LojaVirtual.Data.Repositories
                     .Where(f => f.Produto.Ativo && f.Produto.Vendedor != null && f.Produto.Vendedor.Ativo)
                     .ToList();
 
-                cliente.SetFavoritos(favoritosAtivos);
+                cliente.DefinirFavoritos(favoritosAtivos);
             }
 
             return cliente;

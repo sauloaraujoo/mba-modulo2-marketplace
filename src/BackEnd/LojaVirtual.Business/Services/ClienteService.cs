@@ -47,7 +47,7 @@ namespace LojaVirtual.Business.Services
                 return false;
             }
 
-            cliente.AddFavorito(produtoId);
+            cliente.AdicionarFavorito(produtoId);
             _clienteRepository.Editar(cliente);
             await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
 
@@ -72,7 +72,7 @@ namespace LojaVirtual.Business.Services
                 return false;
             }
 
-            cliente.RemoveFavorito(favorito);
+            cliente.RemoverFavorito(favorito);
             _clienteRepository.Editar(cliente);
             await _clienteRepository.SalvarMudancas(tokenDeCancelamento);
 

@@ -180,7 +180,7 @@ namespace LojaVirtual.Data.Seed
 
             if (primeiroProduto != null)
             {
-                cliente.AddFavorito(primeiroProduto.Id);
+                cliente.AdicionarFavorito(primeiroProduto.Id);
             }
 
             await context.ClienteSet.AddAsync(cliente);
