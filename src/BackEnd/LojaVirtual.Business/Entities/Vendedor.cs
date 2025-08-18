@@ -2,11 +2,20 @@
 {
     public class Vendedor : Entity
     {
+        public string Nome { get; private set; }
+        public string Email { get; private set; }
+        public bool Ativo { get; private set; }
+        private readonly List<Produto> _produtos;
+        public IReadOnlyCollection<Produto> Produtos => _produtos;
+
         protected Vendedor()
         {
             _produtos = new List<Produto>();
         }
-        public Vendedor(Guid id, string nome, string email)
+
+        public Vendedor(Guid id, 
+                        string nome, 
+                        string email)
         {
             Id = id;
             Nome = nome;
@@ -14,12 +23,6 @@
             Ativo = true;
             _produtos = new List<Produto>();
         }
-        public string Nome { get; private set; }
-        public string Email { get; private set; }
-        public bool Ativo { get; private set; }
-
-        private readonly List<Produto> _produtos;
-        public IReadOnlyCollection<Produto> Produtos => _produtos;
 
         public void AlterarStatus()
         {
@@ -28,7 +31,6 @@
             {
                 produto.AlterarStatus();
             }
-
         }
     }
 }
